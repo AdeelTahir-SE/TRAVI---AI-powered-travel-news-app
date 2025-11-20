@@ -23,3 +23,8 @@
 //     end_date:Date,
 //     active:boolean
 // }
+
+interface FAQ{
+    question:string,
+    answer:string,
+}

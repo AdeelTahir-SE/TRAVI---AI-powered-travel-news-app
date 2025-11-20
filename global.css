@@ -1,5 +1,0 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-.stylish-yellow-heading{
-    @apply text-4xl font-bold text-yellow-400;
-}
