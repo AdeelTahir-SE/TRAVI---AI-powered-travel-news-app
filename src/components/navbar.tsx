@@ -5,20 +5,7 @@ export default function Navbar() {
   return (
     <header
       className="
-    fixed top-[40px]
-    left-[20px]
-    sm:left-[30px]
-    md:left-[50px]
-    lg:left-[70px]
-    xl:left-[100px]
-    2xl:left-[140px]
-    w-[400px]
-    sm:w-[700px]
-    md:w-[800px]
-    lg:w-[960px]
-    xl:w-[1100px]
-    2xl:w-[1640px]
-    
+    w-full fixed flex flex-row items-center justify-center pt-[40px] px-[20px] sm:px-[25px] md:px-[70px] lg:px-[90px] xl:[120px] 2xl:px-[140px] z-50
   "
     >
       <nav className="flex flex-row items-center justify-between w-full h-full">
