@@ -100,3 +100,6 @@ body {
   }
 }
 
+.background-blue-gradient{
+  @apply bg-[linear-gradient(180deg,#2384C8_72.91%,rgba(35,132,200,0.63)_90.68%,rgba(35,132,200,0)_100%)];
+}

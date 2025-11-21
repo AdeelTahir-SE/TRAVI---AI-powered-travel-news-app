@@ -25,8 +25,7 @@ export default function FAQSection() {
         <h2 className="stylish-yellow-text">Faq&apos;s</h2>
         <h2 className="heading-2">Frequently Asked Questions</h2>
         <p className="sub-heading">
-          Find answers to common questions about our services, pricing, and
-          more.
+          Answers to the most common guest queries.{" "}
         </p>
       </div>
 
