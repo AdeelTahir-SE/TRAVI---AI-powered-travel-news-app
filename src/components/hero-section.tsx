@@ -44,9 +44,8 @@ export default function HeroSection() {
           <SearchInput action="/" />
         </div>
       </div>
-      <CloudSection />
+      <CloudSection className="bg-gradient-to-b from-[#2384C8] via-[#3ca8f5] via-[#44adf8]  to-white " />
 
-      <h1></h1>
     </section>
   );
 }

@@ -1,7 +1,7 @@
 import Image from "next/image";
-export default function CloudSection({className}:{className:string}){
+export default function TransparentCloudsSection({className}:{className:string}){
     return (
-      <section className={`overflow-hidden ${className}max-h-[600px] h-[200px] md:h-[350px]  *:min-h-[400px] *:min-w-[1200px]`} >
+      <section className={`overflow-hidden ${className} max-h-[600px] h-[200px] md:h-[350px]  *:min-h-[400px] *:min-w-[1200px]`} >
         <Image
           src="/clouds/cloud.svg"
           alt="Cloud Left"

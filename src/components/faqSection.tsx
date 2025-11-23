@@ -24,7 +24,9 @@ export default function FAQSection() {
       <div className="flex flex-col items-center justify-center gap-[12px]">
         <h2 className="stylish-yellow-text">Faq&apos;s</h2>
         <h2 className="heading-2">Frequently Asked Questions</h2>
-        <p className="sub-heading">
+        <p
+          className="sub-heading text-[#475467]"
+        >
           Answers to the most common guest queries.{" "}
         </p>
       </div>

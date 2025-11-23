@@ -54,14 +54,15 @@ body {
 /* Hurricane text */
 .stylish-yellow-text {
   font-family: "Hurricane", sans-serif; /* directly use the font */
-  font-weight: 400;                     /* normal */
+  font-weight: 400; /* normal */
   font-size: 70px;
   line-height: 54.4px;
   letter-spacing: -0.03em;
-  color:#F8A900
+  color: #f8a900;
 }
 
-@media (min-width: 640px) { /* sm: breakpoint in Tailwind */
+@media (min-width: 640px) {
+  /* sm: breakpoint in Tailwind */
   .stylish-yellow-text {
     font-size: 100px;
   }
@@ -70,7 +71,7 @@ body {
 /* Manrope heading */
 .heading-2 {
   font-family: "Manrope", sans-serif;
-  font-weight: 800;  /* extrabold */
+  font-weight: 800; /* extrabold */
   font-size: 48px;
   line-height: 100%;
   letter-spacing: -0.03em;
@@ -90,7 +91,16 @@ body {
   line-height: 28px;
   letter-spacing: -0.02em;
   text-align: center;
-  color:#475467;
+}
+
+/* Hide scrollbar but keep scroll */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 @media (min-width: 640px) {
@@ -100,7 +110,7 @@ body {
   }
 }
 
-.background-blue-gradient{
+.background-blue-gradient {
   @apply bg-[linear-gradient(180deg,#2384C8_65_91%,rgba(35,132,200,0)_100%)];
 }
 
@@ -112,7 +122,7 @@ body {
   font-size: 24px;
   line-height: 36px;
   letter-spacing: -0.02em;
-  color: #A0A0A0; /* placeholder color */
+  color: #a0a0a0; /* placeholder color */
 }
 
 /* Small screens (phones) */

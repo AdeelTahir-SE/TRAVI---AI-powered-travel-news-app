@@ -1,5 +1,9 @@
-export default function ExploreActivitiesSection(){
-    return (
+import ActivitiesCarousel from "./activitiesCarousel";
+import Image from "next/image";
+import TransparentCloudsSection from "./transparentCloudSection";
+export default function ExploreActivitiesSection() {
+  return (
+    <section className="flex flex-col items-center justify-center ">
       <section className="flex flex-col items-center justify-center gap-[10px]">
         <h2 className="heading-2 text-center">Explore From Wide Range</h2>
         <h2 className="stylish-yellow-text">of activites</h2>
@@ -9,5 +13,22 @@ export default function ExploreActivitiesSection(){
           tristique leo. Etiam sollicitudin facilisis malesuada.{" "}
         </p>
       </section>
-    );
+      <ActivitiesCarousel />
+      <section className="relative w-full flex flex-col items-center justify-center  ">
+        <Image
+          src="/background-images/explore-activities.jpg"
+          width={1200}
+          height={433}
+          className="w-full h-auto min-h-[433px] lg:min-h- object-cover md:object-contain rotate-y-180"
+          alt="Hero"
+        />
+
+        {/* OVERLAY */}
+        <div className="absolute  inset-0 pointer-events-none bg-[linear-gradient(to_bottom,rgb(255,255,255,1)_0%,rgba(255,255,255,0)_50%,rgb(255,255,255,1)_100%)]"></div>
+
+        {/* <div className="w-full h-[200px]"></div> */}
+        <TransparentCloudsSection className="absolute overflow-x-hidden w-full top-[230px] md:top-[230px] z-50 " />
+      </section>
+    </section>
+  );
 }
