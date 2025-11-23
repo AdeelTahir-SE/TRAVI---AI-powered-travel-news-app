@@ -101,5 +101,15 @@ body {
 }
 
 .background-blue-gradient{
-  @apply bg-[linear-gradient(180deg,#2384C8_72.91%,rgba(35,132,200,0.63)_90.68%,rgba(35,132,200,0)_100%)];
+  @apply bg-[linear-gradient(180deg,#2384C8_65_91%,rgba(35,132,200,0)_100%)];
+}
+
+.input-placeholder::placeholder {
+  font-family: Inter;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 36px;
+  letter-spacing: -0.02em;
+  color: #A0A0A0; /* optional placeholder color */
 }
