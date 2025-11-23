@@ -104,6 +104,7 @@ body {
   @apply bg-[linear-gradient(180deg,#2384C8_65_91%,rgba(35,132,200,0)_100%)];
 }
 
+/* Default (big screens) */
 .input-placeholder::placeholder {
   font-family: Inter;
   font-weight: 400;
@@ -111,5 +112,17 @@ body {
   font-size: 24px;
   line-height: 36px;
   letter-spacing: -0.02em;
-  color: #A0A0A0; /* optional placeholder color */
+  color: #A0A0A0; /* placeholder color */
+}
+
+/* Small screens (phones) */
+@media (max-width: 640px) {
+  .input-placeholder::placeholder {
+    font-family: Inter;
+    font-weight: 400;
+    font-style: normal; /* "Regular" is normal in CSS */
+    font-size: 16px;
+    line-height: 17.92px;
+    letter-spacing: -0.02em; /* -2% = approx -0.02em */
+  }
 }
