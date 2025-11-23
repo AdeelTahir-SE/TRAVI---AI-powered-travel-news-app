@@ -12,6 +12,15 @@ export default function HeroSection() {
           className="w-full h-auto object-cover md:object-contain"
           alt="Hero"
         />
+        <Image
+          src="/logos/hero-section.svg"
+          width={1200}
+          height={400}
+          alt=""
+          className="absolute w-full h-auto z-10
+             top-[80px] 
+             px-6 sm:px-12 md:px-24 lg:px-32 xl:px-48"
+        />
 
         {/* Subtle bluish overlay */}
         <div
@@ -34,7 +43,6 @@ export default function HeroSection() {
         <div className="flex flex-col items-center justify-center mt-[20px]">
           <SearchInput action="/" />
         </div>
-        
       </div>
       <CloudSection />
 
