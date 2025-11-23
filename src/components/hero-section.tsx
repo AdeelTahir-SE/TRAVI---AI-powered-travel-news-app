@@ -9,7 +9,7 @@ export default function HeroSection() {
           src="/background-images/hero-section.svg"
           width={1280}
           height={595}
-          className="w-full h-auto object-cover md:object-contain"
+          className="w-full h-auto min-h-[595px] object-cover md:object-contain"
           alt="Hero"
         />
         <Image
@@ -18,7 +18,7 @@ export default function HeroSection() {
           height={400}
           alt=""
           className="absolute w-full h-auto z-10
-             top-[80px] 
+             top-[140px]  md:top-[80px] 
              px-6 sm:px-12 md:px-24 lg:px-32 xl:px-48"
         />
 
