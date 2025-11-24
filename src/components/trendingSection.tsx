@@ -23,7 +23,7 @@ export default function TrendingSection() {
      leading-[80px] md:leading-[320px] 
      tracking-[0em] 
      bg-[linear-gradient(180deg,_rgba(0,0,0,0.09)_0%,_rgba(0,0,0,0.008)_100%)] 
-     bg-clip-text text-transparent z-20 relative"
+     bg-clip-text text-transparent z-20 relative max-w-screen px-4"
       >
         Trending
       </h2>

@@ -10,7 +10,7 @@ export default function Footer() {
   });
   return (
     <section className="flex flex-col items-center justify-center relative">
-      <section className="absolute w-full top-12 min-h-[760px]">
+      <section className="absolute w-full top-0   min-h-[760px] ">
         <Image
           src="/background-images/explore-dubai-background-effect.png"
           width={1200}
@@ -20,10 +20,10 @@ export default function Footer() {
         />
 
         {/* gradient overlay above image */}
-        <div className="absolute inset-0 z-0 bg-[linear-gradient(to_bottom,_rgba(255,255,255,1)_0%,_rgba(255,255,255,1)_45%,_rgba(255,255,255,0)_50%,_rgba(255,255,255,1)_100%)]"></div>
+        <div className="absolute inset-0 z-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,1)_0%,rgba(255,255,255,0.4)_50%,rgba(255,255,255,1)_100%)]"></div>
       </section>
-      <div className="flex flex-col items-center justify-center  gap-[30px] px-8 py-8">
-        <div className="flex flex-col items-start justify-center z-20">
+      <div className="flex flex-col items-center justify-center  gap-[30px] py-8 ">
+        <div className="flex flex-col items-start justify-center z-20 px-8">
           <h2 className="heading-2">Subscribe to our</h2>
           <h2 className="stylish-yellow-text relative bottom-4">Newsletter</h2>
           <p

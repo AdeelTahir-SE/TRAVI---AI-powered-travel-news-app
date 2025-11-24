@@ -27,7 +27,7 @@ export default function ExploreActivitiesSection() {
         <div className="absolute  inset-0 pointer-events-none bg-[linear-gradient(to_bottom,rgb(255,255,255,1)_0%,rgba(255,255,255,0)_50%,rgb(255,255,255,1)_100%)]"></div>
 
         {/* <div className="w-full h-[200px]"></div> */}
-        <TransparentCloudsSection className="absolute overflow-x-hidden w-full top-[230px] md:top-[230px]  " />
+        <TransparentCloudsSection className="absolute overflow-x-hidden w-full top-[230px] md:top-[230px] z-50 " />
       </section>
     </section>
   );
