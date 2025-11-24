@@ -19,15 +19,15 @@ export default function ExploreActivitiesSection() {
           src="/background-images/explore-activities.jpg"
           width={1200}
           height={433}
-          className="w-full h-auto min-h-[433px] lg:min-h- object-cover md:object-contain rotate-y-180"
-          alt="Hero"
+          className="w-full h-auto min-h-[433px]  object-cover md:object-contain rotate-y-180"
+          alt=""
         />
 
         {/* OVERLAY */}
         <div className="absolute  inset-0 pointer-events-none bg-[linear-gradient(to_bottom,rgb(255,255,255,1)_0%,rgba(255,255,255,0)_50%,rgb(255,255,255,1)_100%)]"></div>
 
         {/* <div className="w-full h-[200px]"></div> */}
-        <TransparentCloudsSection className="absolute overflow-x-hidden w-full top-[230px] md:top-[230px] z-50 " />
+        <TransparentCloudsSection className="absolute overflow-x-hidden w-full top-[230px] md:top-[230px]  " />
       </section>
     </section>
   );
