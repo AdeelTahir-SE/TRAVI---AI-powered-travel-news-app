@@ -114,6 +114,15 @@ body {
   @apply bg-[linear-gradient(180deg,#2384C8_65_91%,rgba(35,132,200,0)_100%)];
 }
 
+.yellow-button {
+  @apply w-[150.52px] h-[45px]       /* small screens */
+  rounded-[38.79px]           /* small screens */
+  text-[15.52px] leading-[23.28px] tracking-[-0.02em]  /* small screens */
+  md:w-[194px] md:h-[58px] md:rounded-[50px] md:text-[20px] md:leading-[30px] md:tracking-[-0.02em]  /* large screens */
+  bg-[#F8A900] text-black
+  font-inter font-semibold
+  opacity-100;
+}
 /* Default (big screens) */
 .input-placeholder::placeholder {
   font-family: Inter;

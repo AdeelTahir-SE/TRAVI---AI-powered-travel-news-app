@@ -5,6 +5,7 @@ import ExploreActivitiesSection from "@/components/exploreActivitesSection";
 import ShalimarSection from "@/components/shalimarSection";
 import ExploreDubaiSection from "@/components/exploreDubaiSection";
 import Footer from "@/components/footer";
+import TrendingSection from "@/components/trendingSection";
 export default function Home() {
   return (
     <section>
@@ -12,9 +13,11 @@ export default function Home() {
       <HeroSection />
       <ExploreActivitiesSection />
       {/* <FAQSection /> */}
-      {/* <ShalimarSection/> */}
       <ExploreDubaiSection />
-      {/* <Footer /> */}
+      <TrendingSection />
+      <ShalimarSection/>
+
+      <Footer />
     </section>
   );
 }
