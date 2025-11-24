@@ -144,4 +144,10 @@ body {
     line-height: 17.92px;
     letter-spacing: -0.02em; /* -2% = approx -0.02em */
   }
+
+  .footer-section-heading{
+    @apply font-inter font-medium 
+  text-[28px] leading-[100%] tracking-[-0.02em] 
+  md:text-[30px] md:leading-[100%] md:tracking-[-0.02em];
+  }
 }
