@@ -22,7 +22,7 @@ export default function Footer() {
         {/* gradient overlay above image */}
         <div className="absolute inset-0 z-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,1)_0%,rgba(255,255,255,0.4)_50%,rgba(255,255,255,1)_100%)]"></div>
       </section>
-      <div className="flex flex-col items-center justify-center  gap-[30px] py-8 ">
+      <div className="flex flex-col items-center justify-center  gap-[30px] py-8 lg:flex-row ">
         <div className="flex flex-col items-start justify-center z-20 px-8">
           <h2 className="heading-2">Subscribe to our</h2>
           <h2 className="stylish-yellow-text relative bottom-4">Newsletter</h2>
@@ -55,7 +55,7 @@ export default function Footer() {
           </button>
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center *:border-t-1 w-full px-8 z-50 *:w-full ">
+      <div className="flex flex-col lg:flex-row items-start justify-center *:border-t-1 w-full px-8 z-50 *:w-full ">
         <div className="flex flex-col items-center justify-center z-50 pb-7 ">
           <Image
             src="/logos/footer-cartoon.png"

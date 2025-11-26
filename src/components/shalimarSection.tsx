@@ -14,7 +14,7 @@ export default function ShalimarSection() {
         />
         <div className="absolute  inset-0 pointer-events-none bg-[linear-gradient(180deg,rgba(73,153,210,0)_89.93%,#4999D2_100%]"></div>
       </section>
-      <ShalimarCloudSection className="absolute overflow-hidden w-full bottom-[-40px]   " />
+      <ShalimarCloudSection className="absolute overflow-hidden w-full bottom-[-40px]  " />
     </section>
   );
 }
