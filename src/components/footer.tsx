@@ -22,8 +22,8 @@ export default function Footer() {
         {/* gradient overlay above image */}
         <div className="absolute inset-0 z-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,1)_0%,rgba(255,255,255,0.4)_50%,rgba(255,255,255,1)_100%)]"></div>
       </section>
-      <div className="flex flex-col items-center justify-center  gap-[30px] py-8 lg:flex-row ">
-        <div className="flex flex-col items-start justify-center z-20 px-8">
+      <div className="flex flex-col items-center justify-center  gap-[30px] py-8 lg:flex-row px-8 ">
+        <div className="flex flex-col items-start justify-center z-20 ">
           <h2 className="heading-2">Subscribe to our</h2>
           <h2 className="stylish-yellow-text relative bottom-4">Newsletter</h2>
           <p
@@ -42,7 +42,7 @@ export default function Footer() {
           <input
             type="text"
             placeholder="Enter your email here"
-            className="bg-white rounded-[34.72px] min-w-[400px] min-h-[53.7px] pl-4"
+            className="bg-white rounded-[34.72px] min-w-[300px] sm:min-w-[400px] min-h-[53.7px] pl-4"
           />
           <button className="absolute insets-0   right-2 w-[31px] h-[31px]  flex flex-row items-center justify-center rounded-full bg-[#FFD116]">
             <Image
@@ -55,14 +55,21 @@ export default function Footer() {
           </button>
         </div>
       </div>
-      <div className="flex flex-col lg:flex-row items-start justify-center *:border-t-1 w-full px-8 z-50 *:w-full ">
-        <div className="flex flex-col items-center justify-center z-50 pb-7 ">
+      <div className="flex flex-col lg:flex-row items-start justify-center *:border-t-1  *:border-gray-500 w-full px-8 z-50 *:w-full ">
+        <div className="flex flex-col items-center justify-center z-50 py-[30px] ">
           <Image
             src="/logos/footer-cartoon.png"
             alt=""
             width={160}
             height={200}
-            className="w-[160px] h-[200px] "
+            className="w-[160px] h-[200px] lg:hidden "
+          />
+          <Image
+            src="/logos/footer-simple-text.svg"
+            alt=""
+            width={160}
+            height={200}
+            className="w-[160px] h-auto hidden lg:block pb-4"
           />
 
           <p
@@ -75,11 +82,11 @@ export default function Footer() {
             the readable content of a page when looking at its layout.
           </p>
         </div>
-        <div className="flex flex-row items-start justify-between py-[30px] ">
+        <div className="flex flex-row items-start justify-between lg:justify-center py-[30px]  ">
           <div className="flex flex-col items-center justify center gap-[30px]">
             <h3 className="footer-section-heading">Quick Links</h3>
             {isActive?.quickLinks && (
-              <ul className="flex flex-col items-start justify-center list-style-none gap-[32px]">
+              <ul className="flex flex-col items-start justify-center list-style-none gap-[32px] md:hidden">
                 <li
                   className="font-inter font-normal text-[20px] leading-[14px] tracking-[-0.02em] 
           md:text-[24px] md:leading-[100%]"
@@ -112,9 +119,41 @@ export default function Footer() {
                 </li>
               </ul>
             )}
+            <ul className="md:flex flex-col items-start justify-center list-style-none gap-8 hidden">
+              <li
+                className="font-inter font-normal text-[20px] leading-[14px] tracking-[-0.02em] 
+          md:text-[24px] md:leading-[100%]"
+              >
+                About
+              </li>
+              <li
+                className="font-inter font-normal text-[20px] leading-[14px] tracking-[-0.02em] 
+          md:text-[24px] md:leading-[100%]"
+              >
+                Program
+              </li>
+              <li
+                className="font-inter font-normal text-[20px] leading-[14px] tracking-[-0.02em] 
+          md:text-[24px] md:leading-[100%]"
+              >
+                Speakers
+              </li>
+              <li
+                className="font-inter font-normal text-[20px] leading-[14px] tracking-[-0.02em] 
+          md:text-[24px] md:leading-[100%]"
+              >
+                Venue & Travel
+              </li>
+              <li
+                className="font-inter font-normal text-[20px] leading-[14px] tracking-[-0.02em] 
+          md:text-[24px] md:leading-[100%]"
+              >
+                Resources
+              </li>
+            </ul>
           </div>
           <button
-            className="bg-[#F8A900] border-[1.57px] border-white rounded-full min-w-[30px] min-h-[30px] flex items-center justify-center"
+            className="bg-[#F8A900] border-[1.57px] lg:hidden border-white rounded-full min-w-[30px] min-h-[30px] flex items-center justify-center"
             onClick={() =>
               setIsActive((prev) => ({ ...prev, quickLinks: !prev.quickLinks }))
             }
@@ -130,11 +169,11 @@ export default function Footer() {
             />
           </button>
         </div>
-        <div className="flex flex-row items-start justify-between py-[30px]">
-          <div className="flex flex-col items-center justify center gap-[30px]">
+        <div className="flex flex-row items-start justify-between lg:justify-center py-[30px] lg:border-x-1 border-gray-500">
+          <div className="flex flex-col items-center justify center gap-[30px] ">
             <h3 className="footer-section-heading">More Links</h3>
             {isActive?.moreLinks && (
-              <ul className="flex flex-col items-start justify-center list-style-none gap-[32px]">
+              <ul className="flex flex-col items-start justify-center list-style-none gap-[32px] md:hidden">
                 <li
                   className="font-inter font-normal text-[20px] leading-[14px] tracking-[-0.02em] 
           md:text-[24px] md:leading-[100%]"
@@ -167,9 +206,41 @@ export default function Footer() {
                 </li>
               </ul>
             )}
+            <ul className="flex-col items-start justify-center list-style-none gap-8 h-full md:flex hidden ">
+              <li
+                className="font-inter font-normal text-[20px] leading-[14px] tracking-[-0.02em] 
+          md:text-[24px] md:leading-[100%]"
+              >
+                About
+              </li>
+              <li
+                className="font-inter font-normal text-[20px] leading-[14px] tracking-[-0.02em] 
+          md:text-[24px] md:leading-[100%]"
+              >
+                Program
+              </li>
+              <li
+                className="font-inter font-normal text-[20px] leading-[14px] tracking-[-0.02em] 
+          md:text-[24px] md:leading-[100%]"
+              >
+                Speakers
+              </li>
+              <li
+                className="font-inter font-normal text-[20px] leading-[14px] tracking-[-0.02em] 
+          md:text-[24px] md:leading-[100%]"
+              >
+                Venue & Travel
+              </li>
+              <li
+                className="font-inter font-normal text-[20px] leading-[14px] tracking-[-0.02em] 
+          md:text-[24px] md:leading-[100%]"
+              >
+                Resources
+              </li>
+            </ul>
           </div>
           <button
-            className="bg-[#F8A900] border-[1.57px] border-white rounded-full min-w-[30px] min-h-[30px] flex items-center justify-center"
+            className="bg-[#F8A900] border-[1.57px] lg:hidden border-white rounded-full min-w-[30px] min-h-[30px] flex items-center justify-center"
             onClick={() =>
               setIsActive((prev) => ({ ...prev, moreLinks: !prev.moreLinks }))
             }
@@ -183,7 +254,7 @@ export default function Footer() {
             />
           </button>
         </div>
-        <div className="flex flex-col items-start justify-center py-[30px] gap-[26px] border-b-[1px]">
+        <div className="flex flex-col lg:px-8 items-start justify-center py-[30px] gap-[26px] border-b-[1px] lg:border-b-0">
           <h3 className="footer-section-heading">Follow Us</h3>
           <div className="flex flex-row items-center justify-start gap-[16px]">
             <Link
@@ -249,9 +320,11 @@ export default function Footer() {
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center justify-center text-black z-20 gap-[20px] py-12">
-        <p>Copyright © 2025 Travi - All Rights Reserved.</p>
-        <p>Privacy Policy | Terms of Service</p>
+      <div className="flex flex-row items-center  w-full  justify-center text-black z-20 md:px-8  ">
+        <div className="py-12 flex flex-col lg:flex-row items-center lg:justify-between w-full lg:border-t-1 border-gray-500 justify-center text-black z-20 gap-[20px]">
+          <p>Copyright © 2025 Travi - All Rights Reserved.</p>
+          <p>Privacy Policy | Terms of Service</p>
+        </div>
       </div>
     </section>
   );
