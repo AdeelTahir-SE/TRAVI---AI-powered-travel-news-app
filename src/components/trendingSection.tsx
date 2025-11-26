@@ -19,8 +19,8 @@ export default function TrendingSection() {
       {/* Foreground content */}
       <h2
         className="font-manrope font-bold uppercase text-center text-[50px]
-     sm:text-[80px] md:text-[310px] 
-     leading-[80px] md:leading-[320px] 
+     sm:text-[80px] 2xl:text-[310px] 
+     leading-[80px] 2xl:leading-[320px] 
      tracking-[0em] 
      bg-[linear-gradient(180deg,_rgba(0,0,0,0.09)_0%,_rgba(0,0,0,0.008)_100%)] 
      bg-clip-text text-transparent z-20 relative max-w-screen "
@@ -28,72 +28,78 @@ export default function TrendingSection() {
         Trending
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 items-center justify-center relative z-20 gap-[20px]">
-        <div className="flex flex-col md:items-start items-center justify-center text-center md:text-left">
-          <h2 className="heading-2">Trending</h2>
-          <h1 className="stylish-yellow-text">in Dubai</h1>
-          <p
-            className="font-manrope font-normal text-center tracking-[0em] 
+      <div className="relative z-20 flex flex-col lg:flex-row flex-wrap items-center lg:items-start justify-center  *:lg:max-w-[400px] gap-[30px] *:gap-[30px]">
+        <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col lg:items-start items-center justify-center text-center lg:text-left">
+            <h2 className="heading-2">Trending</h2>
+            <h1 className="stylish-yellow-text">in Dubai</h1>
+            <p
+              className="font-manrope font-normal  tracking-[0em] 
        text-[16px] leading-[26px] 
-       md:text-[23px] md:leading-[34px] px-15"
-          >
-            Nam in dui at est convallis scelerisque vel vitae tellus. Curabitur
-            volutpat dui ut volutpat varius. Ut sapien nibh, sagittis vel
-            sagittis nec, tempus ut arcu.
-          </p>
-        </div>
+       md:text-[23px] md:leading-[34px] py-4"
+            >
+              Nam in dui at est convallis scelerisque vel vitae tellus.
+              Curabitur volutpat dui ut volutpat varius. Ut sapien nibh,
+              sagittis vel sagittis nec, tempus ut arcu.
+            </p>
+          </div>
 
-        <div className="flex justify-center md:justify-end lg:justify-end">
-          <Image
-            src="/images/trending-restaurant.png"
-            className="rounded-[30px] w-[400px] h-[412px] object-cover"
-            alt=""
-            width={400}
-            height={412}
-          />
+          <div className="flex justify-center md:justify-end lg:justify-end">
+            <Image
+              src="/images/trending-jewelery.png"
+              className=" object-cover  rounded-[30px] w-[400px] h-[478px] object-cover"
+              alt=""
+              width={400}
+              height={412}
+            />
+          </div>
         </div>
-        <div className="flex justify-center md:justify-end lg:justify-end">
-          <Image
-            src="/images/trending-jewelery.png"
-            className="rounded-[30px] w-[400px] h-[478px] object-cover"
-            alt=""
-            width={400}
-            height={478}
-          />
+        <div className="flex flex-col items-center justify-center w-full">
+          <div className="flex justify-center md:justify-end lg:justify-end">
+            <Image
+              src="/images/trending-restaurant.png"
+              className="rounded-[30px] w-[400px] h-[412px]"
+              alt=""
+              width={400}
+              height={478}
+            />
+          </div>
+          <div className="flex justify-center md:justify-end lg:justify-end">
+            <Image
+              src="/images/trending-dirtbike.png"
+              className="rounded-[30px] w-[400px] h-[391px] object-cover"
+              alt=""
+              width={400}
+              height={391}
+            />
+          </div>
         </div>
-        <div className="flex justify-center md:justify-end lg:justify-end">
-          <Image
-            src="/images/trending-dirtbike.png"
-            className="rounded-[30px] w-[400px] h-[391px] object-cover"
-            alt=""
-            width={400}
-            height={391}
-          />
-        </div>
-        <div className="flex justify-center md:justify-end lg:justify-end">
-          <Image
-            src="/images/trending-tower.png"
-            className="rounded-[30px] w-[400px] h-[594px] object-cover"
-            alt=""
-            width={400}
-            height={594}
-          />
-        </div>
-        <div className="flex flex-col items-center justify-center gap-[20px]">
-          <p
-            className="font-manrope font-normal text-center tracking-[0em] 
+        <div className="flex flex-col items-center justify-center">
+          <div className="flex justify-center md:justify-end lg:justify-end">
+            <Image
+              src="/images/trending-tower.png"
+              className="rounded-[30px] w-[400px] h-[594px] object-cover"
+              alt=""
+              width={400}
+              height={594}
+            />
+          </div>
+          <div className="flex flex-col items-center lg:items-start justify-start gap-[20px]">
+            <p
+              className="font-manrope font-normal text-center lg:text-start tracking-[0em] 
        text-[16px] leading-[26px] 
-       md:text-[23px] md:leading-[34px] px-15"
-          >
-            It is a long established fact that a reader will be distracted by
-            the readable content of a page when looking at its layout...
-          </p>
-          <Link
-            href="/"
-            className="yellow-button flex flex-col items-center justify-center"
-          >
-            View all Trends
-          </Link>
+       md:text-[23px] md:leading-[34px] py-4 "
+            >
+              It is a long established fact that a reader will be distracted by
+              the readable content of a page when looking at its layout...
+            </p>
+            <Link
+              href="/"
+              className="yellow-button flex flex-col items-center justify-center"
+            >
+              View all Trends
+            </Link>
+          </div>
         </div>
       </div>
     </section>
