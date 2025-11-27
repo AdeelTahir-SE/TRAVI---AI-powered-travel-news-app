@@ -92,7 +92,7 @@ export default function ExploreDubaiSection() {
             <div className="absolute inset-0 z-0 bg-[linear-gradient(to_bottom,_rgba(255,255,255,1)_0%,_rgba(255,255,255,1)_45%,_rgba(255,255,255,0)_50%,_rgba(255,255,255,1)_100%)]"></div>
           </section>
         </section>
-        <section className="flex flex-col-reverse lg:flex-col items-center justify-center">
+        <section className="flex flex-col-reverse lg:flex-col items-center justify-center w-full">
           <section className="flex flex-col items-start justify-center pl-8 pt-7 relative z-40 font-inter font-normal text-[14px] text-[#0066CA] sm:text-[22px] leading-[35px] tracking-[-0.02em]">
             <h4 className="font-inter font-normal text-[22px] leading-[35px] tracking-[-0.02em]">
               Date : 24.10.2025{" "}
@@ -167,7 +167,7 @@ export default function ExploreDubaiSection() {
 
           {/* bottom one for phone screens */}
 
-          <section className="relative  w-full  flex flex-row items-center justify-start overflow-hidden gap-[11px] lg:right-[100px] lg:hidden block  ">
+          <section className="relative  w-full  flex flex-row items-center justify-start overflow-hidden gap-[11px] lg:right-[100px] lg:hidden block overflow-x-hidden ">
             <div className="relative z-30 flex flex-row mt-[18px] items-center justify-start pl-8 overflow-hidden gap-[11px]">
               <Image
                 src={"/background-images/explore-dubai.svg"}

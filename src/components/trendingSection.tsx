@@ -18,7 +18,7 @@ export default function TrendingSection() {
 
       {/* Foreground content */}
       <h2
-        className="font-manrope font-bold uppercase text-center text-[80px]
+        className="font-manrope font-bold uppercase text-center text-[70px]
      sm:text-[80px] md:text-[120px] lg:text-[180px] 2xl:text-[310px]
   leading-[80px] md:leading-[140px] lg:leading-[220px] 2xl:leading-[320px]
      tracking-[0em] 
@@ -28,7 +28,7 @@ export default function TrendingSection() {
         Trending
       </h2>
 
-      <div className="relative z-20 flex flex-col lg:flex-row flex-wrap items-center lg:items-start justify-center  *:lg:max-w-[400px] gap-[30px] *:gap-[30px]">
+      <div className="relative z-20 flex flex-col lg:flex-row flex-wrap items-center lg:items-start justify-center px-4 *:lg:max-w-[400px] gap-[30px] *:gap-[30px]">
         <div className="flex flex-col items-center justify-center">
           <div className="flex flex-col lg:items-start items-center justify-center text-center lg:text-left">
             <h2 className="heading-2">Trending</h2>

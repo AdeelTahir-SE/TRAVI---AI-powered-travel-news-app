@@ -1,5 +1,4 @@
-import FAQSection from "@/components/faqSection";
-import Navbar from "@/components/navbar";
+
 import HeroSection from "@/components/hero-section";
 import ExploreActivitiesSection from "@/components/exploreActivitesSection";
 import ShalimarSection from "@/components/shalimarSection";
@@ -9,7 +8,6 @@ import TrendingSection from "@/components/trendingSection";
 export default function Home() {
   return (
     <section>
-      <Navbar />
       <HeroSection />
       <ExploreActivitiesSection />
       {/* <FAQSection /> */}
@@ -17,7 +15,7 @@ export default function Home() {
       <TrendingSection />
       <ShalimarSection/>
 
-      <Footer />
+      {/* <Footer /> */}
     </section>
   );
 }
