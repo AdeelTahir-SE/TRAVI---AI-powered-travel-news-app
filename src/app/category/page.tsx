@@ -1,3 +1,4 @@
+import BookStaySection from "@/components/bookStaySection";
 import CategoryCardsSection from "@/components/categoryCardsSection";
 import CategoryHeroSection from "@/components/categoryHeroSection";
 
@@ -6,6 +7,7 @@ export default function Category() {
     <div className="flex flex-col items-center justify-center">
       <CategoryHeroSection />
       <CategoryCardsSection/>
+      <BookStaySection/>
     </div>
   );
 }

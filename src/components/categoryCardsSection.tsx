@@ -147,7 +147,7 @@ export default function CategoryCardsSection() {
         </button>
       </div>
 
-      <div className="flex flex-row items-center justify-between w-full border-t-[1px] border-white ">
+      <div className=" md:hidden flex flex-row items-center justify-between w-full border-t-[1px] border-white ">
         <button className="rounded-full flex items-center justify-center gap-[8px] border-1 border-[#D0D5DD] w-[58px] h-[58px]">
           <Image
             src="/icons/arrow-left.svg"
