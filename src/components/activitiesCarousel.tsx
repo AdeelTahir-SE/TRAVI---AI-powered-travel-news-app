@@ -89,7 +89,7 @@ export default function ActivitiesCarousel() {
   const [scrollPos, setScrollPos] = useState(0);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const [currentActive, setCurrentActive] = useState(0);
+  const [currentActive, setCurrentActive] = useState(1);
   // useEffect(()=>{
   //     fetchActivities().then((data)=>{
   //         setActivities(data);

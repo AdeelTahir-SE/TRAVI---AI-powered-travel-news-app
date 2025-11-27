@@ -1,7 +1,8 @@
 import Image from "next/image";
+import CategoryHeroCloudSection from "./categoryHeroCloudSection";
 export default function CategoryHeroSection() {
   return (
-    <div className="flex flex-col items-center justify-center relative w-full ">
+    <div className="flex flex-col items-center justify-center relative w-full  ">
       <section className="flex flex-col items-center justify-center w-full">
         <Image
           src={"/background-images/category-hero-section.jpg"}
@@ -17,9 +18,7 @@ export default function CategoryHeroSection() {
             </h2>
           </div>
           <div className="relative flex flex-col items-center justify-center">
-            <div
-              className="absolute inset-0 pointer-events-none z-0 max-h-[350px] bg-[radial-gradient(ellipse_at_center,rgba(35,132,200,0.3)_0%,rgba(35,132,200,0.3)_40%,rgba(35,132,200,0.1)_65%,rgba(35,132,200,0)_100%)]"
-            ></div>
+            <div className="absolute inset-0 pointer-events-none z-0 max-h-[350px] bg-[radial-gradient(ellipse_at_center,rgba(35,132,200,0.3)_0%,rgba(35,132,200,0.3)_40%,rgba(35,132,200,0.1)_65%,rgba(35,132,200,0)_100%)]"></div>
             <h1 className="font-manrope font-extrabold text-[56px] lg:text-[100px] leding-[100%] tracking-[-0.03em] z-10">
               Dubai 5-Star Hotels
             </h1>
@@ -30,13 +29,14 @@ export default function CategoryHeroSection() {
             </p>
           </div>
         </div>
-      </section>
-      <div
-        className="
+        <div
+          className="
       absolute inset-0 z-0
       bg-[linear-gradient(to_bottom,rgba(35,132,200,1)_0%,rgba(35,132,200,0.85)_13.27%,rgba(35,132,200,0)_50%)]
     "
-      ></div>
+        ></div>
+      </section>
+      <CategoryHeroCloudSection/>
     </div>
   );
 }

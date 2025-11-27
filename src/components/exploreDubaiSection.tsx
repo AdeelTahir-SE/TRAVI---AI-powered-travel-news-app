@@ -2,7 +2,7 @@ import Image from "next/image";
 export default function ExploreDubaiSection() {
   return (
     <section className="flex flex-col items-center w-full justify-center bg-white">
-      <div className="flex flex-col items-start mb-[30px] justify-center w-full pl-8">
+      <div className="flex flex-col items-start mb-[30px] justify-center w-full pl-8 z-50">
         <h2 className="heading-2">Ready to </h2>
         <h2 className="stylish-yellow-text">Explore Dubai</h2>
       </div>
