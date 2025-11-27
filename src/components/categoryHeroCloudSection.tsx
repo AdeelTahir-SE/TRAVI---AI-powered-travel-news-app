@@ -63,7 +63,7 @@ export default function CategoryHeroCloudSection(){
         <div
           className="
       absolute inset-0 z-0
-      bg-[linear-gradient(to_bottom,rgba(35,132,200,0)_0%,rgba(35,132,200,0.15)_43.27%,rgba(35,132,200,1)_97%)]
+      bg-[linear-gradient(to_bottom,rgba(35,132,200,0)_0%,rgba(35,132,200,0.15)_33.27%,rgba(35,132,200,0.7)_70%,rgba(255,255,255,1)_100%))]
     "
         ></div>
       </div>
