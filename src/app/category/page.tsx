@@ -1,6 +1,7 @@
 import BookStaySection from "@/components/bookStaySection";
 import CategoryCardsSection from "@/components/categoryCardsSection";
 import CategoryHeroSection from "@/components/categoryHeroSection";
+import ShalimarSection from "@/components/shalimarSection";
 
 export default function Category() {
   return (
@@ -8,6 +9,7 @@ export default function Category() {
       <CategoryHeroSection />
       <CategoryCardsSection/>
       <BookStaySection/>
+      <ShalimarSection/>
     </div>
   );
 }
