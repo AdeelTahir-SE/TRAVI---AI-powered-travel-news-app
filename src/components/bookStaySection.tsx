@@ -27,38 +27,7 @@ export default function BookStaySection(){
             </div>
           </div>
         </div>
-        <div className="absolute inset-0 z-10 flex flex-row items-center justify-center ">
-          <div className="flex flex-row items-center justify-center max-h-[250px]  ">
-            <Image
-              src="/clouds/cloud.svg"
-              width={600}
-              height={400}
-              className="w-[600px] h-[400px] absolute top-[400px]"
-              alt=""
-            />
-            <Image
-              src="/clouds/cloud.svg"
-              width={600}
-              height={400}
-              className="w-[600px] h-[400px] absolute top-[400px]"
-              alt=""
-            />
-            <Image
-              src="/clouds/cloud.svg"
-              width={600}
-              height={400}
-              className="w-[600px] h-[400px] absolute top-[400px] left-[-110px]"
-              alt=""
-            />
-            <Image
-              src="/clouds/cloud.svg"
-              width={600}
-              height={400}
-              className="w-[600px] h-[400px] absolute "
-              alt=""
-            />
-          </div>
-        </div>
+       
       </section>
     );
 }
