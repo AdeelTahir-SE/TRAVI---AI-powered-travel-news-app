@@ -127,6 +127,9 @@ body {
 .footer-section-heading {
   @apply font-inter font-medium text-[#112259] text-[28px] leading-[100%] md:text-[30px] tracking-[-0.02em];
 }
+
+
+
 /* Default (big screens) */
 .input-placeholder::placeholder {
   font-family: Inter;

@@ -3,18 +3,18 @@ import HotelCard from "./hotelCard";
 import BookStaySection from "./bookStaySection";
 export default function CategoryCardsSection() {
   const arr = [
-    // {
-    //   name: "hello",
-    // },
-    // {
-    //   name: "hello",
-    // },
-    // {
-    //   name: "hello",
-    // },
-    // {
-    //   name: "hello",
-    // },
+    {
+      name: "hello",
+    },
+    {
+      name: "hello",
+    },
+    {
+      name: "hello",
+    },
+    {
+      name: "hello",
+    },
   ];
  if (!arr || arr.length <= 0) {
    return (
