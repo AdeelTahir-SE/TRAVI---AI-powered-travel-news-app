@@ -9,23 +9,25 @@ export default function Navbar() {
   "
     >
       <nav className="flex flex-row items-center justify-between w-full h-full">
-        <Image
-          src="/logos/navbar-text.svg"
-          alt="logo"
-          width={150}
-          height={70}
-          className="h-full w-auto"
-        />
+        <Link href="/">
+          <Image
+            src="/logos/navbar-text.svg"
+            alt="logo"
+            width={150}
+            height={70}
+            className="h-full w-auto"
+          />
+        </Link>
 
         <ul className="hidden sm:flex flex-row items-center gap-[60px]">
           <li className="font-inter font-normal text-[20px] leading-[30px] -tracking-[0.02em] text-white">
-            Home
+            <Link href="/">Home</Link>
           </li>
           <li className="font-inter font-normal text-[20px] leading-[30px] -tracking-[0.02em] text-white">
-            About
+            <Link href="/">About</Link>
           </li>
           <li className="font-inter font-normal text-[20px] leading-[30px] -tracking-[0.02em] text-white">
-            Contact
+            <Link href="/">Contact</Link>
           </li>
         </ul>
 
