@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
-async function fetchActivities() {}
+async function fetchActivities() { }
 export default function ActivitiesCarousel() {
   const [activities, setActivities] = useState([
     {
@@ -125,8 +125,6 @@ export default function ActivitiesCarousel() {
         fixbug;
 
       container.scrollTo({ left: scrollLeft, behavior: "smooth" });
-
-      // Save new scroll position immediately
       setScrollPos(scrollLeft);
     }
   };
