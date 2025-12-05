@@ -94,6 +94,9 @@ export default function ExploreDubaiSection() {
         </section>
         <section className="flex flex-col-reverse lg:flex-col items-center justify-center w-full">
           <section className="flex flex-col items-start justify-center pl-8 pt-7 relative z-40 font-inter font-normal text-[14px] text-[#0066CA] sm:text-[22px] leading-[35px] tracking-[-0.02em]">
+            <Image src={"/images/piegon.svg"} width={150} height={150} className="2xl:block hidden absolute top-[-30px] w-[320px] top-0 right-[20px]" alt="" />
+            <Image src={"/images/piegon.svg"} width={150} height={150} className="2xl:block hidden  absolute w-[170px]  right-[20px]" alt="" />
+
             <h4 className="font-inter font-normal text-[22px] leading-[35px] tracking-[-0.02em]">
               Date : 24.10.2025{" "}
             </h4>

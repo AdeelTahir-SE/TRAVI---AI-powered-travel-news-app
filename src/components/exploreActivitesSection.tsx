@@ -4,7 +4,8 @@ import TransparentCloudsSection from "./transparentCloudSection";
 export default function ExploreActivitiesSection() {
   return (
     <section className="flex flex-col items-center justify-center ">
-      <section className="flex flex-col items-center justify-center gap-[10px]">
+      <section className="relative flex flex-col items-center justify-center gap-[10px]">
+        <Image src={"/images/aeroplane.png"} width={400} height={100} className="absolute left-[20px] lg:block hidden top-[-200px] rotate-y-[180deg]" alt="" />
         <h2 className="heading-2 text-center">Explore From Wide Range</h2>
         <h2 className="stylish-yellow-text">of activites</h2>
         <p className="sub-heading color-[#1B1B1B] px-[30px]">

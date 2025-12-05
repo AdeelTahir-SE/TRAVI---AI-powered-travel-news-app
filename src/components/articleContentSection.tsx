@@ -51,7 +51,7 @@ export default function ArticleContentSection() {
                 For something truly unique, take a desert safari — dune bashing, camel rides, and a sunset dinner under the stars capture the magic of Arabia in one evening.
             </p>
 
-            <div className="flex flex-row items-center justify-center gap-[37px] lg:gap-[70px] w-full">
+            <div className="flex flex-col lg:flex-row items-center justify-center gap-[37px] lg:gap-[70px] w-full">
                 <div className="w-fit">
                     <QuoteWithoutImage />
                 </div >
@@ -85,7 +85,7 @@ export default function ArticleContentSection() {
 
 
             <p className="font-inter font-normal text-[22px] leading-[32px] tracking-[-0.02em]">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse tincidunt, nisl id pulvinar tincidunt, mi nunc fringilla augue, ut faucibus risus augue ac magna. Phasellus non convallis elit, ac tempus odio. Vivamus a interdum dolor. Donec tincidunt accumsan leo ac lacinia. </p>
-            <div className="flex flex-row items-center justify-center gap-[37px] lg:gap-[60px] ">
+            <div className="flex flex-col lg:flex-row items-center justify-center gap-[37px] lg:gap-[60px] ">
                 <div className="felx flex-col items-start justify-center gap-[20px] w-full font-inter font-normal text-[22px] leading-[32px] tracking-[-0.02em]">
                     <p>Mauris nulla eros, rutrum quis imperdiet ut, lacinia at arcu. Sed sit amet risus magna. Sed elementum tellus at dui hendrerit, a finibus sapien porta. Sed et nibh ultrices, dictum libero eget, hendrerit nisl. Donec et turpis varius, lacinia arcu nec, posuere libero. Suspendisse posuere, metus eu commodo aliquet, diam neque luctus ligula, eget molestie lacus dolor ut libero. Pellentesque dignissim eros vitae orci sollicitudin mattis. Vestibulum rhoncus, justo bibendum tincidunt volutpat, libero justo gravida est, convallis pharetra massa libero in diam. Pellentesque varius consectetur vulputate.</p>
                     <p>Sed quis dui non enim varius faucibus quis id augue. Suspendisse in tincidunt tortor. Integer in gravida est. Integer vel ultrices felis, quis vehicula ante.</p>
