@@ -12,7 +12,7 @@ export default function Home() {
       {/* <FAQSection /> */}
       <ExploreDubaiSection />
       <TrendingSection />
-      <ShalimarSection/>
+      <ShalimarSection />
 
     </section>
   );

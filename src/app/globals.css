@@ -7,6 +7,8 @@
   --font-manrope: "Manrope", sans-serif;
   --font-inter: "Inter", sans-serif;
   --font-italic: "Inter-Italic", italic;
+  --font-playfair: "font-playfair", sans-serif;
+  --font-oswald: "Oswald", sans-serif;
 }
 
 @theme inline {
@@ -18,6 +20,8 @@
   --font-manrope: var(--font-manrope);
   --font-inter: var(--font-inter);
   --font-italic: var(--font-italic);
+  --font-playfair: var(--font-playfair);
+  --font-oswald: var(--font-oswald);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -32,14 +36,25 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
 @font-face {
   font-family: "Hurricane";
   src: url("/fonts/Hurricane-Regular.ttf") format("truetype");
 }
 
 @font-face {
+  font-family: "font-playfair";
+  src: url("/fonts/PlayfairDisplay-VariableFont_wght.ttf") format("truetype");
+}
+
+@font-face {
   font-family: "Manrope";
   src: url("/fonts/Manrope.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Oswald";
+  src: url("/fonts/Oswald-VariableFont_wght.ttf") format("truetype");
 }
 
 @font-face {
@@ -51,10 +66,13 @@ body {
   font-family: "Inter-Italic";
   src: url("/fonts/Inter-Italic.ttf") format("truetype");
 }
+
 /* Hurricane text */
 .stylish-yellow-text {
-  font-family: "Hurricane", sans-serif; /* directly use the font */
-  font-weight: 400; /* normal */
+  font-family: "Hurricane", sans-serif;
+  /* directly use the font */
+  font-weight: 400;
+  /* normal */
   font-size: 70px;
   line-height: 54.4px;
   letter-spacing: -0.03em;
@@ -62,6 +80,7 @@ body {
 }
 
 @media (min-width: 640px) {
+
   /* sm: breakpoint in Tailwind */
   .stylish-yellow-text {
     font-size: 100px;
@@ -71,7 +90,8 @@ body {
 /* Manrope heading */
 .heading-2 {
   font-family: "Manrope", sans-serif;
-  font-weight: 800; /* extrabold */
+  font-weight: 800;
+  /* extrabold */
   font-size: 48px;
   line-height: 100%;
   letter-spacing: -0.03em;
@@ -86,7 +106,8 @@ body {
 /* Inter sub-heading */
 .sub-heading {
   font-family: "Inter", sans-serif;
-  font-weight: 400; /* normal */
+  font-weight: 400;
+  /* normal */
   font-size: 20px;
   line-height: 28px;
   letter-spacing: -0.02em;
@@ -99,8 +120,10 @@ body {
 }
 
 .no-scrollbar {
-  -ms-overflow-style: none; /* IE & Edge */
-  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;
+  /* IE & Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 @media (min-width: 640px) {
@@ -111,17 +134,20 @@ body {
 }
 
 .background-blue-gradient {
-  @apply bg-[linear-gradient(180deg,#2384C8_65_91%,rgba(35,132,200,0)_100%)];
+  background: linear-gradient(180deg,
+      #2384c8 65.91%,
+      rgba(35, 132, 200, 0) 100%);
 }
 
+
 .yellow-button {
-  @apply w-[150.52px] h-[45px]       /* small screens */
-  rounded-[38.79px]           /* small screens */
-  text-[15.52px] leading-[23.28px] tracking-[-0.02em]  /* small screens */
-  md:w-[194px] md:h-[58px] md:rounded-[50px] md:text-[20px] md:leading-[30px] md:tracking-[-0.02em]  /* large screens */
-  bg-[#F8A900] text-black
-  font-inter font-semibold
-  opacity-100;
+  @apply w-[150.52px] h-[45px] rounded-[38.79px]
+  /* small screens */
+  text-[15.52px] leading-[23.28px] tracking-[-0.02em]
+  /* small screens */
+  md:w-[194px] md:h-[58px] md:rounded-[50px] md:text-[20px] md:leading-[30px] md:tracking-[-0.02em]
+  /* large screens */
+  bg-[#F8A900] text-black font-inter font-semibold opacity-100;
 }
 
 .footer-section-heading {
@@ -138,7 +164,8 @@ body {
   font-size: 24px;
   line-height: 36px;
   letter-spacing: -0.02em;
-  color: #a0a0a0; /* placeholder color */
+  color: #a0a0a0;
+  /* placeholder color */
 }
 
 
@@ -148,12 +175,14 @@ body {
   .input-placeholder::placeholder {
     font-family: Inter;
     font-weight: 400;
-    font-style: normal; /* "Regular" is normal in CSS */
+    font-style: normal;
+    /* "Regular" is normal in CSS */
     font-size: 16px;
     line-height: 17.92px;
-    letter-spacing: -0.02em; /* -2% = approx -0.02em */
+    letter-spacing: -0.02em;
+    /* -2% = approx -0.02em */
   }
 
 
-  
+
 }
