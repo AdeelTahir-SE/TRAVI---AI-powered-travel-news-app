@@ -35,3 +35,13 @@ function TraviRecommendsCard() {
         </section>
     )
 }
+
+
+
+
+
+
+
+
+
+
