@@ -13,7 +13,7 @@ export const revalidate = 86400;
 
 
 export async function generateStaticParams() {
-  const {data,error} = await fetchRequest(
+  const { data, error } = await fetchRequest(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/attractions`,
     {
       cache: "force-cache",
@@ -21,7 +21,7 @@ export async function generateStaticParams() {
   );
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return data?.map((item:any) => ({
+  return data?.map((item: any) => ({
     slug: item.slug,
   }));
 }
@@ -33,11 +33,11 @@ export async function generateStaticParams() {
 
 
 async function getAttraction(slug: string) {
-  const {data,error} = await fetchRequest(
+  const { data, error } = await fetchRequest(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/attractions/${slug}`,
     { cache: "force-cache" }
   );
-  return {data,error}
+  return { data, error }
 }
 
 
@@ -57,7 +57,7 @@ export default function AboutAttractionPage({
 }) {
   const { slug } = params;
 
-  const {data,error} = use(getAttraction(slug));
+  const { data, error } = use(getAttraction(slug));
 
   return (
     <section className="flex flex-col items-center justify-center">
@@ -80,16 +80,53 @@ export default function AboutAttractionPage({
 
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const {data,error} = await getAttraction(params.slug);
+  const { data, error } = await getAttraction(params.slug);
 
   if (!data) {
     return {
-      title: "Attraction Not Found",
+      title: "Attraction Not Found | Travi",
+      description: "The requested attraction could not be found.",
     };
   }
 
+  const aboutUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/about/${params.slug}`;
+  const imageUrl = data?.image || "/logo/navbar-text.svg";
+
   return {
-    title: data.title,
+    title: `About ${data.title} | Travi`,
     description: data.description,
+
+    openGraph: {
+      title: `About ${data.title}`,
+      description: data.description,
+      url: aboutUrl,
+      siteName: "Travi",
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: data.title,
+        },
+      ],
+      type: "website",
+      locale: "en_US",
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: `About ${data.title}`,
+      description: data.description,
+      images: [imageUrl],
+    },
+
+    alternates: {
+      canonical: aboutUrl,
+    },
+
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }

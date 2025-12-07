@@ -24,7 +24,7 @@ export const revalidate = 86400;
 
 
 export async function generateStaticParams() {
-  const {data,error} = await fetchRequest(
+  const { data, error } = await fetchRequest(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/articles`,
     {
       cache: "force-cache",
@@ -32,7 +32,7 @@ export async function generateStaticParams() {
   );
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return data?.map((item:any) => ({
+  return data?.map((item: any) => ({
     slug: item.slug,
   }));
 }
@@ -57,7 +57,7 @@ export async function generateStaticParams() {
 
 
 
-async function getArticle( slug : string ) {
+async function getArticle(slug: string) {
   const { data, error } = await fetchRequest(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/articles/${slug}`,
     { cache: "force-cache" }
@@ -79,7 +79,7 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
   const { slug } = params;
 
   // ❗ use() allows promise suspension inside component
-  const { data, error } = use(getArticle( slug ));
+  const { data, error } = use(getArticle(slug));
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -102,16 +102,55 @@ export default function ArticlePage({ params }: { params: { slug: string } }) {
 
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const {data,error} = await getArticle(params.slug);
+  const { data, error } = await getArticle(params.slug);
 
   if (!data) {
     return {
-      title: "Attraction Not Found",
+      title: "Article Not Found | Travi",
+      description: "The requested article could not be found.",
     };
   }
 
+  const articleUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/article/${params.slug}`;
+  const imageUrl = data?.image || "/logo/navbar-text.svg";
+
   return {
-    title: data?.title,
+    title: `${data?.title} | Travi`,
     description: data?.description,
+
+    openGraph: {
+      title: data?.title,
+      description: data?.description,
+      url: articleUrl,
+      siteName: "Travi",
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: data?.title,
+        },
+      ],
+      type: "article",
+      publishedTime: data?.publishedAt,
+      authors: data?.author ? [data.author] : undefined,
+      tags: data?.tags,
+    },
+
+    twitter: {
+      card: "summary_large_image",
+      title: data?.title,
+      description: data?.description,
+      images: [imageUrl],
+    },
+
+    alternates: {
+      canonical: articleUrl,
+    },
+
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }

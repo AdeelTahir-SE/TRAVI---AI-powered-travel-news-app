@@ -2,14 +2,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
-
+import ShalimarCloudSection from "./shalimarCloudSection";
 export default function Footer() {
   const [isActive, setIsActive] = useState({
     quickLinks: false,
     moreLinks: false,
   });
   return (
-    <section className="flex flex-col items-center justify-center relative">
+    <section className="relative flex flex-col items-center justify-center relative py-[60px] px-[20px] xl:px-[100px]  2xl:px-[140px] 2xl:py-[100px]">
       <section className="absolute w-full top-0   min-h-[760px] ">
         <Image
           src="/background-images/explore-dubai-background-effect.png"
@@ -19,10 +19,22 @@ export default function Footer() {
           alt=""
         />
 
+
         {/* gradient overlay above image */}
         <div className="absolute inset-0 z-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,1)_0%,rgba(255,255,255,0.4)_50%,rgba(255,255,255,1)_100%)]"></div>
       </section>
-      <div className="flex flex-col items-center justify-center  gap-[30px] py-8 lg:flex-row px-8 ">
+
+
+
+
+
+
+
+
+      <div className="relative flex flex-col items-center justify-center  gap-[30px]  xl:flex-row lg:py-[70px] py-[30px]">
+
+
+
         <div className="flex flex-col items-start justify-center z-20 ">
           <h2 className="heading-2">Subscribe to our</h2>
           <h2 className="stylish-yellow-text relative bottom-4">Newsletter</h2>
@@ -38,6 +50,9 @@ export default function Footer() {
             pellentesque maximus.{" "}
           </p>
         </div>
+
+
+
         <div className="flex flex-row items-center justify-center relative">
           <input
             type="text"
@@ -54,8 +69,11 @@ export default function Footer() {
             />
           </button>
         </div>
+
+
+
       </div>
-      <div className="flex flex-col lg:flex-row items-start justify-center *:border-t-1  *:border-gray-500 w-full px-8 z-50 *:w-full ">
+      <div className="flex flex-col xl:flex-row items-start justify-center *:border-t-1  *:border-gray-500 w-full px-8 z-50 *:w-full ">
         <div className="flex flex-col items-center justify-center z-50 py-[30px] ">
           <Image
             src="/logos/footer-cartoon.png"
@@ -82,7 +100,7 @@ export default function Footer() {
             the readable content of a page when looking at its layout.
           </p>
         </div>
-        <div className="flex flex-row items-start justify-between lg:justify-center py-[30px]  ">
+        <div className="flex flex-row items-start justify-between xl:justify-center py-[30px]  ">
           <div className="flex flex-col items-center justify center gap-[30px]">
             <h3 className="footer-section-heading">Quick Links</h3>
             {isActive?.quickLinks && (
@@ -169,7 +187,7 @@ export default function Footer() {
             />
           </button>
         </div>
-        <div className="flex flex-row items-start justify-between lg:justify-center py-[30px] lg:border-x-1 border-gray-500">
+        <div className="flex flex-row items-start justify-between xl:justify-center py-[30px] xl:border-x-1 border-gray-500">
           <div className="flex flex-col items-center justify center gap-[30px] ">
             <h3 className="footer-section-heading">More Links</h3>
             {isActive?.moreLinks && (
@@ -256,10 +274,10 @@ export default function Footer() {
         </div>
         <div className="flex flex-col lg:px-8 items-start justify-center py-[30px] gap-[26px] border-b-[1px] lg:border-b-0">
           <h3 className="footer-section-heading">Follow Us</h3>
-          <div className="flex flex-row items-center justify-start gap-[16px]">
+          <div className="flex flex-row items-center justify-start gap-[16px] *:w-[48px] *:h-[48px] *:border-[1px] *:rounded-full *:flex *:items-center *:justify-center *:p-3 ">
             <Link
               href="/"
-              className="max-w-[48px] max-h-[48px] border-[1px] rounded-full flex items-center justify-center p-3"
+              className=""
             >
               <Image
                 src="/icons/facebook.svg"
@@ -271,7 +289,6 @@ export default function Footer() {
             </Link>
             <Link
               href="/"
-              className="max-w-[48px] max-h-[48px] border-[1px] rounded-full flex items-center justify-center p-3"
             >
               <Image
                 src="/icons/instagram.svg"
@@ -283,7 +300,6 @@ export default function Footer() {
             </Link>
             <Link
               href="/"
-              className="max-w-[48px] max-h-[48px] border-[1px] rounded-full flex items-center justify-center p-3"
             >
               <Image
                 src="/icons/youtube.svg"
@@ -295,7 +311,6 @@ export default function Footer() {
             </Link>
             <Link
               href="/"
-              className="max-w-[48px] max-h-[48px] border-[1px] rounded-full flex items-center justify-center p-3"
             >
               <Image
                 src="/icons/twitter.svg"
@@ -307,7 +322,6 @@ export default function Footer() {
             </Link>
             <Link
               href="/"
-              className="max-w-[48px] max-h-[48px] border-[1px] rounded-full flex items-center justify-center p-3"
             >
               <Image
                 src="/icons/linkedin.svg"

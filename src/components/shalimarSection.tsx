@@ -20,7 +20,7 @@ export default function ShalimarSection() {
         ></div>
       </section>
 
-      <ShalimarCloudSection className="absolute overflow-hidden w-full bottom-[-40px] " />
+      <ShalimarCloudSection className="absolute overflow-hidden w-full bottom-[-40px] z-10 bg-transparent  " />
     </section>
   );
 }

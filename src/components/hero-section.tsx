@@ -4,7 +4,7 @@ import CloudSection from "./cloudSection";
 export default function HeroSection() {
   return (
     <section className="background-blue-gradient h-full  ">
-      <div className="relative w-full">
+      <div className="relative w-full h-full ">
         <Image
           src="/background-images/hero-section.svg"
           width={1280}
@@ -29,7 +29,7 @@ export default function HeroSection() {
         ></div>
       </div>
 
-      <div className="bg-[linear-gradient(to_bottom,rgba(35,132,200,0)_0%,rgba(35,132,200,0)_0%,#2384C8_100%)]  w-full relative bottom-[109px] z-20">
+      <div className="w-full relative bottom-[109px] z-20">
         <section className="flex flex-col items-center justify-center relative z-20  ">
           <div className="relative flex flex-col items-center justify-center z-10">
             <h1 className="heading-2 text-white">Discover Dubai</h1>
@@ -44,7 +44,7 @@ export default function HeroSection() {
           <SearchInput action="/" />
         </div>
       </div>
-      <CloudSection className="bg-gradient-to-b from-[#2384C8] via-[#3ca8f5] via-[#44adf8]  to-white " />
+      <CloudSection className=" " />
 
     </section>
   );

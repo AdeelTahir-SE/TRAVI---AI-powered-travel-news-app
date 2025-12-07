@@ -2,7 +2,7 @@ import Image from "next/image";
 export default function ExploreDubaiSection() {
   return (
     <section className="flex flex-col items-center w-full justify-center bg-white">
-      <div className="flex flex-col items-start mb-[30px] justify-center w-full pl-8 z-50">
+      <div className="flex flex-col items-start mb-[30px] justify-center w-full  px-[20px] lg:px-[140px] z-50">
         <h2 className="heading-2">Ready to </h2>
         <h2 className="stylish-yellow-text">Explore Dubai</h2>
       </div>
@@ -143,14 +143,14 @@ export default function ExploreDubaiSection() {
               </button>
               <Image
                 src={"/background-images/explore-dubai.svg"}
-                className="min-w-[258px] 2xl:min-w-[328px] 2xl:min-h-[258px] min-h-[223px] rounded-[10.72px]"
+                className="min-w-[258px] 2xl:min-w-[328px] 2xl:min-h-[258px] min-h-[223px] rounded-[20px]"
                 width={158}
                 height={123}
                 alt=""
               />
               <Image
                 src={"/background-images/explore-dubai.svg"}
-                className="min-w-[258px] 2xl:min-w-[328px] 2xl:min-h-[258px] min-h-[223px] rounded-[10.72px]"
+                className="min-w-[258px] 2xl:min-w-[328px] 2xl:min-h-[258px] min-h-[223px] rounded-[20px]"
                 width={158}
                 height={123}
                 alt=""

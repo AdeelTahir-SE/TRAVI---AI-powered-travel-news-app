@@ -132,7 +132,7 @@ export default function ActivitiesCarousel() {
   return (
     <section
       ref={containerRef}
-      className="relative flex flex-row w-full no-scrollbar max-w-screen items-center md:items-start justify-start gap-[31px] lg:gap-[100px] overflow-x-auto scroll-smooth py-15 "
+      className="min-w-full  relative flex flex-row w-full no-scrollbar max-w-screen items-center md:items-start justify-start gap-[31px] lg:gap-[100px] overflow-x-auto scroll-smooth py-15 "
     >
       {activities &&
         activities?.length > 0 &&
@@ -179,7 +179,7 @@ function CarouselItem({
             width={320}
             height={527}
             alt=""
-            className="rounded-[3280px] lg:rounded-[5000px] min-w-[320px] lg:w-[490px] min-h-[527px] lg:h-[803px] object-cover border-[12px]"
+            className="rounded-[3280px] lg:rounded-[5000px] min-w-[320px] lg:w-[490px] h-full object-cover border-[12px]"
           />
           <div className="absolute top-[102px] left-0 right-0 px-4 lg:px-8 flex flex-col items-center justify-center gap-[14px]">
             <h3 className="text-white font-inter font-bold text-[25px] lg:text-[40px] leading-[100%] tracking-[-0.02em] text-center">
