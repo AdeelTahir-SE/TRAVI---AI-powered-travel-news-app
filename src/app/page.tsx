@@ -9,7 +9,7 @@ export default function Home() {
     <section>
       <HeroSection />
       <ExploreActivitiesSection />
-      {/* <ExploreDubaiSection /> */}
+      <ExploreDubaiSection />
       <TrendingSection />
       <ShalimarSection />
 

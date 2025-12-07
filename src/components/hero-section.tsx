@@ -41,7 +41,7 @@ export default function HeroSection() {
           </div>
         </section>
         <div className="flex flex-col items-center justify-center mt-[20px]">
-          <SearchInput action="/" />
+          <SearchInput action="/search" />
         </div>
       </div>
       <CloudSection className=" " />

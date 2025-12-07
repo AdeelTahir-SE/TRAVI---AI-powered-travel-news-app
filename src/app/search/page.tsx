@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     siteName: "Travi",
     images: [
       {
-        url: "/logo/navbar-text.svg",
+        url: "/logos/navbar-text.svg",
         width: 1200,
         height: 630,
         alt: "Travi - Search Travel Content",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Search Travel Content | Travi",
     description: "Search for travel articles, destinations, attractions, and hotels. Find exactly what you're looking for with Travi's comprehensive search.",
-    images: ["/logo/navbar-text.svg"],
+    images: ["/logos/navbar-text.svg"],
   },
 
   alternates: {
@@ -41,7 +41,9 @@ export const metadata: Metadata = {
   },
 };
 
-export default function SearchPage() {
+export default function SearchPage({ searchParams }: { searchParams: { q: string } }) {
+  const query = searchParams.q || "";
+
   return (
     <div className="flex flex-col items-center">
       <SearchHeroSectoion />

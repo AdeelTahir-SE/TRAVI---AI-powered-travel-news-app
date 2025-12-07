@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     siteName: "Travi",
     images: [
       {
-        url: "/logo/navbar-text.svg",
+        url: "/logos/navbar-text.svg",
         width: 1200,
         height: 630,
         alt: "Travi - Hotel Comparison",
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Hotel Comparison | Travi",
     description: "Compare top hotels and accommodations to find the perfect stay for your travel needs. Detailed comparisons of amenities, prices, and reviews.",
-    images: ["/logo/navbar-text.svg"],
+    images: ["/logos/navbar-text.svg"],
   },
 
   alternates: {

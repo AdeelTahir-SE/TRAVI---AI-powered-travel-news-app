@@ -15,7 +15,7 @@ export const metadata: Metadata = {
         siteName: "Travi",
         images: [
             {
-                url: "/logo/navbar-text.svg",
+                url: "/logos/navbar-text.svg",
                 width: 1200,
                 height: 630,
                 alt: "Travi - Travel Tags",
@@ -28,7 +28,7 @@ export const metadata: Metadata = {
         card: "summary_large_image",
         title: "Travel Tags | Travi",
         description: "Browse travel content by tags and discover related articles, destinations, and experiences. Explore curated travel topics.",
-        images: ["/logo/navbar-text.svg"],
+        images: ["/logos/navbar-text.svg"],
     },
 
     alternates: {

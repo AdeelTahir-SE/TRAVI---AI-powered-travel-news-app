@@ -13,8 +13,10 @@ export default function SearchInput({ action }: { action: string }) {
     w-[365px]
   "
       >
+        <label htmlFor="search"></label>
         <input
           type="text"
+          name="q"
           className="
       input-placeholder             /* enables custom placeholder style */
       bg-white

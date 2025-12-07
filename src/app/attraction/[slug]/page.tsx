@@ -94,7 +94,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 
   const attractionUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/attraction/${params.slug}`;
-  const imageUrl = data?.image || "/logo/navbar-text.svg";
+  const imageUrl = data?.image || "/logos/navbar-text.svg";
 
   return {
     title: `${data.title} | Travi`,
