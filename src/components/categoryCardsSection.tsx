@@ -1,6 +1,83 @@
 import Image from "next/image";
 import HotelCard from "./hotelCard";
+
 export default function CategoryCardsSection() {
+  // Mock hotel data for display
+  const mockHotels = [
+    {
+      hotel_id: '1',
+      created_at: new Date().toISOString(),
+      title: 'Burj Al Arab',
+      tagline: 'Luxury hotel known for its distinctive sail-shaped silhouette',
+      location: 'Jumeirah Beach, Dubai',
+      rating: 4.7,
+      reviews: 5000,
+      price: 500,
+      about_hotel_images: ['/images/trending-jewelery.png'],
+      hotel_image_in_clouds: '/images/trending-jewelery.png'
+    },
+    {
+      hotel_id: '2',
+      created_at: new Date().toISOString(),
+      title: 'Atlantis The Palm',
+      tagline: 'Iconic resort with waterpark and marine experiences',
+      location: 'Palm Jumeirah, Dubai',
+      rating: 4.5,
+      reviews: 4200,
+      price: 350,
+      about_hotel_images: ['/images/trending-jewelery.png'],
+      hotel_image_in_clouds: '/images/trending-jewelery.png'
+    },
+    {
+      hotel_id: '3',
+      created_at: new Date().toISOString(),
+      title: 'Armani Hotel',
+      tagline: 'Sophisticated luxury in the heart of Dubai',
+      location: 'Downtown Dubai',
+      rating: 4.8,
+      reviews: 3800,
+      price: 450,
+      about_hotel_images: ['/images/trending-jewelery.png'],
+      hotel_image_in_clouds: '/images/trending-jewelery.png'
+    },
+    {
+      hotel_id: '4',
+      created_at: new Date().toISOString(),
+      title: 'Jumeirah Beach Hotel',
+      tagline: 'Beachfront paradise with stunning views',
+      location: 'Jumeirah Beach, Dubai',
+      rating: 4.6,
+      reviews: 4500,
+      price: 400,
+      about_hotel_images: ['/images/trending-jewelery.png'],
+      hotel_image_in_clouds: '/images/trending-jewelery.png'
+    },
+    {
+      hotel_id: '5',
+      created_at: new Date().toISOString(),
+      title: 'The Address Downtown',
+      tagline: 'Modern elegance with skyline views',
+      location: 'Downtown Dubai',
+      rating: 4.4,
+      reviews: 3200,
+      price: 300,
+      about_hotel_images: ['/images/trending-jewelery.png'],
+      hotel_image_in_clouds: '/images/trending-jewelery.png'
+    },
+    {
+      hotel_id: '6',
+      created_at: new Date().toISOString(),
+      title: 'One&Only Royal Mirage',
+      tagline: 'Arabian elegance meets beachfront luxury',
+      location: 'Al Sufouh, Dubai',
+      rating: 4.9,
+      reviews: 2800,
+      price: 550,
+      about_hotel_images: ['/images/trending-jewelery.png'],
+      hotel_image_in_clouds: '/images/trending-jewelery.png'
+    }
+  ];
+
   return (
     <section className="relative  flex flex-col items-center justify-center lg:gap-[80px] gap-[60px] px-[20px] md:px-[70px] py-[60px] 2xl:px-[140px] 2xl:py-[120px] w-full h-full">
       <div className="absolute inset-0 -z-10 top-[500px]">
@@ -64,10 +141,10 @@ export default function CategoryCardsSection() {
           </div>
         </div>
         {/* Mobile Filter Button - visible on small screens only */}
-          <button className="flex lg:hidden items-center justify-between py-[16px] px-[24px] border-1  border-[#D0D5DD] min-w-full rounded-[12px]">
-            <span className="font-inter font-medium text-[22px] leading-[100%] tracking-[-0.02em]">Filters</span>
-            <Image src="/icons/filter-lines.svg" alt="" width={24} height={24}/>
-          </button>
+        <button className="flex lg:hidden items-center justify-between py-[16px] px-[24px] border-1  border-[#D0D5DD] min-w-full rounded-[12px]">
+          <span className="font-inter font-medium text-[22px] leading-[100%] tracking-[-0.02em]">Filters</span>
+          <Image src="/icons/filter-lines.svg" alt="" width={24} height={24} />
+        </button>
 
         <div className="flex flex-row items-center lg:justify-center gap-[20px] w-full lg:w-fit justify-between ">
           <span className="font-inter font-bold text-[22px] leading-[100%] tracking-[-0.02em]">
@@ -85,12 +162,9 @@ export default function CategoryCardsSection() {
         </div>
       </div>
       <div className="flex flex-row flex-wrap items-center justify-center gap-[32px] w-full">
-        <HotelCard/>
-        <HotelCard/>
-        <HotelCard/>
-        <HotelCard/>
-        <HotelCard/>
-        <HotelCard/>
+        {mockHotels.map((hotel) => (
+          <HotelCard key={hotel.hotel_id} hotel={hotel} />
+        ))}
       </div>
 
       <div className="hidden md:flex flex-row items-center justify-between border-t-1 w-full border-white">
