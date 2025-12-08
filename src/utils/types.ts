@@ -78,3 +78,29 @@ export interface Hotel {
     traveler_tips?: string[];
     faqs?: FAQ[];
 }
+
+export interface Quotation {
+    quote: string;
+    person_name: string;
+    person_role?: string;
+    person_image?: string;
+}
+
+export interface Subsection {
+    heading: string;
+    paras: string[];
+}
+
+export interface Article {
+    article_id: number;
+    title: string;
+    images: string[];
+    published_date: string;
+    paras: string[];
+    subsections: Subsection[];
+    quotation1?: Quotation;
+    quotation2?: Quotation;
+    tip: string;
+    created_at: string;
+    updated_at: string;
+}

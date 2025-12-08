@@ -25,6 +25,7 @@ export async function uploadImage(
             })
 
         if (error) {
+            alert(error)
             console.error('Error uploading image:', error)
             return null
         }

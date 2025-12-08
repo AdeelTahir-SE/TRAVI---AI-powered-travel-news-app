@@ -282,8 +282,8 @@ export default function HotelsPage() {
                 {showModal && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
                         <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-                            <div className="sticky top-0 bg-white border-b px-6 py-4 flex justify-between items-center">
-                                <h2 className="text-2xl font-bold text-gray-900">
+                            <div className="sticky z-20 top-0 bg-white border-b border-gray-400 px-6 py-4 flex justify-between items-center">
+                                <h2 className="text-2xl font-bold text-gray-900 ">
                                     {editingHotel ? 'Edit Hotel' : 'Create New Hotel'}
                                 </h2>
                                 <button

@@ -1,5 +1,5 @@
 'use client'
-
+import Image from 'next/image'
 import { useState } from 'react'
 import { uploadImage, uploadMultipleImages } from '@/utils/storage'
 
@@ -92,7 +92,7 @@ export default function ImageUpload({
     }
 
     return (
-        <div className="space-y-3">
+        <div className="space-y-3 ">
             <label className="block text-sm font-semibold text-gray-700">
                 {label}
             </label>
@@ -130,10 +130,12 @@ export default function ImageUpload({
 
             {/* Image Previews */}
             {previews.length > 0 && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
+                < div className="relative z-0 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-4">
                     {previews.map((url, index) => (
                         <div key={index} className="relative group">
-                            <img
+                            <Image
+                                width={500}
+                                height={500}
                                 src={url}
                                 alt={`Preview ${index + 1}`}
                                 className="w-full h-32 object-cover rounded-lg border-2 border-gray-200"
@@ -150,12 +152,13 @@ export default function ImageUpload({
                         </div>
                     ))}
                 </div>
-            )}
+            )
+            }
 
             <p className="text-xs text-gray-500">
                 {multiple ? 'You can upload multiple images. ' : 'Upload a single image. '}
                 Maximum file size: 10MB. Supported formats: JPG, PNG, GIF, WebP
             </p>
-        </div>
+        </div >
     )
 }
