@@ -39,9 +39,74 @@ export default function HotelsPage() {
     const handleCreate = () => {
         setEditingHotel(null)
         setFormData({
-            title: '',
-            tagline: '',
-            about_hotel_images: [],
+            title: 'Paradise Beach Resort',
+            tagline: 'Your Perfect Tropical Getaway',
+            location: 'Maldives',
+            beach: 'Private white sand beach',
+            rating: 4.8,
+            reviews: 1250,
+            price: 350,
+            rating_desc: 'Excellent',
+            facilities: 'Spa, Pool, Gym, Restaurant',
+            check_rates_link: 'https://example.com/check-rates',
+            view_rooms_link: 'https://example.com/view-rooms',
+            rooms_link: 'https://example.com/rooms',
+            hotel_image_in_clouds: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d',
+            about_hotel_images: [
+                'https://images.unsplash.com/photo-1566073771259-6a8506099945',
+                'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b',
+                'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4'
+            ],
+            essential_information: {
+                checkin_checkout: 'Check-in: 3:00 PM, Check-out: 11:00 AM',
+                location_distance: '5 km from Male International Airport',
+                price_range: '$200 - $500 per night',
+                beach_access: 'Private beach, direct access',
+                dining_options: '3 restaurants, 2 bars, room service 24/7',
+                family_facilities: 'Kids club, playground, babysitting service',
+                wifi_availability: 'Free WiFi in all areas',
+                parking_availability: 'Free on-site parking available'
+            },
+            traveler_tips: [
+                'Book early for best rates and room selection',
+                'Request ocean view rooms for stunning sunsets',
+                'Try the seafood restaurant for fresh local cuisine',
+                'Book spa treatments in advance during peak season'
+            ],
+            faqs: [
+                {
+                    question: 'What time is check-in and check-out?',
+                    answer: 'Check-in is at 3:00 PM and check-out is at 11:00 AM. Early check-in and late check-out may be available upon request, subject to availability.'
+                },
+                {
+                    question: 'Is breakfast included in the room rate?',
+                    answer: 'Breakfast is included with most room packages. Please check your specific booking details or contact us for confirmation.'
+                },
+                {
+                    question: 'Do you offer airport transfers?',
+                    answer: 'Yes, we offer complimentary airport shuttle service. Please inform us of your arrival time at least 24 hours in advance.'
+                }
+            ],
+            rooms: [
+                {
+                    image: 'https://images.unsplash.com/photo-1611892440504-42a792e24d32',
+                    title: 'Deluxe Ocean View Suite',
+                    size: '45 sqm',
+                    bed_type: 'King bed',
+                    view: 'Ocean view',
+                    ventilation: 'Air conditioning',
+                    link: 'https://example.com/rooms/deluxe-ocean'
+                },
+                {
+                    image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427',
+                    title: 'Beach Villa with Pool',
+                    size: '85 sqm',
+                    bed_type: 'King bed + Sofa bed',
+                    view: 'Beach front',
+                    ventilation: 'Air conditioning + Ceiling fan',
+                    link: 'https://example.com/rooms/beach-villa'
+                }
+            ]
         })
         setShowModal(true)
     }
@@ -296,7 +361,30 @@ export default function HotelsPage() {
                                         </div>
                                     </div>
 
+
                                     <div className="grid grid-cols-2 gap-4">
+
+                                        <div>
+                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Rating Description</label>
+                                            <input
+                                                type="text"
+                                                value={formData.rating_desc || ''}
+                                                onChange={(e) => handleInputChange('rating_desc', e.target.value)}
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Facilities</label>
+                                            <input
+                                                value={formData.facilities || ''}
+                                                onChange={(e) => handleInputChange('facilities', e.target.value)}
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <div className="grid grid-cols-3 gap-4">
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-2">Rating (0-5)</label>
                                             <input
@@ -319,35 +407,27 @@ export default function HotelsPage() {
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                             />
                                         </div>
-                                    </div>
 
-                                    <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Rating Description</label>
-                                        <input
-                                            type="text"
-                                            value={formData.rating_desc || ''}
-                                            onChange={(e) => handleInputChange('rating_desc', e.target.value)}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Facilities</label>
-                                        <textarea
-                                            value={formData.facilities || ''}
-                                            onChange={(e) => handleInputChange('facilities', e.target.value)}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                            rows={3}
-                                        />
+                                        <div>
+                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Price (per night)</label>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={formData.price || ''}
+                                                onChange={(e) => handleInputChange('price', parseFloat(e.target.value))}
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                placeholder="e.g., 250"
+                                            />
+                                        </div>
                                     </div>
 
                                     <div className="grid grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Check Rooms Link</label>
+                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Check Rates Link</label>
                                             <input
                                                 type="url"
-                                                value={formData.check_rooms_link || ''}
-                                                onChange={(e) => handleInputChange('check_rooms_link', e.target.value)}
+                                                value={formData.check_rates_link || ''}
+                                                onChange={(e) => handleInputChange('check_rates_link', e.target.value)}
                                                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                             />
                                         </div>
@@ -374,29 +454,358 @@ export default function HotelsPage() {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                            Essential Information (comma-separated)
+                                        <label className="block text-sm font-semibold text-gray-700 mb-3">
+                                            Essential Information
                                         </label>
-                                        <textarea
-                                            value={formData.essential_information?.join(', ') || ''}
-                                            onChange={(e) => handleArrayInput('essential_information', e.target.value)}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                            rows={3}
-                                            placeholder="Check-in: 3 PM, Check-out: 11 AM, Free WiFi"
-                                        />
+                                        <div className="grid grid-cols-2 gap-4 border border-gray-200 rounded-lg p-4 bg-gray-50">
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-600 mb-1">Check-in / Check-out</label>
+                                                <input
+                                                    type="text"
+                                                    value={formData.essential_information?.checkin_checkout || ''}
+                                                    onChange={(e) => handleInputChange('essential_information', {
+                                                        ...formData.essential_information,
+                                                        checkin_checkout: e.target.value
+                                                    })}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                    placeholder="e.g., Check-in: 3 PM, Check-out: 11 AM"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-600 mb-1">Location & Distance</label>
+                                                <input
+                                                    type="text"
+                                                    value={formData.essential_information?.location_distance || ''}
+                                                    onChange={(e) => handleInputChange('essential_information', {
+                                                        ...formData.essential_information,
+                                                        location_distance: e.target.value
+                                                    })}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                    placeholder="e.g., 5 km from city center"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-600 mb-1">Price Range</label>
+                                                <input
+                                                    type="text"
+                                                    value={formData.essential_information?.price_range || ''}
+                                                    onChange={(e) => handleInputChange('essential_information', {
+                                                        ...formData.essential_information,
+                                                        price_range: e.target.value
+                                                    })}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                    placeholder="e.g., $100 - $300 per night"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-600 mb-1">Beach Access</label>
+                                                <input
+                                                    type="text"
+                                                    value={formData.essential_information?.beach_access || ''}
+                                                    onChange={(e) => handleInputChange('essential_information', {
+                                                        ...formData.essential_information,
+                                                        beach_access: e.target.value
+                                                    })}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                    placeholder="e.g., Private beach, 2 min walk"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-600 mb-1">Dining Options</label>
+                                                <input
+                                                    type="text"
+                                                    value={formData.essential_information?.dining_options || ''}
+                                                    onChange={(e) => handleInputChange('essential_information', {
+                                                        ...formData.essential_information,
+                                                        dining_options: e.target.value
+                                                    })}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                    placeholder="e.g., 3 restaurants, room service"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-600 mb-1">Family Facilities</label>
+                                                <input
+                                                    type="text"
+                                                    value={formData.essential_information?.family_facilities || ''}
+                                                    onChange={(e) => handleInputChange('essential_information', {
+                                                        ...formData.essential_information,
+                                                        family_facilities: e.target.value
+                                                    })}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                    placeholder="e.g., Kids club, playground"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-600 mb-1">WiFi Availability</label>
+                                                <input
+                                                    type="text"
+                                                    value={formData.essential_information?.wifi_availability || ''}
+                                                    onChange={(e) => handleInputChange('essential_information', {
+                                                        ...formData.essential_information,
+                                                        wifi_availability: e.target.value
+                                                    })}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                    placeholder="e.g., Free WiFi in all areas"
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-600 mb-1">Parking Availability</label>
+                                                <input
+                                                    type="text"
+                                                    value={formData.essential_information?.parking_availability || ''}
+                                                    onChange={(e) => handleInputChange('essential_information', {
+                                                        ...formData.essential_information,
+                                                        parking_availability: e.target.value
+                                                    })}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                    placeholder="e.g., Free on-site parking"
+                                                />
+                                            </div>
+                                        </div>
                                     </div>
 
                                     <div>
                                         <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                            Traveler Tips (comma-separated)
+                                            Traveler Tips
                                         </label>
-                                        <textarea
-                                            value={formData.traveler_tips?.join(', ') || ''}
-                                            onChange={(e) => handleArrayInput('traveler_tips', e.target.value)}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                            rows={3}
-                                            placeholder="Book early for best rates, Request ocean view rooms"
-                                        />
+                                        <div className="space-y-2">
+                                            {(formData.traveler_tips || []).map((tip, index) => (
+                                                <div key={index} className="flex gap-2">
+                                                    <input
+                                                        type="text"
+                                                        value={tip}
+                                                        onChange={(e) => {
+                                                            const newTips = [...(formData.traveler_tips || [])]
+                                                            newTips[index] = e.target.value
+                                                            handleInputChange('traveler_tips', newTips)
+                                                        }}
+                                                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                        placeholder="Enter a traveler tip"
+                                                    />
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => {
+                                                            const newTips = (formData.traveler_tips || []).filter((_, i) => i !== index)
+                                                            handleInputChange('traveler_tips', newTips)
+                                                        }}
+                                                        className="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition-colors"
+                                                    >
+                                                        ×
+                                                    </button>
+                                                </div>
+                                            ))}
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    const newTips = [...(formData.traveler_tips || []), '']
+                                                    handleInputChange('traveler_tips', newTips)
+                                                }}
+                                                className="w-full px-4 py-2 border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                                            >
+                                                <span className="text-xl">+</span> Add Tip
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                            FAQs
+                                        </label>
+                                        <div className="space-y-4">
+                                            {(formData.faqs || []).map((faq, index) => (
+                                                <div key={index} className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+                                                    <div className="flex justify-between items-start mb-3">
+                                                        <span className="text-sm font-semibold text-gray-600">FAQ #{index + 1}</span>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                const newFaqs = (formData.faqs || []).filter((_, i) => i !== index)
+                                                                handleInputChange('faqs', newFaqs)
+                                                            }}
+                                                            className="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-bold transition-colors"
+                                                        >
+                                                            ×
+                                                        </button>
+                                                    </div>
+                                                    <div className="space-y-3">
+                                                        <div>
+                                                            <label className="block text-xs font-medium text-gray-600 mb-1">Question</label>
+                                                            <input
+                                                                type="text"
+                                                                value={faq.question}
+                                                                onChange={(e) => {
+                                                                    const newFaqs = [...(formData.faqs || [])]
+                                                                    newFaqs[index] = { ...newFaqs[index], question: e.target.value }
+                                                                    handleInputChange('faqs', newFaqs)
+                                                                }}
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                                placeholder="Enter question"
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-xs font-medium text-gray-600 mb-1">Answer</label>
+                                                            <textarea
+                                                                value={faq.answer}
+                                                                onChange={(e) => {
+                                                                    const newFaqs = [...(formData.faqs || [])]
+                                                                    newFaqs[index] = { ...newFaqs[index], answer: e.target.value }
+                                                                    handleInputChange('faqs', newFaqs)
+                                                                }}
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                                rows={3}
+                                                                placeholder="Enter answer"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    const newFaqs = [...(formData.faqs || []), { question: '', answer: '' }]
+                                                    handleInputChange('faqs', newFaqs)
+                                                }}
+                                                className="w-full px-4 py-2 border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                                            >
+                                                <span className="text-xl">+</span> Add FAQ
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                            Rooms
+                                        </label>
+                                        <div className="space-y-4">
+                                            {(formData.rooms || []).map((room, index) => (
+                                                <div key={index} className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+                                                    <div className="flex justify-between items-start mb-3">
+                                                        <span className="text-sm font-semibold text-gray-600">Room #{index + 1}</span>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => {
+                                                                const newRooms = (formData.rooms || []).filter((_, i) => i !== index)
+                                                                handleInputChange('rooms', newRooms)
+                                                            }}
+                                                            className="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-bold transition-colors"
+                                                        >
+                                                            ×
+                                                        </button>
+                                                    </div>
+                                                    <div className="grid grid-cols-2 gap-3">
+                                                        <div className="col-span-2">
+                                                            <label className="block text-xs font-medium text-gray-600 mb-1">Room Image URL</label>
+                                                            <input
+                                                                type="text"
+                                                                value={room.image || ''}
+                                                                onChange={(e) => {
+                                                                    const newRooms = [...(formData.rooms || [])]
+                                                                    newRooms[index] = { ...newRooms[index], image: e.target.value }
+                                                                    handleInputChange('rooms', newRooms)
+                                                                }}
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                                placeholder="Enter image URL"
+                                                            />
+                                                        </div>
+                                                        <div className="col-span-2">
+                                                            <label className="block text-xs font-medium text-gray-600 mb-1">Room Title *</label>
+                                                            <input
+                                                                type="text"
+                                                                value={room.title}
+                                                                onChange={(e) => {
+                                                                    const newRooms = [...(formData.rooms || [])]
+                                                                    newRooms[index] = { ...newRooms[index], title: e.target.value }
+                                                                    handleInputChange('rooms', newRooms)
+                                                                }}
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                                placeholder="e.g., Deluxe Ocean View Suite"
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-xs font-medium text-gray-600 mb-1">Size</label>
+                                                            <input
+                                                                type="text"
+                                                                value={room.size || ''}
+                                                                onChange={(e) => {
+                                                                    const newRooms = [...(formData.rooms || [])]
+                                                                    newRooms[index] = { ...newRooms[index], size: e.target.value }
+                                                                    handleInputChange('rooms', newRooms)
+                                                                }}
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                                placeholder="e.g., 45 sqm"
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-xs font-medium text-gray-600 mb-1">Bed Type</label>
+                                                            <input
+                                                                type="text"
+                                                                value={room.bed_type || ''}
+                                                                onChange={(e) => {
+                                                                    const newRooms = [...(formData.rooms || [])]
+                                                                    newRooms[index] = { ...newRooms[index], bed_type: e.target.value }
+                                                                    handleInputChange('rooms', newRooms)
+                                                                }}
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                                placeholder="e.g., King bed"
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-xs font-medium text-gray-600 mb-1">View</label>
+                                                            <input
+                                                                type="text"
+                                                                value={room.view || ''}
+                                                                onChange={(e) => {
+                                                                    const newRooms = [...(formData.rooms || [])]
+                                                                    newRooms[index] = { ...newRooms[index], view: e.target.value }
+                                                                    handleInputChange('rooms', newRooms)
+                                                                }}
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                                placeholder="e.g., Ocean view"
+                                                            />
+                                                        </div>
+                                                        <div>
+                                                            <label className="block text-xs font-medium text-gray-600 mb-1">Ventilation</label>
+                                                            <input
+                                                                type="text"
+                                                                value={room.ventilation || ''}
+                                                                onChange={(e) => {
+                                                                    const newRooms = [...(formData.rooms || [])]
+                                                                    newRooms[index] = { ...newRooms[index], ventilation: e.target.value }
+                                                                    handleInputChange('rooms', newRooms)
+                                                                }}
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                                placeholder="e.g., Air conditioning"
+                                                            />
+                                                        </div>
+                                                        <div className="col-span-2">
+                                                            <label className="block text-xs font-medium text-gray-600 mb-1">Details Link</label>
+                                                            <input
+                                                                type="url"
+                                                                value={room.link || ''}
+                                                                onChange={(e) => {
+                                                                    const newRooms = [...(formData.rooms || [])]
+                                                                    newRooms[index] = { ...newRooms[index], link: e.target.value }
+                                                                    handleInputChange('rooms', newRooms)
+                                                                }}
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                                placeholder="Enter link to room details"
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            <button
+                                                type="button"
+                                                onClick={() => {
+                                                    const newRooms = [...(formData.rooms || []), { title: '', image: '', size: '', bed_type: '', view: '', ventilation: '', link: '' }]
+                                                    handleInputChange('rooms', newRooms)
+                                                }}
+                                                className="w-full px-4 py-2 border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                                            >
+                                                <span className="text-xl">+</span> Add Room
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
 
@@ -418,7 +827,8 @@ export default function HotelsPage() {
                             </form>
                         </div>
                     </div>
-                )}
+                )
+                }
             </div>
         </div>
     )

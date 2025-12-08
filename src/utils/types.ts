@@ -29,16 +29,30 @@ export interface FAQ {
     answer: string,
 }
 
+export interface EssentialInformation {
+    checkin_checkout?: string;
+    location_distance?: string;
+    price_range?: string;
+    beach_access?: string;
+    dining_options?: string;
+    family_facilities?: string;
+    wifi_availability?: string;
+    parking_availability?: string;
+}
+
 export interface Highlight {
     title: string;
     description: string;
 }
 
 export interface Room {
-    name: string;
-    price?: number;
-    description?: string;
-    amenities?: string[];
+    image?: string;
+    title: string;
+    size?: string;
+    bed_type?: string;
+    view?: string;
+    ventilation?: string;
+    link?: string;
 }
 
 export interface Hotel {
@@ -46,7 +60,8 @@ export interface Hotel {
     created_at: string;
     title: string;
     tagline: string;
-    check_rooms_link?: string;
+    price?: number;
+    check_rates_link?: string;
     view_rooms_link?: string;
     location?: string;
     rating_desc?: string;
@@ -58,8 +73,8 @@ export interface Hotel {
     hotel_image_in_clouds?: string;
     highlights?: Highlight[];
     rooms_link?: string;
-    room?: Room[];
-    essential_information?: string[];
+    rooms?: Room[];
+    essential_information?: EssentialInformation;
     traveler_tips?: string[];
     faqs?: FAQ[];
 }

@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     siteName: "Travi",
     images: [
       {
-        url: "/logo/navbar-text.svg", // your social preview image
+        url: "/logos/navbar-text.svg", // your social preview image
         width: 1200,
         height: 630,
         alt: "Travi - Travel News & Trending Destinations",
@@ -43,11 +43,11 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteTitle,
     description: siteDescription,
-    images: ["/logo/navbar-text.svg"],
+    images: ["/logos/navbar-text.svg"],
   },
 
   icons: {
-    icon: "/logo/navbar-text.svg",
+    icon: "/logos/navbar-text.svg",
   },
 
   alternates: {

@@ -18,7 +18,7 @@ export default function ImageUpload({
     existingImages = [],
     label = 'Upload Images',
     bucket = 'hotel-images',
-    folder = ''
+    folder = 'images'
 }: ImageUploadProps) {
     const [uploading, setUploading] = useState(false)
     const [previews, setPreviews] = useState<string[]>(existingImages)
@@ -71,6 +71,7 @@ export default function ImageUpload({
                 setPreviews(newPreviews)
                 onUploadComplete(newPreviews)
             } else {
+                alert(uploadedUrls)
                 alert('Failed to upload images. Please try again.')
             }
         } catch (error) {

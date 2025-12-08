@@ -1,74 +1,117 @@
+'use client'
+
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import HotelCard from "./hotelCard";
 import BookStaySection from "./bookStaySection";
+import { Hotel } from "@/utils/types";
+
 export default function CategoryCardsSection() {
-  const arr = [
-    {
-      name: "hello",
-    },
-    {
-      name: "hello",
-    },
-    {
-      name: "hello",
-    },
-    {
-      name: "hello",
-    },
-  ];
- if (!arr || arr.length <= 0) {
-   return (
-     <div className="flex flex-col items-center justify-center gap-[70px] md:gap-0 min-w-full">
-       <section className="relative w-full min-h-full flex flex-col items-center justify-center px-[20px] py-[100px] lg:py-[210px] lg:px-[140px]">
-         {/* Background image only on large screens */}
-         <div className="hidden lg:block absolute inset-0 top-[160px] -z-10 ">
-           <Image
-             src={"/background-images/explore-dubai-background-effect.png"}
-             alt=""
-             fill
-             className="object-cover"
-           />
+  const searchParams = useSearchParams();
+  const query = searchParams.get('q') || '';
 
-           <div
-             className="absolute inset-0 pointer-events-none   bg-[linear-gradient(to_bottom,rgba(255,255,255,1)_0%,rgba(255,255,255,0)_20%,rgba(255,255,255,0)_80%,rgba(255,255,255,1)_100%)]  bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0)_45%,rgba(255,255,255,0.7)_100%)]
+  const [hotels, setHotels] = useState<Hotel[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchHotels = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const params = new URLSearchParams();
+        if (query) params.append('q', query);
+        params.append('limit', '12');
+
+        const response = await fetch(`/api/hotels?${params.toString()}`);
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch hotels');
+        }
+
+        const data = await response.json();
+        setHotels(data.hotels || []);
+      } catch (err) {
+        console.error('Error fetching hotels:', err);
+        setError('Failed to load hotels');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHotels();
+  }, [query]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <p className="text-red-600 text-lg">{error}</p>
+      </div>
+    );
+  }
+  if (!hotels || hotels.length <= 0) {
+    return (
+      <div className="flex flex-col items-center justify-center gap-[70px] md:gap-0 min-w-full">
+        <section className="relative w-full min-h-full flex flex-col items-center justify-center px-[20px] py-[100px] lg:py-[210px] lg:px-[140px]">
+          {/* Background image only on large screens */}
+          <div className="hidden lg:block absolute inset-0 top-[160px] -z-10 ">
+            <Image
+              src={"/background-images/explore-dubai-background-effect.png"}
+              alt=""
+              fill
+              className="object-cover"
+            />
+
+            <div
+              className="absolute inset-0 pointer-events-none   bg-[linear-gradient(to_bottom,rgba(255,255,255,1)_0%,rgba(255,255,255,0)_20%,rgba(255,255,255,0)_80%,rgba(255,255,255,1)_100%)]  bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0)_45%,rgba(255,255,255,0.7)_100%)]
 "
-           ></div>
-         </div>
+            ></div>
+          </div>
 
-         {/* No result content */}
-         <div className="flex flex-col items-center justify-center gap-[48px] text-center">
-           <Image
-             src={"/images/no-result.svg"}
-             width={511}
-             height={390}
-             alt="No results"
-             className="hidden md:block md:w-[511px] md:h-[390px]"
-           />
-           <Image
-             src={"/images/no-result-phones.svg"}
-             width={511}
-             height={390}
-             alt="No results"
-             className="w-[183px] h-[166px] md:hidden block"
-           />
+          {/* No result content */}
+          <div className="flex flex-col items-center justify-center gap-[48px] text-center">
+            <Image
+              src={"/images/no-result.svg"}
+              width={511}
+              height={390}
+              alt="No results"
+              className="hidden md:block md:w-[511px] md:h-[390px]"
+            />
+            <Image
+              src={"/images/no-result-phones.svg"}
+              width={511}
+              height={390}
+              alt="No results"
+              className="w-[183px] h-[166px] md:hidden block"
+            />
 
-           {/* Text below SVG */}
-           <div className="flex flex-col items-center justify-center gap-[20px]">
-             <h2 className="font-manrope font-semibold text-[48px] leading-[100%] tracking-[-0.03em]">
-               Nothing Matches Your Search
-             </h2>
-             <p className="font-inter text-[28px] font-normal text-[#475467] leading-[100%] tracking-[0.03em]">
-               No results found. Try adjusting your filters.
-             </p>
-           </div>
-         </div>
-       </section>
-       <div className="md:hidden">
-         <BookStaySection />
-       </div>
-     </div>
-   );
- }
+            {/* Text below SVG */}
+            <div className="flex flex-col items-center justify-center gap-[20px]">
+              <h2 className="font-manrope font-semibold text-[48px] leading-[100%] tracking-[-0.03em]">
+                Nothing Matches Your Search
+              </h2>
+              <p className="font-inter text-[28px] font-normal text-[#475467] leading-[100%] tracking-[0.03em]">
+                No results found. Try adjusting your filters.
+              </p>
+            </div>
+          </div>
+        </section>
+        <div className="md:hidden">
+          <BookStaySection />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <section className="relative  flex flex-col items-center justify-center lg:gap-[80px] gap-[60px] px-[20px] md:px-[70px] py-[60px] 2xl:px-[140px] 2xl:py-[120px] w-full h-full">
@@ -80,13 +123,13 @@ export default function CategoryCardsSection() {
           fill
           className="object-cover object-center absolute z-0 lg:min-h-[900px]"
         />
-        
+
 
         {/* Gradient Overlay */}
         <div className="absolute z-10 inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,1)_0%,rgba(255,255,255,0)_50%,rgba(255,255,255,1)_100%)]"></div>
       </div>
 
-      {arr && arr?.length > 0 && (
+      {hotels && hotels?.length > 0 && (
         <div className="flex flex-col gap-[24px] lg:gap-0 lg:flex-row items-center justify-between w-full ">
           <div className="lg:flex flex-row items-center justify-center w-fit hidden flex-wrap gap-[20px] *:border-1 *:rounded-[12px] *:py-[16px] *:px-[24px] *:bg-white *:text-black *:border-[#D0D5DD] *:font-inter *:font-medium *:text-[22px] *:leading-[100%] *:tracking-[-0.02em]">
             <button>All</button>
@@ -121,14 +164,14 @@ export default function CategoryCardsSection() {
         </div>
       )}
       <div className="flex flex-row flex-wrap items-center justify-center gap-[32px] w-full">
-        {arr &&
-          arr?.length > 0 &&
-          arr?.map((v, i) => {
-            return <HotelCard key={i} />;
+        {hotels &&
+          hotels?.length > 0 &&
+          hotels?.map((hotel, i) => {
+            return <HotelCard key={i} hotel={hotel} />;
           })}
       </div>
 
-      {arr && arr?.length > 0 && (
+      {hotels && hotels?.length > 0 && (
         <div className="hidden md:flex flex-row items-center justify-between border-t-1 w-full border-white">
           <button className="flex flex-row items-center justify-center px-[30px]  py-[24px] border-[1px] border-[#D0D5DD] gap-[8px] rounded-[800px] ">
             <Image
@@ -185,7 +228,7 @@ export default function CategoryCardsSection() {
           </button>
         </div>
       )}
-      {arr && arr?.length > 0 && (
+      {hotels && hotels?.length > 0 && (
         <div className=" md:hidden flex flex-row items-center justify-between w-full border-t-[1px] border-white ">
           <button className="rounded-full flex items-center justify-center gap-[8px] border-1 border-[#D0D5DD] w-[58px] h-[58px]">
             <Image
