@@ -1,7 +1,7 @@
 import Image from "next/image"
 export default function CommentContainer({ author, author_image, quote, author_role }: { author?: string, author_image?: string, author_role?: string, quote?: string }) {
     return (
-        <section className="relative flex felx-row items-center justify-center w-[381px] h-[365px]">
+        <section className="relative flex felx-row items-center justify-center max-w-screen w-[381px] h-[365px]">
             <Image src={"/images/comment-container.svg"} className="w-full h-full" width={381} height={365} alt="" />
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-[47px] px-[26px] pt-[44px] pb-[38px]">
                 <div className="relative ">

@@ -44,7 +44,7 @@ export default function ExploreDubaiSection() {
   };
 
   const currentArticle = articles[currentIndex];
-  const articleSlug = currentArticle?.title?.toString().replace(" ", "-") || '';
+  const articleSlug = currentArticle?.title?.toString().replace(/ /g, "-") || '';
 
   if (loading) {
     return (
@@ -68,16 +68,16 @@ export default function ExploreDubaiSection() {
         <h2 className="heading-2">Ready to </h2>
         <h2 className="stylish-yellow-text">Explore Dubai</h2>
       </div>
-      <section className="flex flex-col lg:flex-row items-center w-full relative justify-center">
-        <section className="flex flex-col items-start w-full relative justify-center">
+      <section className="flex flex-col md:flex-row items-center w-full relative justify-center">
+        <section className="flex flex-col items-start w-full relative justify-center pr-[20px] sm:pr-[0px]">
           <Image
             src={currentArticle.images?.[0] || "/background-images/explore-dubai.svg"}
-            width={420}
-            height={320}
-            className="rounded-tr-[18px] rounded-0 object-cover ml-0 pl-0 w-[420px] lg:min-w-[600px] lg:h-auto z-20   h-[320px]"
+            width={600}
+            height={450}
+            className="rounded-tr-[18px] object-cover w-full sm:w-[500px] md:w-[550px] lg:w-[600px] xl:w-[700px] 2xl:w-auto h-[280px] sm:h-[350px] md:h-[400px] lg:h-[450px] xl:h-[500px] 2xl:min-h-[720px] z-20 "
             alt={currentArticle.title}
           />
-          <section className="absolute inset-0 w-full overflow-hidden min-h-[200px]  top-60 lg:top-80 z-20 pointer-events-none">
+          <section className="absolute inset-0 w-full overflow-hidden min-h-[200px]  top-50 md:top-[300px] lg:top-[370px] xl:top-[400px] 2xl:top-[600px] z-20 pointer-events-none">
             <div className="absolute inset-0 flex flex-row items-center justify-start gap-[5px] *:top-2">
               <Image
                 src={"/clouds/cloud.svg"}
@@ -141,7 +141,7 @@ export default function ExploreDubaiSection() {
             </div>
           </section>
 
-          <section className="absolute w-full top-12 min-h-[760px] lg:hidden">
+          <section className="absolute w-full top-12 min-h-[760px] md:hidden">
             <Image
               src="/background-images/explore-dubai-background-effect.png"
               width={1200}
@@ -154,7 +154,7 @@ export default function ExploreDubaiSection() {
             <div className="absolute inset-0 z-0 bg-[linear-gradient(to_bottom,_rgba(255,255,255,1)_0%,_rgba(255,255,255,1)_45%,_rgba(255,255,255,0)_50%,_rgba(255,255,255,1)_100%)]"></div>
           </section>
         </section>
-        <section className="flex flex-col-reverse lg:flex-col items-center justify-center w-full">
+        <section className="flex flex-col-reverse md:flex-col items-center justify-center w-full">
           <section className="flex flex-col items-start justify-center pl-8 pt-7 relative z-40 font-inter font-normal text-[14px] text-[#0066CA] sm:text-[22px] leading-[35px] tracking-[-0.02em]">
             <Image src={"/images/piegon.svg"} width={150} height={150} className="2xl:block hidden absolute top-[-30px] w-[320px] top-0 right-[20px]" alt="" />
             <Image src={"/images/piegon.svg"} width={150} height={150} className="2xl:block hidden  absolute w-[170px]  right-[20px]" alt="" />
@@ -168,13 +168,11 @@ export default function ExploreDubaiSection() {
             <p className="text-black py-[30px] font-inter font-normal text-[16px] md:text-[22px] leading-[25px] md:leading-[35px] tracking-[-0.02em]">
               {currentArticle.paras?.[0]?.substring(0, 250)}...
             </p>
-            <Link href={`/article/${articleSlug}`}>
-              <button className="flex flex-row items-center justify-center rounded-[39px] bg-[#F8A900] text-black px-[25px] py-[15px] font-inter font-semibold text-[16px] sm:text-[20px] leading-[23.28px] tracking-[-0.02em]">
-                View Details
-              </button>
+            <Link href={`/article/${articleSlug}`} className="flex flex-row items-center justify-center rounded-[39px] bg-[#F8A900] text-black px-[25px] py-[15px] font-inter font-semibold text-[16px] sm:text-[20px] leading-[23.28px] tracking-[-0.02em]">
+              View Details
             </Link>
           </section>
-          <section className="absolute inset-0 w-full h-[500px] overflow-hidden hidden lg:block">
+          <section className="absolute inset-0 w-full h-[400px] lg:h-[500px] overflow-hidden hidden md:block">
             <Image
               src="/background-images/explore-dubai-background-effect.png"
               width={1200}
@@ -188,7 +186,7 @@ export default function ExploreDubaiSection() {
           </section>
 
           {/* this one for large screens */}
-          <section className="relative  w-full  flex flex-row items-center justify-start overflow-hidden gap-[11px] lg:right-[100px] lg:block hidden  ">
+          <section className="relative w-full flex flex-row items-center justify-start gap-[11px] lg:right-[100px] hidden md:block">
             <div className="relative z-30 flex flex-row mt-[18px]  items-center justify-start pl-8  gap-[11px] w-fit">
               <button
                 onClick={handlePrev}
@@ -204,7 +202,7 @@ export default function ExploreDubaiSection() {
                 />
               </button>
               {articles.slice(currentIndex, currentIndex + 2).map((article, idx) => (
-                <div key={article.article_id} className="flex flex-row items-center jutify-center">
+                <div key={article.article_id} className="flex flex-row items-center justify-center gap-[11px]">
                   <Image
                     key={article.article_id}
                     src={article.images?.[1] || "/background-images/explore-dubai.svg"}
@@ -227,7 +225,7 @@ export default function ExploreDubaiSection() {
               <button
                 onClick={handleNext}
                 disabled={currentIndex >= articles.length - 1}
-                className={`right-[-8] absolute w-[50px] h-[50px] p-4 bg-[#F8A900] border-[1.57px] border-white rounded-full flex flex-row items-center justify-center ${currentIndex >= articles.length - 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#e09800]'}`}
+                className={`right-[-8px] absolute  w-[50px] h-[50px] p-4 bg-[#F8A900] border-[1.57px] border-white rounded-full flex flex-row items-center justify-center ${currentIndex >= articles.length - 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#e09800]'}`}
               >
                 <Image
                   src={"/icons/right.svg"}
@@ -242,13 +240,20 @@ export default function ExploreDubaiSection() {
 
           {/* bottom one for phone screens */}
 
-          <section className="relative  w-full  flex flex-row items-center justify-start overflow-hidden gap-[11px] lg:right-[100px] lg:hidden block overflow-x-hidden ">
+          <section className="relative w-full flex flex-row items-center justify-start overflow-hidden gap-[11px] md:right-[100px] block md:hidden overflow-x-hidden">
             <div className="relative z-30 flex flex-row mt-[18px] items-center justify-start pl-8 overflow-hidden gap-[11px]">
               {articles.slice(currentIndex, currentIndex + 3).map((article) => (
-                <div key={article.article_id} className="flex flex-row items-center jutify-center">
+                <div key={article.article_id} className="flex flex-row items-center justify-center gap-[11px]">
 
                   <Image
                     src={article.images?.[0] || "/background-images/explore-dubai.svg"}
+                    className="min-w-[158px] min-h-[123px] rounded-[10.72px] object-cover"
+                    width={158}
+                    height={123}
+                    alt={article.title}
+                  />
+                  <Image
+                    src={article.images?.[1] || "/background-images/explore-dubai.svg"}
                     className="min-w-[158px] min-h-[123px] rounded-[10.72px] object-cover"
                     width={158}
                     height={123}
