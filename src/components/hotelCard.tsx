@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Hotel } from "@/utils/types";
-
+import Link from "next/link";
 interface HotelCardProps {
   hotel: Hotel;
 }
@@ -16,10 +16,10 @@ export default function HotelCard({ hotel }: HotelCardProps) {
         src={hotel.hotel_image_in_clouds || hotel.about_hotel_images?.[0] || "/images/trending-jewelery.png"}
         width={525}
         height={725}
-        className="h-fit object-cover w-full  rounded-t-[16px] lg:rounded-t-[30px]"
+        className="h-fit object-cover w-full max-h-[354px] rounded-t-[16px] lg:rounded-t-[30px]"
         alt={hotel.title}
       />
-      <div className="p-[20px] lg:p-[24px] gap-[32px] flex flex-col items-center justify-center ">
+      <div className="p-[20px] lg:p-[24px] gap-[32px] flex flex-col items-start justify-center w-full  ">
         <div className="gap-[12px] lg:gap-[16px] flex flex-col items-start justify-center ">
           <div className="flex flex-col items-start justify-center gap-[8px] ">
             <h3 className="font-inter font-medium text-[28px] lg:text-[32px] leading-[100%] tracking-[-0.02em]">
@@ -74,9 +74,9 @@ export default function HotelCard({ hotel }: HotelCardProps) {
             ${hotel.price || '---'}
           </h6>
         </div>
-        <button className="border-[#D0D5DD] border-1 py-[24px] px-[30px] rounded-[800px] font-inter font-[600px] font-extrabold text-[20px] leading-[100%] tracking-0">
+        <Link href={"/hotel/" + hotel?.title?.replace(" ", "-")} className="border-[#D0D5DD] border-1 py-[24px] px-[30px] rounded-[800px] font-inter font-[600px] font-extrabold text-[20px] leading-[100%] tracking-0">
           View Details
-        </button>
+        </Link>
       </div>
     </div>
   );

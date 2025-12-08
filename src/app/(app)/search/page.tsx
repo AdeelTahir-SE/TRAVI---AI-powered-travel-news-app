@@ -41,9 +41,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function SearchPage({ searchParams }: { searchParams: Promise<{ q: string }> }) {
-  const params = await searchParams;
-  const query = params?.q || "";
+export default async function SearchPage() {
 
   return (
     <div className="flex flex-col items-center">
