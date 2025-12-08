@@ -36,17 +36,53 @@ export default function ArticlesAdminPage() {
         setLoading(false)
     }
 
+
     const handleCreate = () => {
         setEditingArticle(null)
         setFormData({
-            title: '',
+            title: 'Discover Dubai: Where Tradition Meets Tomorrow',
             images: [],
-            published_date: new Date().toISOString().split('T')[0],
-            paras: ['', '', '', '', ''],
-            subsections: [],
-            quotation1: undefined,
-            quotation2: undefined,
-            tip: '',
+            published_date: '2025-10-28',
+            paras: [
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse tincidunt, nisl id pulvinar tincidunt, mi nunc fringilla augue, ut faucibus risus augue ac magna. Phasellus non convallis elit, ac tempus odio. Vivamus a interdum dolor. Donec tincidunt accumsan leo ac lacinia. In commodo nulla augue, sed tempus nulla euismod sed. Integer auctor et elit vel eleifend. Etiam sed mauris posuere, condimentum tortor nec, luctus odio.',
+                'Proin dignissim aliquet felis, eget pulvinar risus commodo sed. Nulla malesuada turpis sed posuere dictum. Praesent auctor magna et sapien facilisis, et fermentum lectus hendrerit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris tempus ullamcorper malesuada. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.',
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse tincidunt, nisl id pulvinar tincidunt, mi nunc fringilla augue, ut faucibus risus augue ac magna. Phasellus non convallis elit, ac tempus odio. Vivamus a interdum dolor. Donec tincidunt accumsan leo ac lacinia.',
+                'Nullam non ipsum ac leo euismod sodales non eu lectus. Sed rhoncus purus quis tellus vestibulum, et lacinia dui varius. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam in dignissim justo. Vestibulum pharetra mollis erat, nec molestie leo vulputate quis.',
+                'Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Morbi condimentum, eros et sodales convallis, ante elit aliquam arcu, eu lobortis dolor urna a mauris. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed placerat lectus eget metus tincidunt venenatis. Duis quis sapien diam. Aenean aliquam lectus et molestie pulvinar.'
+            ],
+            subsections: [
+                {
+                    heading: 'Beaches, Desert, and Adventure',
+                    paras: [
+                        "Dubai's natural landscapes are just as spectacular as its skyscrapers. Spend a lazy afternoon at Jumeirah Beach, or head to Kite Beach for water sports and a beachfront food truck feast.",
+                        'For something truly unique, take a desert safari — dune bashing, camel rides, and a sunset dinner under the stars capture the magic of Arabia in one evening.',
+                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse tincidunt, nisl id pulvinar tincidunt, mi nunc fringilla augue, ut faucibus risus augue ac magna. Phasellus non convallis elit, ac tempus odio. Vivamus a interdum dolor. Donec tincidunt accumsan leo ac lacinia.',
+                        'Praesent tincidunt varius tortor, molestie tempus nunc mollis sit amet. Aenean tincidunt dictum eros id rhoncus. Praesent quis justo non risus ultricies efficitur. Integer sit amet facilisis ante, et feugiat erat.',
+                        'Sed justo magna, finibus non enim nec, aliquet consequat arcu. Nullam a malesuada augue. In commodo nulla augue, sed tempus nulla euismod sed. Integer auctor et elit vel eleifend. Etiam sed mauris posuere, condimentum tortor nec, luctus odio. Sed vitae risus ultrices, efficitur urna id, tempor arcu.'
+                    ]
+                },
+                {
+                    heading: 'Culture and Heritage',
+                    paras: [
+                        "Amid the glitz, Dubai proudly preserves its heritage. Wander through Al Fahidi Historical Neighborhood, where narrow lanes and wind towers reveal the city's humble beginnings. Visit the Dubai Creek, hop on an abra (wooden boat), and explore the bustling Gold and Spice Souks — timeless reminders of the city's trading past.",
+                        'Mauris nulla eros, rutrum quis imperdiet ut, lacinia at arcu. Sed sit amet risus magna. Sed elementum tellus at dui hendrerit, a finibus sapien porta. Sed et nibh ultrices, dictum libero eget, hendrerit nisl. Donec et turpis varius, lacinia arcu nec, posuere libero. Suspendisse posuere, metus eu commodo aliquet, diam neque luctus ligula, eget molestie lacus dolor ut libero. Pellentesque dignissim eros vitae orci sollicitudin mattis. Vestibulum rhoncus, justo bibendum tincidunt volutpat, libero justo gravida est, convallis pharetra massa libero in diam. Pellentesque varius consectetur vulputate.',
+                        'Sed quis dui non enim varius faucibus quis id augue. Suspendisse in tincidunt tortor. Integer in gravida est. Integer vel ultrices felis, quis vehicula ante.',
+                        'Nunc feugiat, neque eget vehicula rutrum, ipsum magna condimentum tellus, sit amet eleifend nisl felis accumsan justo. Donec consectetur aliquam eros non vestibulum. Quisque imperdiet rhoncus eros, sit amet luctus ligula',
+                        'Nullam non ipsum ac leo euismod sodales non eu lectus. Sed rhoncus purus quis tellus vestibulum, et lacinia dui varius. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nullam in dignissim justo. Vestibulum pharetra mollis erat, nec molestie leo vulputate quis. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Morbi condimentum, eros et sodales convallis, ante elit aliquam arcu, eu lobortis dolor urna a mauris. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed placerat lectus eget metus tincidunt venenatis. Duis quis sapien diam. Aenean aliquam lectus et molestie pulvinar.'
+                    ]
+                }
+            ],
+            quotation1: {
+                quote: 'Duis ultrices erat sed elementum facilisis. Fusce congue lobortis augue nec congue. Vivamus tellus velit, vestibulum eget elit dignissim',
+                person_name: 'James Joyce',
+                person_role: 'Travel Enthusiast',
+                person_image: '/images/comment-avatar.jpg'
+            },
+            quotation2: {
+                quote: 'Dubai is where dreams become reality',
+                person_name: 'Sarah Ahmed'
+            },
+            tip: 'Best time to visit Dubai is between November and March when the weather is pleasant. Book desert safaris in advance and dress modestly when visiting cultural sites.',
         })
         setShowModal(true)
     }

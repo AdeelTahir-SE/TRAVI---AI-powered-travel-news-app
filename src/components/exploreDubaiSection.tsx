@@ -1,5 +1,67 @@
+'use client'
+
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { supabase } from "@/utils/supabase";
+import { Article } from "@/utils/types";
+
 export default function ExploreDubaiSection() {
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchArticles();
+  }, []);
+
+  const fetchArticles = async () => {
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('article')
+      .select('*')
+      .order('published_date', { ascending: false })
+      .limit(10);
+
+    if (error) {
+      console.error('Error fetching articles:', error);
+    } else if (data) {
+      setArticles(data as Article[]);
+    }
+    setLoading(false);
+  };
+
+  const handleNext = () => {
+    if (currentIndex < articles.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  const handlePrev = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
+
+  const currentArticle = articles[currentIndex];
+  const articleSlug = currentArticle?.title?.toString().replace(" ", "-") || '';
+
+  if (loading) {
+    return (
+      <section className="flex flex-col items-center w-full justify-center bg-white py-20">
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent"></div>
+      </section>
+    );
+  }
+
+  if (!currentArticle) {
+    return (
+      <section className="flex flex-col items-center w-full justify-center bg-white py-20">
+        <p className="text-gray-600">No articles available</p>
+      </section>
+    );
+  }
+
   return (
     <section className="flex flex-col items-center w-full justify-center bg-white">
       <div className="flex flex-col items-start mb-[30px] justify-center w-full  px-[20px] lg:px-[140px] z-50">
@@ -9,11 +71,11 @@ export default function ExploreDubaiSection() {
       <section className="flex flex-col lg:flex-row items-center w-full relative justify-center">
         <section className="flex flex-col items-start w-full relative justify-center">
           <Image
-            src="background-images/explore-dubai.svg"
+            src={currentArticle.images?.[0] || "/background-images/explore-dubai.svg"}
             width={420}
             height={320}
             className="rounded-tr-[18px] rounded-0 object-cover ml-0 pl-0 w-[420px] lg:min-w-[600px] lg:h-auto z-20   h-[320px]"
-            alt=""
+            alt={currentArticle.title}
           />
           <section className="absolute inset-0 w-full overflow-hidden min-h-[200px]  top-60 lg:top-80 z-20 pointer-events-none">
             <div className="absolute inset-0 flex flex-row items-center justify-start gap-[5px] *:top-2">
@@ -98,23 +160,19 @@ export default function ExploreDubaiSection() {
             <Image src={"/images/piegon.svg"} width={150} height={150} className="2xl:block hidden  absolute w-[170px]  right-[20px]" alt="" />
 
             <h4 className="font-inter font-normal text-[22px] leading-[35px] tracking-[-0.02em]">
-              Date : 24.10.2025{" "}
+              Date : {new Date(currentArticle.published_date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '.')}{" "}
             </h4>
             <h3 className="text-[#112259] font-inter font-semibold text-[28px] md:text-[45px] leading-[100%] tracking-[-0.02em]">
-              Integer imperdiet magna gravida mauris posuere
+              {currentArticle.title}
             </h3>
             <p className="text-black py-[30px] font-inter font-normal text-[16px] md:text-[22px] leading-[25px] md:leading-[35px] tracking-[-0.02em]">
-              Donec ut est id massa tristique dignissim. Sed dictum blandit eros
-              non cursus. Nam accumsan nisl lectus, euismod placerat dui
-              pellentesque maximus. Integer urna libero, tincidunt id eros non,
-              cursus placerat magna. Morbi bibendum efficitur metus. Mauris
-              porta feugiat ligula eu scelerisque. Etiam eu viverra metus. Etiam
-              vestibulum elit imperdiet tempor aliquam. Proin pretium non nulla
-              eu aliquet...
+              {currentArticle.paras?.[0]?.substring(0, 250)}...
             </p>
-            <button className="flex flex-row items-center justify-center rounded-[39px] bg-[#F8A900] text-black px-[25px] py-[15px] font-inter font-semibold text-[16px] sm:text-[20px] leading-[23.28px] tracking-[-0.02em]">
-              View Details
-            </button>
+            <Link href={`/article/${articleSlug}`}>
+              <button className="flex flex-row items-center justify-center rounded-[39px] bg-[#F8A900] text-black px-[25px] py-[15px] font-inter font-semibold text-[16px] sm:text-[20px] leading-[23.28px] tracking-[-0.02em]">
+                View Details
+              </button>
+            </Link>
           </section>
           <section className="absolute inset-0 w-full h-[500px] overflow-hidden hidden lg:block">
             <Image
@@ -132,7 +190,11 @@ export default function ExploreDubaiSection() {
           {/* this one for large screens */}
           <section className="relative  w-full  flex flex-row items-center justify-start overflow-hidden gap-[11px] lg:right-[100px] lg:block hidden  ">
             <div className="relative z-30 flex flex-row mt-[18px]  items-center justify-start pl-8  gap-[11px] w-fit">
-              <button className=" rotate-180 left-4 absolute w-[50px] h-[50px] p-4 bg-[#F8A900] border-[1.57px] border-white rounded-full flex flex-row items-center justify-center">
+              <button
+                onClick={handlePrev}
+                disabled={currentIndex === 0}
+                className={`rotate-180 left-4 absolute w-[50px] h-[50px] p-4 bg-[#F8A900] border-[1.57px] border-white rounded-full flex flex-row items-center justify-center ${currentIndex === 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#e09800]'}`}
+              >
                 <Image
                   src={"/icons/right.svg"}
                   width={19.78}
@@ -141,22 +203,32 @@ export default function ExploreDubaiSection() {
                   className="w-full h-full"
                 />
               </button>
-              <Image
-                src={"/background-images/explore-dubai.svg"}
-                className="min-w-[258px] 2xl:min-w-[328px] 2xl:min-h-[258px] min-h-[223px] rounded-[20px]"
-                width={158}
-                height={123}
-                alt=""
-              />
-              <Image
-                src={"/background-images/explore-dubai.svg"}
-                className="min-w-[258px] 2xl:min-w-[328px] 2xl:min-h-[258px] min-h-[223px] rounded-[20px]"
-                width={158}
-                height={123}
-                alt=""
-              />
+              {articles.slice(currentIndex, currentIndex + 2).map((article, idx) => (
+                <div key={article.article_id} className="flex flex-row items-center jutify-center">
+                  <Image
+                    key={article.article_id}
+                    src={article.images?.[1] || "/background-images/explore-dubai.svg"}
+                    className="min-w-[258px] 2xl:min-w-[328px] 2xl:min-h-[258px] min-h-[223px] rounded-[20px] object-cover"
+                    width={328}
+                    height={258}
+                    alt={article.title}
+                  />
+                  <Image
+                    key={article.article_id}
+                    src={article.images?.[2] || "/background-images/explore-dubai.svg"}
+                    className="min-w-[258px] 2xl:min-w-[328px] 2xl:min-h-[258px] min-h-[223px] rounded-[20px] object-cover"
+                    width={328}
+                    height={258}
+                    alt={article.title}
+                  />
+                </div>
+              ))}
 
-              <button className="  right-[-8] absolute w-[50px] h-[50px] p-4 bg-[#F8A900] border-[1.57px] border-white rounded-full flex flex-row items-center justify-center">
+              <button
+                onClick={handleNext}
+                disabled={currentIndex >= articles.length - 1}
+                className={`right-[-8] absolute w-[50px] h-[50px] p-4 bg-[#F8A900] border-[1.57px] border-white rounded-full flex flex-row items-center justify-center ${currentIndex >= articles.length - 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#e09800]'}`}
+              >
                 <Image
                   src={"/icons/right.svg"}
                   width={19.78}
@@ -172,31 +244,33 @@ export default function ExploreDubaiSection() {
 
           <section className="relative  w-full  flex flex-row items-center justify-start overflow-hidden gap-[11px] lg:right-[100px] lg:hidden block overflow-x-hidden ">
             <div className="relative z-30 flex flex-row mt-[18px] items-center justify-start pl-8 overflow-hidden gap-[11px]">
-              <Image
-                src={"/background-images/explore-dubai.svg"}
-                className="min-w-[158px] min-h-[123px] rounded-[10.72px]"
-                width={158}
-                height={123}
-                alt=""
-              />
-              <Image
-                src={"/background-images/explore-dubai.svg"}
-                className="min-w-[158px] min-h-[123px] rounded-[10.72px]"
-                width={158}
-                height={123}
-                alt=""
-              />
-              <Image
-                src={"/background-images/explore-dubai.svg"}
-                className="min-w-[158px] min-h-[123px] rounded-[10.72px]"
-                width={158}
-                height={123}
-                alt=""
-              />
+              {articles.slice(currentIndex, currentIndex + 3).map((article) => (
+                <div key={article.article_id} className="flex flex-row items-center jutify-center">
+
+                  <Image
+                    src={article.images?.[0] || "/background-images/explore-dubai.svg"}
+                    className="min-w-[158px] min-h-[123px] rounded-[10.72px] object-cover"
+                    width={158}
+                    height={123}
+                    alt={article.title}
+                  />
+                  <Image
+                    src={article.images?.[2] || "/background-images/explore-dubai.svg"}
+                    className="min-w-[158px] min-h-[123px] rounded-[10.72px] object-cover"
+                    width={158}
+                    height={123}
+                    alt={article.title}
+                  />
+                </div>
+              ))}
             </div>
 
             <div className="absolute flex flex-col gap-[10px] items-center justify-center left-[350px] z-30">
-              <button className=" w-[30px] h-[30px] bg-[#F8A900] border-[1.57px] border-white rounded-full flex flex-row items-center justify-center">
+              <button
+                onClick={handleNext}
+                disabled={currentIndex >= articles.length - 1}
+                className={`w-[30px] h-[30px] bg-[#F8A900] border-[1.57px] border-white rounded-full flex flex-row items-center justify-center ${currentIndex >= articles.length - 1 ? 'opacity-50' : ''}`}
+              >
                 <Image
                   src={"/icons/right.svg"}
                   width={9.78}
@@ -205,7 +279,11 @@ export default function ExploreDubaiSection() {
                   className="w-fit h-fit"
                 />
               </button>
-              <button className=" rotate-180  flex flex-row items-center justify-center w-[30px] h-[30px] bg-[#F8A900] border-[1.57px] border-white rounded-full">
+              <button
+                onClick={handlePrev}
+                disabled={currentIndex === 0}
+                className={`rotate-180  flex flex-row items-center justify-center w-[30px] h-[30px] bg-[#F8A900] border-[1.57px] border-white rounded-full ${currentIndex === 0 ? 'opacity-50' : ''}`}
+              >
                 <Image
                   src={"/icons/right.svg"}
                   width={29.57}
@@ -215,6 +293,7 @@ export default function ExploreDubaiSection() {
                 />
               </button>
             </div>
+
           </section>
         </section>
       </section>

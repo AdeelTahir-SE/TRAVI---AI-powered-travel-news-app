@@ -2,12 +2,12 @@ import Image from "next/image"
 import CategoryHeroCloudSection from "@/components/categoryHeroCloudSection"
 import { JSX } from "react"
 import ArticleCloudSection from "./articleCloudSection"
-export default function ArticleHeroSection(): JSX.Element {
+export default function ArticleHeroSection({ articleImage }: { articleImage: string }): JSX.Element {
     return (
         <div className="flex flex-col items-center justify-center relative w-full  ">
             <section className="flex flex-col items-center justify-center w-full">
                 <Image
-                    src={"/images/article-banner.jpg"}
+                    src={articleImage}
                     width={700}
                     height={835}
                     className="w-auto object-cover h-[685px] lg:h-[986px] min-w-full"

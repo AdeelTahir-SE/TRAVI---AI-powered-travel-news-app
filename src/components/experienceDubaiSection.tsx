@@ -14,9 +14,9 @@ export default function ExperienceDubaiSection(): JSX.Element {
                     alt=""
                 />
 
-                <div className="*:relative absolute z-10 inset-0  uppercase gap-[230px] w-full h-full flex flex-col items-center justify-center">
-                    <h2 className="text-[#F8A900] font-oswald text-[250px] leading-[28.25px] text-center  tracking-[-0.03em] font-bold">Experience</h2>
-                    <h2 className="text-[#FFFFFF] font-oswald text-[290px] leading-[28.25px] text-center  tracking-[-0.03em] font-bold">Dubai</h2>
+                <div className="*:relative absolute z-10 inset-0  uppercase gap-[80px] sm:gap-[150px] md:gap-[200px] lg:gap-[230px] w-full h-full flex flex-col items-center justify-center">
+                    <h2 className="text-[#F8A900] font-oswald text-[60px] sm:text-[120px] md:text-[180px] lg:text-[250px] leading-[28.25px] text-center  tracking-[-0.03em] font-bold">Experience</h2>
+                    <h2 className="text-[#FFFFFF] font-oswald text-[70px] sm:text-[140px] md:text-[210px] lg:text-[290px] leading-[28.25px] text-center  tracking-[-0.03em] font-bold">Dubai</h2>
 
                 </div>
                 <div

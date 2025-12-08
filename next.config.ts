@@ -2,7 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["images.unsplash.com", "flusjttbfwvwvutqpndx.supabase.co"],
+    domains: ["travi-ai-powered-travel-news-app.vercel.app", "images.unsplash.com", "flusjttbfwvwvutqpndx.supabase.co"],
   },
 };
 

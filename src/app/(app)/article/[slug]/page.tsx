@@ -4,153 +4,99 @@ import RelatedArticlesSection from "@/components/relatedArticlesSection";
 import TraviRecommends from "@/components/traviRecommends";
 import ArticleContentSection from "@/components/articleContentSection";
 import ExperienceDubaiSection from "@/components/experienceDubaiSection";
-import { use } from "react";
-import { fetchRequest } from "@/utils/fetch";
+import { supabase } from "@/utils/supabase";
+import { Article } from "@/utils/types";
+import { notFound } from "next/navigation";
+export const dynamic = "force-dynamic";
 
+async function getArticle(title: string): Promise<Article | null> {
+  console.log(title)
+  const { data, error } = await supabase
+    .from("article")
+    .select("*")
+    .eq("title", title?.split("-").join(" "))
+    .single();
 
+  if (error || !data) {
+    console.error("Error fetching article:", error);
+    return null;
+  }
 
+  return data as Article;
+}
 
+export default async function ArticlePage({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const slug = (await params).slug;
+  const cleanSlug = decodeURIComponent(slug);
 
+  const article = await getArticle(cleanSlug);
 
-
-// export const dynamic = "force-static";
-// export const revalidate = 86400;
-
-
-
-
-
-
-
-
-// export async function generateStaticParams() {
-//   const { data, error } = await fetchRequest(
-//     `${process.env.NEXT_PUBLIC_BACKEND_URL}/articles`,
-//     {
-//       cache: "force-cache",
-//     }
-//   );
-
-//   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//   return data?.map((item: any) => ({
-//     slug: item.slug,
-//   }));
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// async function getArticle(slug: string) {
-//   const { data, error } = await fetchRequest(
-//     `${process.env.NEXT_PUBLIC_BACKEND_URL}/articles/${slug}`,
-//     { cache: "force-cache" }
-//   );
-//   return { data, error };
-// }
-
-
-
-
-
-
-
-
-
-
-
-export default function ArticlePage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
-
-  // ❗ use() allows promise suspension inside component
-  // const { data, error } = use(getArticle(slug));
+  if (!article) notFound();
 
   return (
     <div className="flex flex-col items-center justify-center">
-      {/* <ArticleHeroSection />
-      <ArticleContentSection />
+      <ArticleHeroSection articleImage={article.images?.[0]} />
+      <ArticleContentSection article={article} />
       <ExperienceDubaiSection />
-
       <TraviRecommends />
       <RelatedArticlesSection />
-
-      <ArticleCoupleSection /> */}
+      <ArticleCoupleSection />
     </div>
   );
 }
 
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  const article = await getArticle(params.slug);
 
+  if (!article) {
+    return {
+      title: "Article Not Found | Travi",
+      description: "The requested article could not be found.",
+    };
+  }
 
+  const articleUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/article/${params.slug}`;
+  const imageUrl = article.images?.[0] || "/logos/navbar-text.svg";
 
+  return {
+    title: `${article.title} | Travi`,
+    description: article.paras?.[0]?.substring(0, 160) || article.title,
 
+    openGraph: {
+      title: article.title,
+      description: article.paras?.[0]?.substring(0, 160) || article.title,
+      url: articleUrl,
+      siteName: "Travi",
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 630,
+          alt: article.title,
+        },
+      ],
+      type: "article",
+      publishedTime: article.published_date,
+    },
 
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.paras?.[0]?.substring(0, 160) || article.title,
+      images: [imageUrl],
+    },
 
-// export async function generateMetadata({ params }: { params: { slug: string } }) {
-//   const { data, error } = await getArticle(params.slug);
+    alternates: {
+      canonical: articleUrl,
+    },
 
-//   if (!data) {
-//     return {
-//       title: "Article Not Found | Travi",
-//       description: "The requested article could not be found.",
-//     };
-//   }
-
-//   const articleUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/article/${params.slug}`;
-//   const imageUrl = data?.image || "/logos/navbar-text.svg";
-
-//   return {
-//     title: `${data?.title} | Travi`,
-//     description: data?.description,
-
-//     openGraph: {
-//       title: data?.title,
-//       description: data?.description,
-//       url: articleUrl,
-//       siteName: "Travi",
-//       images: [
-//         {
-//           url: imageUrl,
-//           width: 1200,
-//           height: 630,
-//           alt: data?.title,
-//         },
-//       ],
-//       type: "article",
-//       publishedTime: data?.publishedAt,
-//       authors: data?.author ? [data.author] : undefined,
-//       tags: data?.tags,
-//     },
-
-//     twitter: {
-//       card: "summary_large_image",
-//       title: data?.title,
-//       description: data?.description,
-//       images: [imageUrl],
-//     },
-
-//     alternates: {
-//       canonical: articleUrl,
-//     },
-
-//     robots: {
-//       index: true,
-//       follow: true,
-//     },
-//   };
-// }
+    robots: {
+      index: true,
+      follow: true,
+    },
+  };
+}
