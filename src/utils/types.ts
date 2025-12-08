@@ -24,7 +24,42 @@
 //     active:boolean
 // }
 
-interface FAQ{
-    question:string,
-    answer:string,
+export interface FAQ {
+    question: string,
+    answer: string,
+}
+
+export interface Highlight {
+    title: string;
+    description: string;
+}
+
+export interface Room {
+    name: string;
+    price?: number;
+    description?: string;
+    amenities?: string[];
+}
+
+export interface Hotel {
+    hotel_id: string;
+    created_at: string;
+    title: string;
+    tagline: string;
+    check_rooms_link?: string;
+    view_rooms_link?: string;
+    location?: string;
+    rating_desc?: string;
+    beach?: string;
+    facilities?: string;
+    rating?: number;
+    reviews?: number;
+    about_hotel_images: string[];
+    hotel_image_in_clouds?: string;
+    highlights?: Highlight[];
+    rooms_link?: string;
+    room?: Room[];
+    essential_information?: string[];
+    traveler_tips?: string[];
+    faqs?: FAQ[];
 }
