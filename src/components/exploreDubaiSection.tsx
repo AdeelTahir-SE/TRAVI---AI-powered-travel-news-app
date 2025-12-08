@@ -201,7 +201,7 @@ export default function ExploreDubaiSection() {
                   className="w-full h-full"
                 />
               </button>
-              {articles.slice(currentIndex, currentIndex + 2).map((article, idx) => (
+              {articles.slice(currentIndex, currentIndex + 1).map((article, idx) => (
                 <div key={article.article_id} className="flex flex-row items-center justify-center gap-[11px]">
                   <Image
                     key={article.article_id}
@@ -242,7 +242,7 @@ export default function ExploreDubaiSection() {
 
           <section className="relative w-full flex flex-row items-center justify-start overflow-hidden gap-[11px] md:right-[100px] block md:hidden overflow-x-hidden">
             <div className="relative z-30 flex flex-row mt-[18px] items-center justify-start pl-8 overflow-hidden gap-[11px]">
-              {articles.slice(currentIndex, currentIndex + 3).map((article) => (
+              {articles.slice(currentIndex, currentIndex + 1).map((article) => (
                 <div key={article.article_id} className="flex flex-row items-center justify-center gap-[11px]">
 
                   <Image
