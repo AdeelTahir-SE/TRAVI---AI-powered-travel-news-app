@@ -49,8 +49,14 @@ export default async function ArticlePage({
   );
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const article = await getArticle(params.slug);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>
+}) {
+  const slug = (await params).slug;
+  const cleanSlug = decodeURIComponent(slug);
+  const article = await getArticle(cleanSlug);
 
   if (!article) {
     return {
@@ -59,8 +65,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     };
   }
 
-  const articleUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/article/${params.slug}`;
-  const imageUrl = article.images?.[0] || "/logos/navbar-text.svg";
+  const articleUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/article/${cleanSlug}`;
+  const imageUrl = article.images?.[0]?.startsWith("http")
+    ? article.images[0]
+    : `${process.env.NEXT_PUBLIC_SITE_URL}${article.images?.[0] || "/logos/navbar-text.svg"}`;
 
   return {
     title: `${article.title} | Travi`,
