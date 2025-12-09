@@ -3,7 +3,6 @@ import Image from "next/image";
 
 
 export default function AboutHotelSection({ aboutHotel, images }: { aboutHotel?: string, images: string[] }) {
-  console.log(images, aboutHotel)
   return (
     <section className="w-full relative ">
       <div className="relative flex flex-col items-center justify-center py-[60px] px-[20px] lg:px-[140px] lg:py-[120px] gap-[60px] lg:gap-[100px] relative z-10">
@@ -14,7 +13,7 @@ export default function AboutHotelSection({ aboutHotel, images }: { aboutHotel?:
           </section>
           <section className="flex flex-col items-start justify-center gap-[12px] font-inter text-normal text-[20px] lg:text-[24px] leading-[28px] lg:leading-[36px] tracking-[-0.02em] text-[#475467] lg:max-w-[400px] 2xl:max-w-[700px]">
             <p>
-              {aboutHotel}
+              {aboutHotel?.slice(0, 165)}
             </p>
 
             <Link
