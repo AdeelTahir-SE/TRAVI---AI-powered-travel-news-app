@@ -73,7 +73,7 @@ export default function Footer() {
 
 
       </div>
-      <div className="flex flex-col xl:flex-row items-start justify-center *:border-t-1  *:border-gray-500 w-full px-8 z-50 *:w-full ">
+      <div className="flex flex-col xl:flex-row items-start justify-center *:border-t-1  *:border-gray-500 w-full z-50 *:w-full ">
         <div className="flex flex-col items-center justify-center z-50 py-[30px] ">
           <Image
             src="/logos/footer-cartoon.png"
@@ -104,7 +104,7 @@ export default function Footer() {
           <div className="flex flex-col items-center justify center gap-[30px]">
             <h3 className="footer-section-heading">Quick Links</h3>
             {isActive?.quickLinks && (
-              <ul className="flex flex-col items-start justify-center list-style-none gap-[32px] md:hidden">
+              <ul className="flex flex-col items-start justify-center list-style-none gap-[32px] lg:hidden">
                 <li
                   className="font-inter font-normal text-[20px] leading-[14px] tracking-[-0.02em] 
           md:text-[24px] md:leading-[100%]"
@@ -137,7 +137,7 @@ export default function Footer() {
                 </li>
               </ul>
             )}
-            <ul className="md:flex flex-col items-start justify-center list-style-none gap-8 hidden">
+            <ul className="lg:flex flex-col items-start justify-center list-style-none gap-8 hidden">
               <li
                 className="font-inter font-normal text-[20px] leading-[14px] tracking-[-0.02em] 
           md:text-[24px] md:leading-[100%]"
@@ -171,7 +171,7 @@ export default function Footer() {
             </ul>
           </div>
           <button
-            className="bg-[#F8A900] border-[1.57px] lg:hidden border-white rounded-full min-w-[30px] min-h-[30px] flex items-center justify-center"
+            className="bg-[#F8A900] border-[1.57px] lg:hidden border-white rounded-full min-w-[30px] min-h-[30px] sm:min-w-[40px] sm:min-h-[40px] flex items-center justify-center"
             onClick={() =>
               setIsActive((prev) => ({ ...prev, quickLinks: !prev.quickLinks }))
             }
@@ -182,7 +182,7 @@ export default function Footer() {
               }
               width={12}
               height={12}
-              className="min-w-[12px] h-auto"
+              className="min-w-[12px] sm:min-w-[20px] h-auto"
               alt=""
             />
           </button>
@@ -191,7 +191,7 @@ export default function Footer() {
           <div className="flex flex-col items-center justify center gap-[30px] ">
             <h3 className="footer-section-heading">More Links</h3>
             {isActive?.moreLinks && (
-              <ul className="flex flex-col items-start justify-center list-style-none gap-[32px] md:hidden">
+              <ul className="flex flex-col items-start justify-center list-style-none gap-[32px] lg:hidden">
                 <li
                   className="font-inter font-normal text-[20px] leading-[14px] tracking-[-0.02em] 
           md:text-[24px] md:leading-[100%]"
@@ -224,7 +224,7 @@ export default function Footer() {
                 </li>
               </ul>
             )}
-            <ul className="flex-col items-start justify-center list-style-none gap-8 h-full md:flex hidden ">
+            <ul className="flex-col items-start justify-center list-style-none gap-8 h-full lg:flex hidden ">
               <li
                 className="font-inter font-normal text-[20px] leading-[14px] tracking-[-0.02em] 
           md:text-[24px] md:leading-[100%]"
@@ -258,7 +258,7 @@ export default function Footer() {
             </ul>
           </div>
           <button
-            className="bg-[#F8A900] border-[1.57px] lg:hidden border-white rounded-full min-w-[30px] min-h-[30px] flex items-center justify-center"
+            className="bg-[#F8A900] border-[1.57px] lg:hidden border-white rounded-full min-w-[30px] min-h-[30px] sm:min-w-[40px] sm:min-h-[40px] flex items-center justify-center"
             onClick={() =>
               setIsActive((prev) => ({ ...prev, moreLinks: !prev.moreLinks }))
             }
@@ -267,7 +267,7 @@ export default function Footer() {
               src={isActive?.moreLinks ? "/icons/minus.svg" : "/icons/plus.svg"}
               width={12}
               height={12}
-              className="min-w-[12px] h-auto"
+              className="min-w-[12px] sm:min-w-[20px] h-auto"
               alt=""
             />
           </button>
