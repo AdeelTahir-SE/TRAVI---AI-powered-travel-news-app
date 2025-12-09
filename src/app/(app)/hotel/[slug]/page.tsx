@@ -38,12 +38,13 @@ export default async function HotelPage({
     const slug = (await params).slug;
     const cleanSlug = decodeURIComponent(slug);
     const hotel = await getHotel(cleanSlug);
+    const hotelSpecs = [hotel?.location, hotel?.rating_desc, hotel?.beach, hotel?.facilities]
     if (!hotel) notFound();
 
     return (
         <div className="flex flex-col items-center justify-center">
-            <HotelDetailHeroSection />
-            <HotelSpecsSection />
+            <HotelDetailHeroSection title={hotel?.title} tagline={hotel?.tagline} hotelImage={hotel?.about_hotel_images?.[0]} checkRatesLink={hotel?.check_rates_link} viewRoomsLink={hotel?.rooms_link} />
+            <HotelSpecsSection hotelSpecs={hotelSpecs} />
             <AboutHotelSection />
             <HotelImageWithCloudSection />
             <HotelHighLightsSection />

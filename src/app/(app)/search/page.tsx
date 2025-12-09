@@ -57,7 +57,7 @@ export default function SearchPage() {
   }, [query, type, location, page, sortBy]);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center justify-center">
       <SearchHeroSectoion results={hotels} query={query.toString()} />
       <SearchCardsSection
         hotels={hotels}

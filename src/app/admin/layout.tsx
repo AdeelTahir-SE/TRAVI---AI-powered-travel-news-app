@@ -40,10 +40,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     // Show loading state
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+            <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
                 <div className="text-center">
-                    <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent"></div>
-                    <p className="mt-4 text-gray-600">Loading...</p>
+                    <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#0D7FF2] border-t-transparent"></div>
+                    <p className="mt-4 text-gray-600 font-medium">Loading...</p>
                 </div>
             </div>
         )
@@ -57,9 +57,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     // Protected admin pages with sidebar
     if (isAuthenticated) {
         return (
-            <div className="flex min-h-screen bg-gray-100">
+            <div className="flex min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
                 <Sidebar onLogout={handleLogout} />
-                <main className="flex-1 overflow-x-hidden">
+                <main className="flex-1 overflow-x-hidden overflow-y-auto">
                     {children}
                 </main>
             </div>

@@ -184,13 +184,13 @@ export default function HotelsPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 p-8">
+        <div className="min-h-screen p-4 sm:p-6 lg:p-8">
             <div className="max-w-7xl mx-auto">
-                <div className="flex justify-between items-center mb-8">
-                    <h1 className="text-3xl font-bold text-gray-900">Hotel Management</h1>
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
+                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Hotel Management</h1>
                     <button
                         onClick={handleCreate}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+                        className="bg-[#0D7FF2] hover:bg-[#0B6FD9] active:bg-[#0956B8] text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg transform hover:-translate-y-0.5 w-full sm:w-auto"
                     >
                         + Create New Hotel
                     </button>
@@ -198,22 +198,22 @@ export default function HotelsPage() {
 
                 {loading ? (
                     <div className="text-center py-12">
-                        <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t-transparent"></div>
-                        <p className="mt-4 text-gray-600">Loading hotels...</p>
+                        <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#0D7FF2] border-t-transparent"></div>
+                        <p className="mt-4 text-gray-600 font-medium">Loading hotels...</p>
                     </div>
                 ) : hotels.length === 0 ? (
-                    <div className="text-center py-12 bg-white rounded-lg shadow">
+                    <div className="text-center py-12 bg-white rounded-xl shadow-md">
                         <p className="text-gray-600 text-lg">No hotels found. Create your first hotel!</p>
                     </div>
                 ) : (
-                    <div className="grid gap-6">
+                    <div className="grid gap-4 sm:gap-6">
                         {hotels.map((hotel) => (
-                            <div key={hotel.hotel_id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                                <div className="flex justify-between items-start">
-                                    <div className="flex-1">
-                                        <h2 className="text-2xl font-bold text-gray-900 mb-2">{hotel.title}</h2>
+                            <div key={hotel.hotel_id} className="bg-white rounded-xl shadow-md p-4 sm:p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                                <div className="flex flex-col lg:flex-row justify-between items-start gap-4">
+                                    <div className="flex-1 w-full">
+                                        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">{hotel.title}</h2>
                                         <p className="text-gray-600 mb-3">{hotel.tagline}</p>
-                                        <div className="grid grid-cols-2 gap-4 text-sm">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
                                             {hotel.location && (
                                                 <div>
                                                     <span className="font-semibold text-gray-700">Location:</span>
@@ -241,33 +241,33 @@ export default function HotelsPage() {
                                         </div>
                                         {/* Show images if available */}
                                         {hotel.about_hotel_images && hotel.about_hotel_images.length > 0 && (
-                                            <div className="mt-4 flex gap-2 overflow-x-auto">
+                                            <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
                                                 {hotel.about_hotel_images.slice(0, 3).map((img, idx) => (
                                                     <img
                                                         key={idx}
                                                         src={img}
                                                         alt={`${hotel.title} ${idx + 1}`}
-                                                        className="w-24 h-24 object-cover rounded-lg"
+                                                        className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
                                                     />
                                                 ))}
                                                 {hotel.about_hotel_images.length > 3 && (
-                                                    <div className="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center text-gray-600 text-sm">
-                                                        +{hotel.about_hotel_images.length - 3} more
+                                                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg flex items-center justify-center text-gray-600 text-sm font-semibold flex-shrink-0">
+                                                        +{hotel.about_hotel_images.length - 3}
                                                     </div>
                                                 )}
                                             </div>
                                         )}
                                     </div>
-                                    <div className="flex gap-2 ml-4">
+                                    <div className="flex flex-row lg:flex-col gap-2 w-full lg:w-auto">
                                         <button
                                             onClick={() => handleEdit(hotel)}
-                                            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                                            className="flex-1 lg:flex-none bg-green-600 hover:bg-green-700 active:bg-green-800 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg"
                                         >
                                             Edit
                                         </button>
                                         <button
                                             onClick={() => handleDelete(hotel.hotel_id)}
-                                            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                                            className="flex-1 lg:flex-none bg-red-600 hover:bg-red-700 active:bg-red-800 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg"
                                         >
                                             Delete
                                         </button>
@@ -280,15 +280,16 @@ export default function HotelsPage() {
 
                 {/* Modal for Create/Edit */}
                 {showModal && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-                        <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-                            <div className="sticky z-20 top-0 bg-white border-b border-gray-400 px-6 py-4 flex justify-between items-center">
-                                <h2 className="text-2xl font-bold text-gray-900 ">
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
+                        <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto my-8">
+                            <div className="sticky z-20 top-0 bg-gradient-to-r from-white to-blue-50 border-b border-[#0D7FF2]/20 px-4 sm:px-6 py-4 flex justify-between items-center">
+                                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
                                     {editingHotel ? 'Edit Hotel' : 'Create New Hotel'}
                                 </h2>
                                 <button
                                     onClick={() => setShowModal(false)}
-                                    className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
+                                    className="cursor-pointer text-gray-500 hover:text-red-600 text-3xl font-bold cursor-pointer transition-colors w-10 h-10 flex items-center justify-center rounded-lg hover:bg-red-50"
+                                    aria-label="Close modal"
                                 >
                                     ×
                                 </button>
@@ -305,7 +306,7 @@ export default function HotelsPage() {
                                             type="text"
                                             value={formData.title || ''}
                                             onChange={(e) => handleInputChange('title', e.target.value)}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
                                             required
                                         />
                                     </div>
@@ -318,7 +319,7 @@ export default function HotelsPage() {
                                             type="text"
                                             value={formData.tagline || ''}
                                             onChange={(e) => handleInputChange('tagline', e.target.value)}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
                                             required
                                         />
                                     </div>
@@ -346,7 +347,7 @@ export default function HotelsPage() {
                                                 type="text"
                                                 value={formData.location || ''}
                                                 onChange={(e) => handleInputChange('location', e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
                                             />
                                         </div>
 
@@ -356,7 +357,7 @@ export default function HotelsPage() {
                                                 type="text"
                                                 value={formData.beach || ''}
                                                 onChange={(e) => handleInputChange('beach', e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
                                             />
                                         </div>
                                     </div>
@@ -370,7 +371,7 @@ export default function HotelsPage() {
                                                 type="text"
                                                 value={formData.rating_desc || ''}
                                                 onChange={(e) => handleInputChange('rating_desc', e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
                                             />
                                         </div>
 
@@ -379,7 +380,7 @@ export default function HotelsPage() {
                                             <input
                                                 value={formData.facilities || ''}
                                                 onChange={(e) => handleInputChange('facilities', e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
                                             />
                                         </div>
                                     </div>
@@ -394,7 +395,7 @@ export default function HotelsPage() {
                                                 max="5"
                                                 value={formData.rating || ''}
                                                 onChange={(e) => handleInputChange('rating', parseFloat(e.target.value))}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
                                             />
                                         </div>
 
@@ -404,7 +405,7 @@ export default function HotelsPage() {
                                                 type="number"
                                                 value={formData.reviews || ''}
                                                 onChange={(e) => handleInputChange('reviews', parseInt(e.target.value))}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
                                             />
                                         </div>
 
@@ -415,7 +416,7 @@ export default function HotelsPage() {
                                                 min="0"
                                                 value={formData.price || ''}
                                                 onChange={(e) => handleInputChange('price', parseFloat(e.target.value))}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
                                                 placeholder="e.g., 250"
                                             />
                                         </div>
@@ -428,7 +429,7 @@ export default function HotelsPage() {
                                                 type="url"
                                                 value={formData.check_rates_link || ''}
                                                 onChange={(e) => handleInputChange('check_rates_link', e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
                                             />
                                         </div>
 
@@ -438,7 +439,7 @@ export default function HotelsPage() {
                                                 type="url"
                                                 value={formData.view_rooms_link || ''}
                                                 onChange={(e) => handleInputChange('view_rooms_link', e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
                                             />
                                         </div>
                                     </div>
@@ -449,7 +450,7 @@ export default function HotelsPage() {
                                             type="url"
                                             value={formData.rooms_link || ''}
                                             onChange={(e) => handleInputChange('rooms_link', e.target.value)}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
                                         />
                                     </div>
 
@@ -467,7 +468,7 @@ export default function HotelsPage() {
                                                         ...formData.essential_information,
                                                         checkin_checkout: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
                                                     placeholder="e.g., Check-in: 3 PM, Check-out: 11 AM"
                                                 />
                                             </div>
@@ -480,7 +481,7 @@ export default function HotelsPage() {
                                                         ...formData.essential_information,
                                                         location_distance: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
                                                     placeholder="e.g., 5 km from city center"
                                                 />
                                             </div>
@@ -493,7 +494,7 @@ export default function HotelsPage() {
                                                         ...formData.essential_information,
                                                         price_range: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
                                                     placeholder="e.g., $100 - $300 per night"
                                                 />
                                             </div>
@@ -506,7 +507,7 @@ export default function HotelsPage() {
                                                         ...formData.essential_information,
                                                         beach_access: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
                                                     placeholder="e.g., Private beach, 2 min walk"
                                                 />
                                             </div>
@@ -519,7 +520,7 @@ export default function HotelsPage() {
                                                         ...formData.essential_information,
                                                         dining_options: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
                                                     placeholder="e.g., 3 restaurants, room service"
                                                 />
                                             </div>
@@ -532,7 +533,7 @@ export default function HotelsPage() {
                                                         ...formData.essential_information,
                                                         family_facilities: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
                                                     placeholder="e.g., Kids club, playground"
                                                 />
                                             </div>
@@ -545,7 +546,7 @@ export default function HotelsPage() {
                                                         ...formData.essential_information,
                                                         wifi_availability: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
                                                     placeholder="e.g., Free WiFi in all areas"
                                                 />
                                             </div>
@@ -558,7 +559,7 @@ export default function HotelsPage() {
                                                         ...formData.essential_information,
                                                         parking_availability: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
                                                     placeholder="e.g., Free on-site parking"
                                                 />
                                             </div>
@@ -580,7 +581,7 @@ export default function HotelsPage() {
                                                             newTips[index] = e.target.value
                                                             handleInputChange('traveler_tips', newTips)
                                                         }}
-                                                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
                                                         placeholder="Enter a traveler tip"
                                                     />
                                                     <button
@@ -589,7 +590,7 @@ export default function HotelsPage() {
                                                             const newTips = (formData.traveler_tips || []).filter((_, i) => i !== index)
                                                             handleInputChange('traveler_tips', newTips)
                                                         }}
-                                                        className="px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition-colors"
+                                                        className="cursor-pointer px-3 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-bold transition-colors"
                                                     >
                                                         ×
                                                     </button>
@@ -601,7 +602,7 @@ export default function HotelsPage() {
                                                     const newTips = [...(formData.traveler_tips || []), '']
                                                     handleInputChange('traveler_tips', newTips)
                                                 }}
-                                                className="w-full px-4 py-2 border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                                                className="cursor-pointer w-full px-4 py-2 border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
                                             >
                                                 <span className="text-xl">+</span> Add Tip
                                             </button>
@@ -623,7 +624,7 @@ export default function HotelsPage() {
                                                                 const newFaqs = (formData.faqs || []).filter((_, i) => i !== index)
                                                                 handleInputChange('faqs', newFaqs)
                                                             }}
-                                                            className="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-bold transition-colors"
+                                                            className="cursor-pointer px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-bold transition-colors"
                                                         >
                                                             ×
                                                         </button>
@@ -639,7 +640,7 @@ export default function HotelsPage() {
                                                                     newFaqs[index] = { ...newFaqs[index], question: e.target.value }
                                                                     handleInputChange('faqs', newFaqs)
                                                                 }}
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
                                                                 placeholder="Enter question"
                                                             />
                                                         </div>
@@ -652,7 +653,7 @@ export default function HotelsPage() {
                                                                     newFaqs[index] = { ...newFaqs[index], answer: e.target.value }
                                                                     handleInputChange('faqs', newFaqs)
                                                                 }}
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
                                                                 rows={3}
                                                                 placeholder="Enter answer"
                                                             />
@@ -666,7 +667,7 @@ export default function HotelsPage() {
                                                     const newFaqs = [...(formData.faqs || []), { question: '', answer: '' }]
                                                     handleInputChange('faqs', newFaqs)
                                                 }}
-                                                className="w-full px-4 py-2 border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                                                className="cursor-pointer w-full px-4 py-2 border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
                                             >
                                                 <span className="text-xl">+</span> Add FAQ
                                             </button>
@@ -688,7 +689,7 @@ export default function HotelsPage() {
                                                                 const newRooms = (formData.rooms || []).filter((_, i) => i !== index)
                                                                 handleInputChange('rooms', newRooms)
                                                             }}
-                                                            className="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-bold transition-colors"
+                                                            className="cursor-pointer px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-bold transition-colors"
                                                         >
                                                             ×
                                                         </button>
@@ -704,7 +705,7 @@ export default function HotelsPage() {
                                                                     newRooms[index] = { ...newRooms[index], image: e.target.value }
                                                                     handleInputChange('rooms', newRooms)
                                                                 }}
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
                                                                 placeholder="Enter image URL"
                                                             />
                                                         </div>
@@ -718,7 +719,7 @@ export default function HotelsPage() {
                                                                     newRooms[index] = { ...newRooms[index], title: e.target.value }
                                                                     handleInputChange('rooms', newRooms)
                                                                 }}
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
                                                                 placeholder="e.g., Deluxe Ocean View Suite"
                                                             />
                                                         </div>
@@ -732,7 +733,7 @@ export default function HotelsPage() {
                                                                     newRooms[index] = { ...newRooms[index], size: e.target.value }
                                                                     handleInputChange('rooms', newRooms)
                                                                 }}
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
                                                                 placeholder="e.g., 45 sqm"
                                                             />
                                                         </div>
@@ -746,7 +747,7 @@ export default function HotelsPage() {
                                                                     newRooms[index] = { ...newRooms[index], bed_type: e.target.value }
                                                                     handleInputChange('rooms', newRooms)
                                                                 }}
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
                                                                 placeholder="e.g., King bed"
                                                             />
                                                         </div>
@@ -760,7 +761,7 @@ export default function HotelsPage() {
                                                                     newRooms[index] = { ...newRooms[index], view: e.target.value }
                                                                     handleInputChange('rooms', newRooms)
                                                                 }}
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
                                                                 placeholder="e.g., Ocean view"
                                                             />
                                                         </div>
@@ -774,7 +775,7 @@ export default function HotelsPage() {
                                                                     newRooms[index] = { ...newRooms[index], ventilation: e.target.value }
                                                                     handleInputChange('rooms', newRooms)
                                                                 }}
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
                                                                 placeholder="e.g., Air conditioning"
                                                             />
                                                         </div>
@@ -788,7 +789,7 @@ export default function HotelsPage() {
                                                                     newRooms[index] = { ...newRooms[index], link: e.target.value }
                                                                     handleInputChange('rooms', newRooms)
                                                                 }}
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
                                                                 placeholder="Enter link to room details"
                                                             />
                                                         </div>
@@ -801,7 +802,7 @@ export default function HotelsPage() {
                                                     const newRooms = [...(formData.rooms || []), { title: '', image: '', size: '', bed_type: '', view: '', ventilation: '', link: '' }]
                                                     handleInputChange('rooms', newRooms)
                                                 }}
-                                                className="w-full px-4 py-2 border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                                                className="cursor-pointer w-full px-4 py-2 border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
                                             >
                                                 <span className="text-xl">+</span> Add Room
                                             </button>
@@ -813,13 +814,13 @@ export default function HotelsPage() {
                                     <button
                                         type="button"
                                         onClick={() => setShowModal(false)}
-                                        className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium transition-colors"
+                                        className="cursor-pointer px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium transition-colors"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         type="submit"
-                                        className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                                        className="cursor-pointer px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
                                     >
                                         {editingHotel ? 'Update Hotel' : 'Create Hotel'}
                                     </button>

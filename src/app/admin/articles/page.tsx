@@ -214,11 +214,11 @@ export default function ArticlesAdminPage() {
     return (
         <div className="min-h-screen bg-gray-50 p-8">
             <div className="max-w-7xl mx-auto">
-                <div className="flex justify-between items-center mb-8 ">
+                <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
                     <h1 className="text-3xl font-bold text-gray-900">Articles Management</h1>
                     <button
                         onClick={handleCreate}
-                        className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium z-10"
+                        className="cursor-pointer bg-[#0D7FF2] w-full sm:w-fit hover:bg-[#0B6FD9] text-white px-6 py-2 rounded-lg font-medium z-10"
                     >
                         + Create New Article
                     </button>
@@ -226,7 +226,7 @@ export default function ArticlesAdminPage() {
 
                 {loading ? (
                     <div className="text-center py-12">
-                        <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-600 border-t border-gray-400-transparent"></div>
+                        <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#0D7FF2] border-t border-gray-400-transparent"></div>
                         <p className="mt-4 text-gray-600">Loading articles...</p>
                     </div>
                 ) : articles.length === 0 ? (
@@ -236,43 +236,56 @@ export default function ArticlesAdminPage() {
                 ) : (
                     <div className="grid gap-6">
                         {articles.map((article) => (
-                            <div key={article.article_id} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
-                                <div className="flex justify-between items-start">
+                            <div
+                                key={article.article_id}
+                                className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-all border border-gray-100"
+                            >
+                                <div className="flex flex-col md:flex-row justify-between md:items-start gap-6">
+                                    {/* LEFT SIDE — Article Info */}
                                     <div className="flex-1">
-                                        <h2 className="text-2xl font-bold text-gray-900 mb-2">{article.title}</h2>
-                                        <div className="grid grid-cols-2 gap-4 text-sm">
-                                            <div>
+                                        <h2 className="text-2xl font-bold text-gray-900 mb-3">
+                                            {article.title}
+                                        </h2>
+
+                                        <div className="flex flex-col gap-3 text-sm">
+                                            <div className="flex items-center gap-2">
                                                 <span className="font-semibold text-gray-700">Published:</span>
-                                                <span className="ml-2 text-gray-600">
+                                                <span className="text-gray-600">
                                                     {new Date(article.published_date).toLocaleDateString()}
                                                 </span>
                                             </div>
-                                            <div>
+
+                                            <div className="flex items-center gap-2">
                                                 <span className="font-semibold text-gray-700">Paragraphs:</span>
-                                                <span className="ml-2 text-gray-600">{article.paras?.length || 0}</span>
+                                                <span className="text-gray-600">{article.paras?.length || 0}</span>
                                             </div>
-                                            <div>
+
+                                            <div className="flex items-center gap-2">
                                                 <span className="font-semibold text-gray-700">Subsections:</span>
-                                                <span className="ml-2 text-gray-600">{article.subsections?.length || 0}</span>
+                                                <span className="text-gray-600">{article.subsections?.length || 0}</span>
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="flex gap-2 ml-4">
+
+                                    {/* RIGHT SIDE — Action Buttons */}
+                                    <div className="flex gap-3 self-start">
                                         <button
                                             onClick={() => handleEdit(article)}
-                                            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                                            className=" cursor-pointer bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200"
                                         >
                                             Edit
                                         </button>
+
                                         <button
                                             onClick={() => handleDelete(article.article_id)}
-                                            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+                                            className=" cursor-pointer bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200"
                                         >
                                             Delete
                                         </button>
                                     </div>
                                 </div>
                             </div>
+
                         ))}
                     </div>
                 )}
@@ -287,7 +300,7 @@ export default function ArticlesAdminPage() {
                                 </h2>
                                 <button
                                     onClick={() => setShowModal(false)}
-                                    className="text-gray-500 hover:text-gray-700 text-2xl font-bold"
+                                    className="cursor-pointer text-gray-500 hover:text-gray-700 text-2xl font-bold"
                                 >
                                     ×
                                 </button>
@@ -360,7 +373,7 @@ export default function ArticlesAdminPage() {
                                                         <button
                                                             type="button"
                                                             onClick={() => removeSubsection(index)}
-                                                            className="px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-bold transition-colors"
+                                                            className="cursor-pointer  px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-bold transition-all duration-200 cursor-pointer"
                                                         >
                                                             ×
                                                         </button>
@@ -392,7 +405,7 @@ export default function ArticlesAdminPage() {
                                             <button
                                                 type="button"
                                                 onClick={addSubsection}
-                                                className="w-full px-4 py-2 border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                                                className="cursor-pointer w-full px-4 py-2 border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg font-medium transition-all duration-200 cursor-pointer flex items-center justify-center gap-2"
                                             >
                                                 <span className="text-xl">+</span> Add Subsection
                                             </button>
@@ -504,13 +517,13 @@ export default function ArticlesAdminPage() {
                                     <button
                                         type="button"
                                         onClick={() => setShowModal(false)}
-                                        className="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium transition-colors"
+                                        className="cursor-pointer px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium transition-all duration-200 cursor-pointer"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         type="submit"
-                                        className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                                        className="cursor-pointer px-6 py-2 bg-[#0D7FF2] hover:bg-[#0B6FD9] text-white rounded-lg font-medium transition-all duration-200 cursor-pointer"
                                     >
                                         {editingArticle ? 'Update Article' : 'Create Article'}
                                     </button>

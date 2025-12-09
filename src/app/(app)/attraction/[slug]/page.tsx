@@ -59,8 +59,8 @@ import { use } from "react";
 
 
 
-export default function AttractionPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export default async function AttractionPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   // const { data, error } = use(getAttraction(slug));
   return (
     <div className="flex flex-col items-center justify-center">
@@ -74,7 +74,7 @@ export default function AttractionPage({ params }: { params: { slug: string } })
       <FAQSection />
       <LocationAndNearBySection />
       <AttractionBookStaySection />
-      <YouMightLikeSection />
+      {/*<YouMightLikeSection />*/}
       <ShalimarWithAboveSection />
     </div>
   )

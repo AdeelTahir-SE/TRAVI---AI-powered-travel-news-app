@@ -71,10 +71,10 @@ export default function HotelCard({ hotel }: HotelCardProps) {
             From
           </h6>
           <h6 className="font-inter text-[28px] leading-[100%] font-[500px]  text-[#0D7FF2]">
-            ${hotel.price || '---'}
+            ${hotel?.price ? hotel.price : "0"}
           </h6>
         </div>
-        <Link href={"/hotel/" + hotel?.title?.replace(" ", "-")} className="border-[#D0D5DD] border-1 py-[24px] px-[30px] rounded-[800px] font-inter font-[600px] font-extrabold text-[20px] leading-[100%] tracking-0">
+        <Link href={"/hotel/" + hotel?.title?.replace(" ", "-")} className="border-[#D0D5DD]  transition-all duration-300 hover:bg-blue-200 border-1 py-[24px] px-[30px] rounded-[800px] font-inter font-[600px] font-extrabold text-[20px] leading-[100%] tracking-0">
           View Details
         </Link>
       </div>

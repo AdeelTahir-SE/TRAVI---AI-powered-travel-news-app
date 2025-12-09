@@ -63,6 +63,7 @@ export default function SearchInput({ action }: { action: string }) {
             className="
         w-[20px] h-[20px]
         md:w-[30px] md:h-[30px]
+        cursor-pointer
       "
             alt=""
           />
