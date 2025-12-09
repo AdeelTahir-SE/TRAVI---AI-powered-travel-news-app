@@ -36,7 +36,7 @@ export default function HotelDetailHeroSection({ title, tagline, hotelImage, che
               <Link href={checkRatesLink || "/"} className="py-[24px] px-[30px] bg-[#F8A900] gap-[10px] rounded-[800px] font-inter font-semibold text-[20px] leading-[100%] tracking-[0px] text-black">
                 Check Rates
               </Link>
-              <Link href={viewRoomsLink || ""} className="py-[24px] px-[30px] border-1 border-[#FFFFFF] gap-[10px] rounded-[800px] font-inter font-semibold text-[20px] leading-[100%] tracking-[0px] text-[#FFFFFF]">
+              <Link href={viewRoomsLink || "/"} className="py-[24px] px-[30px] border-1 border-[#FFFFFF] gap-[10px] rounded-[800px] font-inter font-semibold text-[20px] leading-[100%] tracking-[0px] text-[#FFFFFF]">
                 View Rooms
               </Link>
             </div>
