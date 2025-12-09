@@ -1,5 +1,5 @@
 import Image from "next/image"
-export default function TravelerTips() {
+export default function TravelerTips({ tips, image }: { tips?: string[], image?: string }) {
     return (
         <section className="flex flex-col items-center justify-center gap-[80px] py-[60px] lg:py-[100px] px-[20px] lg:px-[140px] min-w-full">
             <div className="min-w-full flex flex-col items-start justify-center rounded-[24px] gap-[32px] p-[32px] lg:rounded-[60px] lg:p-[72px] lg:gap-[48px] bg-[#112259] text-white">
@@ -9,7 +9,14 @@ export default function TravelerTips() {
 
 
                     <div className="flex flex-col gap-6 *:*:text-white text-[#D0D5DD]">
-                        <p className="font-inter font-normal text-[24px] leading-[36px] tracking-[-0.02em]">
+                        {
+                            tips?.map((tip, i) => {
+                                return <p className="font-inter font-normal text-[24px] leading-[36px] tracking-[-0.02em]">
+                                    • <span className="font-medium">{tip}</span>
+                                </p>
+                            })
+                        }
+                        {/* <p className="font-inter font-normal text-[24px] leading-[36px] tracking-[-0.02em]">
                             • <span className="font-medium">Best time to visit:</span> October–April for pleasant weather and outdoor activities
                         </p>
 
@@ -31,11 +38,11 @@ export default function TravelerTips() {
 
                         <p className="font-inter font-normal text-[24px] leading-[36px] tracking-[-0.02em] ">
                             • <span className="font-medium">Pack swimwear and sunscreen:</span> You'll want to take full advantage of the pools and beach
-                        </p>
+                        </p> */}
                     </div>
-                    <div className="flex flex-row items-center justify-center rounded-[32px]">
-                        <Image src={"/images/traveler-tips.jpg"} width={600} height={400} className="rounded-[32px] w-full h-full" alt="" />
-                    </div>
+                    {image && <div className="flex flex-row items-center justify-center rounded-[32px]">
+                        <Image src={image} width={600} height={400} className="rounded-[32px] w-full h-full" alt="" />
+                    </div>}
                 </div>
             </div>
         </section>

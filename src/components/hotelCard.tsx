@@ -13,7 +13,7 @@ export default function HotelCard({ hotel }: HotelCardProps) {
   return (
     <div className="flex flex-col items-center justify-center border-[1px] border-[#D0D5DD] rounded-[16px] lg:rounded-[30px] bg-white w-[300px] sm:w-[350px] md:w-[400px] lg:w-[525px] max-w-[525px] shadow-lg">
       <Image
-        src={hotel.hotel_image_in_clouds || hotel.about_hotel_images?.[0] || "/images/trending-jewelery.png"}
+        src={hotel.main_image || "/images/trending-jewelery.png"}
         width={525}
         height={725}
         className="h-fit object-cover w-full lg:max-h-[300px] 2xl:max-h-[354px] rounded-t-[16px] lg:rounded-t-[30px]"

@@ -38,6 +38,7 @@ export default async function HotelPage({
     const slug = (await params).slug;
     const cleanSlug = decodeURIComponent(slug);
     const hotel = await getHotel(cleanSlug);
+    // console.log(hotel)
     const hotelSpecs = [hotel?.location, hotel?.rating_desc, hotel?.beach, hotel?.facilities]
     if (!hotel) notFound();
 
@@ -45,13 +46,13 @@ export default async function HotelPage({
         <div className="flex flex-col items-center justify-center">
             <HotelDetailHeroSection title={hotel?.title} tagline={hotel?.tagline} hotelImage={hotel?.about_hotel_images?.[0]} checkRatesLink={hotel?.check_rates_link} viewRoomsLink={hotel?.rooms_link} />
             <HotelSpecsSection hotelSpecs={hotelSpecs} />
-            <AboutHotelSection />
-            <HotelImageWithCloudSection />
-            <HotelHighLightsSection />
-            <RoomTypesSection />
-            <HotelDetailsEssentialInformation />
-            <TravelerTips />
-            <FAQSection />
+            <AboutHotelSection aboutHotel={hotel?.about_hotel} images={hotel?.about_hotel_images} />
+            <HotelImageWithCloudSection image={hotel?.hotel_cloud_image} />
+            <HotelHighLightsSection highLights={hotel?.highlights} />
+            <RoomTypesSection roomsLink={hotel?.rooms_link} rooms={hotel?.rooms} />
+            <HotelDetailsEssentialInformation information={hotel?.essential_information} image={hotel?.essential_information_image} />
+            <TravelerTips tips={hotel?.traveler_tips} image={hotel?.traveler_tips_image} />
+            <FAQSection faqs={hotel?.faqs} />
             <BookStaySection />
             <ShalimarWithAboveSection />
         </div>
@@ -76,8 +77,8 @@ export async function generateMetadata({
 
     const hotelUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/hotel/${slug}`;
     const imageUrl =
-        hotel.hotel_image_in_clouds ||
-        hotel.about_hotel_images?.[0] ||
+        hotel?.main_image ||
+        hotel?.about_hotel_images?.[0] ||
         "/logos/navbar-text.svg";
 
     return {

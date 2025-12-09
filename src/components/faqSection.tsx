@@ -1,25 +1,14 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
-export default function FAQSection() {
-  const faqs = [
-    {
-      question: "What is TRAVI?",
-      answer:
-        "TRAVI is a travel agency that helps people plan and book trips to their dream destinations.",
-    },
-    {
-      question: "How do I book a trip with TRAVI?",
-      answer:
-        "Booking a trip with TRAVI is easy. Simply visit our website, select your destination, travel dates, and number of travelers. We will guide you through the booking process and provide you with a confirmation email.",
-    },
-  ];
+export default function FAQSection({ faqs }: { faqs?: { question: string, answer: string }[] }) {
+
   const [active, setActive] = useState<number>(-1);
   function handleActive(index: number) {
     setActive(index);
   }
   return (
-    <section className="flex flex-col items-center justify-center py-[60px] px-[20px] text-center  sm:px-[100px] sm:py-[140px] sm:gap-[80px] gap-[48px]">
+    <>{faqs && faqs?.length > 0 && <section className="flex flex-col items-center justify-center py-[60px] px-[20px] text-center  sm:px-[100px] sm:py-[140px] sm:gap-[80px] gap-[48px]">
       {/* heading */}
       <div className="flex flex-col items-center justify-center gap-[12px]">
         <h2 className="stylish-yellow-text">Faq&apos;s</h2>
@@ -39,9 +28,8 @@ export default function FAQSection() {
           faqs.map((faq, index) => (
             <div
               key={index}
-              className={`flex flex-row items-start justify-between w-full rounded-[16px] gap-[24px] rounded-[16px] p-[20px] sm:p-[32px] sm:gap-[160px] ${
-                active === index ? "bg-[#F2F4F7]" : ""
-              }`}
+              className={`flex flex-row items-start justify-between w-full rounded-[16px] gap-[24px] rounded-[16px] p-[20px] sm:p-[32px] sm:gap-[160px] ${active === index ? "bg-[#F2F4F7]" : ""
+                }`}
             >
               <div className="flex flex-col items-start justify-center text-start gap-[12px]">
                 <h3 className="font-inter font-semibold sm:text-[32px] text-[20px] leading-[120%] -tracking-[0.03em] ">
@@ -74,5 +62,6 @@ export default function FAQSection() {
           ))}
       </section>
     </section>
+    }</>
   );
 }

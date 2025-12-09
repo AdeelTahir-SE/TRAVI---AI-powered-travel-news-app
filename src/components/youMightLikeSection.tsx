@@ -16,11 +16,15 @@ export default function YouMightLikeSection() {
         rating: 4.5,
         reviews: 100,
         about_hotel_images: ["https://example.com/image1.jpg", "https://example.com/image2.jpg"],
-        hotel_image_in_clouds: "https://example.com/hotel-image.jpg",
-        highlights: [
-            { title: "Highlight 1", description: "Description 1" },
-            { title: "Highlight 2", description: "Description 2" },
-        ],
+        main_image: "https://example.com/hotel-image.jpg",
+        highlights: {
+            waterpolo: "Waterpolo 1",
+            underwater_suites: "Underwater Suites 1",
+            dining_option: "Dining Option 1",
+            beach: "Beach 1",
+            smile: "Smile 1",
+            bed: "Bed 1",
+        },
         rooms_link: "https://example.com/rooms",
         rooms: [
             {

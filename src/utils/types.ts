@@ -41,8 +41,18 @@ export interface EssentialInformation {
 }
 
 export interface Highlight {
+    image?: string
     title: string;
     description: string;
+}
+
+export interface HighlightsDescriptions {
+    waterpolo?: string;
+    underwater_suites?: string;
+    dining_option?: string;
+    beach?: string;
+    smile?: string;
+    bed?: string;
 }
 
 export interface Room {
@@ -70,13 +80,17 @@ export interface Hotel {
     rating?: number;
     reviews?: number;
     about_hotel_images: string[];
-    hotel_image_in_clouds?: string;
-    highlights?: Highlight[];
+    main_image?: string;
+    highlights?: HighlightsDescriptions;
     rooms_link?: string;
     rooms?: Room[];
     essential_information?: EssentialInformation;
+    essential_information_image?: string;
     traveler_tips?: string[];
+    traveler_tips_image?: string;
+    hotel_cloud_image?: string;
     faqs?: FAQ[];
+    about_hotel?: string;
 }
 
 export interface Quotation {

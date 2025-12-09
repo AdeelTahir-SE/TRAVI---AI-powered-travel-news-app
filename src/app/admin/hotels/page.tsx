@@ -51,12 +51,17 @@ export default function HotelsPage() {
             check_rates_link: 'https://example.com/check-rates',
             view_rooms_link: 'https://example.com/view-rooms',
             rooms_link: 'https://example.com/rooms',
-            hotel_image_in_clouds: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d',
+            main_image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d',
             about_hotel_images: [
                 'https://images.unsplash.com/photo-1566073771259-6a8506099945',
                 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b',
-                'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4'
+                'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4',
+                'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9'
             ],
+            about_hotel: 'Paradise Beach Resort offers an unparalleled tropical experience in the heart of the Maldives. Nestled on a pristine private island, our resort combines luxury accommodations with breathtaking natural beauty. Each villa and suite is designed to provide maximum comfort while showcasing stunning ocean views. Our world-class amenities include multiple dining options, a full-service spa, infinity pools, and direct beach access. Whether you\'re seeking adventure or relaxation, Paradise Beach Resort is your perfect escape.',
+            essential_information_image: 'https://images.unsplash.com/photo-1540541338287-41700207dee6',
+            traveler_tips_image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19',
+            hotel_cloud_image: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d',
             essential_information: {
                 checkin_checkout: 'Check-in: 3:00 PM, Check-out: 11:00 AM',
                 location_distance: '5 km from Male International Airport',
@@ -66,6 +71,14 @@ export default function HotelsPage() {
                 family_facilities: 'Kids club, playground, babysitting service',
                 wifi_availability: 'Free WiFi in all areas',
                 parking_availability: 'Free on-site parking available'
+            },
+            highlights: {
+                waterpolo: 'Unlimited access to the Middle East\'s largest waterpark with thrilling slides and attractions',
+                underwater_suites: 'Experience the world\'s first underwater suites with stunning views of the ocean',
+                dining_option: 'Choose from a variety of dining options to suit your taste and preferences',
+                beach: 'Enjoy the beautiful beach with its crystal-clear waters and soft sand',
+                smile: 'Exceptional service that makes you smile every day',
+                bed: 'Luxurious beds designed for ultimate comfort and relaxation'
             },
             traveler_tips: [
                 'Book early for best rates and room selection',
@@ -137,8 +150,42 @@ export default function HotelsPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
 
+        // Validate required fields
         if (!formData.title || !formData.tagline) {
             alert('Title and tagline are required!')
+            return
+        }
+
+        if (!formData.about_hotel || formData.about_hotel.trim() === '') {
+            alert('About Hotel description is required!')
+            return
+        }
+
+        if (!formData.about_hotel_images || formData.about_hotel_images.length < 4) {
+            alert('At least 4 About Hotel images are required!')
+            return
+        }
+
+        if (!formData.essential_information_image) {
+            alert('Essential Information Image is required!')
+            return
+        }
+
+        if (!formData.traveler_tips_image) {
+            alert('Traveler Tips Image is required!')
+            return
+        }
+
+        if (!formData.hotel_cloud_image) {
+            alert('Hotel Cloud Image is required!')
+            return
+        }
+
+        // Validate all highlight descriptions are filled
+        if (!formData.highlights?.waterpolo || !formData.highlights?.underwater_suites ||
+            !formData.highlights?.dining_option || !formData.highlights?.beach ||
+            !formData.highlights?.smile || !formData.highlights?.bed) {
+            alert('All highlight descriptions (Waterpolo, Underwater Suites, Dining Option, Beach, Smile, Bed) are required!')
             return
         }
 
@@ -328,16 +375,145 @@ export default function HotelsPage() {
                                     <ImageUpload
                                         label="Main Hotel Image"
                                         multiple={false}
-                                        existingImages={formData.hotel_image_in_clouds ? [formData.hotel_image_in_clouds] : []}
-                                        onUploadComplete={(urls) => handleInputChange('hotel_image_in_clouds', urls[0] || '')}
+                                        existingImages={formData.main_image ? [formData.main_image] : []}
+                                        onUploadComplete={(urls) => handleInputChange('main_image', urls[0] || '')}
                                     />
 
                                     <ImageUpload
-                                        label="About Hotel Images (Multiple)"
+                                        label="About Hotel Images (Minimum 4) *"
                                         multiple={true}
                                         existingImages={formData.about_hotel_images || []}
                                         onUploadComplete={(urls) => handleInputChange('about_hotel_images', urls)}
                                     />
+
+                                    <ImageUpload
+                                        label="Essential Information Image *"
+                                        multiple={false}
+                                        existingImages={formData.essential_information_image ? [formData.essential_information_image] : []}
+                                        onUploadComplete={(urls) => handleInputChange('essential_information_image', urls[0] || '')}
+                                    />
+
+                                    <ImageUpload
+                                        label="Traveler Tips Image *"
+                                        multiple={false}
+                                        existingImages={formData.traveler_tips_image ? [formData.traveler_tips_image] : []}
+                                        onUploadComplete={(urls) => handleInputChange('traveler_tips_image', urls[0] || '')}
+                                    />
+
+                                    <ImageUpload
+                                        label="Hotel Cloud Image *"
+                                        multiple={false}
+                                        existingImages={formData.hotel_cloud_image ? [formData.hotel_cloud_image] : []}
+                                        onUploadComplete={(urls) => handleInputChange('hotel_cloud_image', urls[0] || '')}
+                                    />
+
+                                    {/* Highlights Descriptions */}
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-3">
+                                            Highlights Descriptions <span className="text-red-600">*</span>
+                                        </label>
+                                        <div className="grid grid-cols-1 gap-4 border border-gray-200 rounded-lg p-4 bg-gray-50">
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-600 mb-1">Waterpolo</label>
+                                                <textarea
+                                                    value={formData.highlights?.waterpolo || ''}
+                                                    onChange={(e) => handleInputChange('highlights', {
+                                                        ...formData.highlights,
+                                                        waterpolo: e.target.value
+                                                    })}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    rows={2}
+                                                    placeholder="e.g., Unlimited access to the Middle East's largest waterpark"
+                                                    required
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-600 mb-1">Underwater Suites</label>
+                                                <textarea
+                                                    value={formData.highlights?.underwater_suites || ''}
+                                                    onChange={(e) => handleInputChange('highlights', {
+                                                        ...formData.highlights,
+                                                        underwater_suites: e.target.value
+                                                    })}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    rows={2}
+                                                    placeholder="e.g., Experience the world's first underwater suites"
+                                                    required
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-600 mb-1">Dining Option</label>
+                                                <textarea
+                                                    value={formData.highlights?.dining_option || ''}
+                                                    onChange={(e) => handleInputChange('highlights', {
+                                                        ...formData.highlights,
+                                                        dining_option: e.target.value
+                                                    })}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    rows={2}
+                                                    placeholder="e.g., Choose from a variety of dining options"
+                                                    required
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-600 mb-1">Beach</label>
+                                                <textarea
+                                                    value={formData.highlights?.beach || ''}
+                                                    onChange={(e) => handleInputChange('highlights', {
+                                                        ...formData.highlights,
+                                                        beach: e.target.value
+                                                    })}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    rows={2}
+                                                    placeholder="e.g., Enjoy the beautiful beach with crystal-clear waters"
+                                                    required
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-600 mb-1">Smile</label>
+                                                <textarea
+                                                    value={formData.highlights?.smile || ''}
+                                                    onChange={(e) => handleInputChange('highlights', {
+                                                        ...formData.highlights,
+                                                        smile: e.target.value
+                                                    })}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    rows={2}
+                                                    placeholder="e.g., Exceptional service that makes you smile"
+                                                    required
+                                                />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-medium text-gray-600 mb-1">Bed</label>
+                                                <textarea
+                                                    value={formData.highlights?.bed || ''}
+                                                    onChange={(e) => handleInputChange('highlights', {
+                                                        ...formData.highlights,
+                                                        bed: e.target.value
+                                                    })}
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    rows={2}
+                                                    placeholder="e.g., Luxurious beds for ultimate comfort"
+                                                    required
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {/* About Hotel */}
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                            About Hotel <span className="text-red-600">*</span>
+                                        </label>
+                                        <textarea
+                                            value={formData.about_hotel || ''}
+                                            onChange={(e) => handleInputChange('about_hotel', e.target.value)}
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
+                                            rows={6}
+                                            placeholder="Enter detailed description about the hotel..."
+                                            required
+                                        />
+                                    </div>
 
                                     {/* Optional Fields */}
                                     <div className="grid grid-cols-2 gap-4">
