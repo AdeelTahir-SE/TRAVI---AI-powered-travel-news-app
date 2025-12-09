@@ -214,7 +214,7 @@ export default function ArticlesAdminPage() {
     return (
         <div className="min-h-screen bg-gray-50 p-8">
             <div className="max-w-7xl mx-auto">
-                <div className="flex justify-between items-center mb-8 bg-white">
+                <div className="flex justify-between items-center mb-8 ">
                     <h1 className="text-3xl font-bold text-gray-900">Articles Management</h1>
                     <button
                         onClick={handleCreate}

@@ -21,7 +21,7 @@ export default function ArticleContentSection({ article }: { article: Article })
                         <p>{article?.paras?.[3]}</p>
                         <p>{article?.paras?.[4]}</p>
                     </div>
-                    <div className="w-full flex flex-row items-center justify-center max-w-screen">
+                    <div className="w-full flex flex-row items-center justify-center max-w-screen overflow-x-hidden">
                         <CommentContainer author={article?.quotation1?.person_name} author_image={article?.quotation1?.person_image} author_role={article?.quotation1?.person_role} quote={article?.quotation1?.quote} />
                     </div>
 
