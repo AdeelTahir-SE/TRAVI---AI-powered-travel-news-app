@@ -1,48 +1,46 @@
 'use client'
 
-import { useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import HotelCard from "./hotelCard";
 import BookStaySection from "./bookStaySection";
 import { Hotel } from "@/utils/types";
 
-export default function CategoryCardsSection() {
+interface SearchCardsSectionProps {
+  hotels: Hotel[];
+  loading: boolean;
+  error: string | null;
+  currentPage: number;
+  totalPages: number;
+}
+
+export default function SearchCardsSection({ hotels, loading, error, currentPage, totalPages }: SearchCardsSectionProps) {
+  const router = useRouter();
   const searchParams = useSearchParams();
+
+  const currentType = searchParams.get('type') || 'all';
+  const currentLocation = searchParams.get('location') || '';
+  const currentSortBy = searchParams.get('sortBy') || '';
   const query = searchParams.get('q') || '';
 
-  const [hotels, setHotels] = useState<Hotel[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const updateSearchParams = (key: string, value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (value && value !== 'all' && value !== '') {
+      params.set(key, value);
+    } else {
+      params.delete(key);
+    }
+    if (key !== 'page') {
+      params.set('page', '1');
+    }
+    router.push(`/search?${params.toString()}`);
+  };
 
-  useEffect(() => {
-    const fetchHotels = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const params = new URLSearchParams();
-        if (query) params.append('q', query);
-        params.append('limit', '12');
-
-        const response = await fetch(`/api/hotels?${params.toString()}`);
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch hotels');
-        }
-
-        const data = await response.json();
-        setHotels(data.hotels || []);
-      } catch (err) {
-        console.error('Error fetching hotels:', err);
-        setError('Failed to load hotels');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchHotels();
-  }, [query]);
+  // Function to handle page navigation
+  const goToPage = (page: number) => {
+    if (page < 1 || page > totalPages) return;
+    updateSearchParams('page', page.toString());
+  };
 
   if (loading) {
     return (
@@ -114,7 +112,7 @@ export default function CategoryCardsSection() {
   }
 
   return (
-    <section className="relative  flex flex-col items-center justify-center lg:gap-[80px] gap-[60px] px-[20px] md:px-[70px] py-[60px] 2xl:px-[140px] 2xl:py-[120px] w-full h-full">
+    <section className="relative  overflow-y-hidden  flex flex-col items-center justify-center lg:gap-[80px] gap-[60px] px-[20px] md:px-[70px] py-[60px] 2xl:px-[140px] 2xl:py-[120px] w-full h-full">
       <div className="absolute inset-0 -z-10 top-[500px]">
         {/* Background Image */}
         <Image
@@ -131,33 +129,74 @@ export default function CategoryCardsSection() {
 
       {hotels && hotels?.length > 0 && (
         <div className="flex flex-col gap-[24px] lg:gap-0 lg:flex-row items-center justify-between w-full ">
-          <div className="lg:flex flex-row items-center justify-center w-fit hidden flex-wrap gap-[20px] *:border-1 *:rounded-[12px] *:py-[16px] *:px-[24px] *:bg-white *:text-black *:border-[#D0D5DD] *:font-inter *:font-medium *:text-[22px] *:leading-[100%] *:tracking-[-0.02em]">
-            <button>All</button>
-            <button>Hotels</button>
-            <button>Attractions</button>
-            <button>Guides</button>
+          {/* Desktop Type Filter Buttons */}
+          <div className="lg:flex flex-row items-center justify-center w-fit hidden flex-wrap gap-[20px]">
+            <button
+              onClick={() => updateSearchParams('type', 'all')}
+              className={`border-1 rounded-[12px] py-[16px] px-[24px] font-inter font-medium text-[22px] leading-[100%] tracking-[-0.02em] transition-colors ${currentType === 'all'
+                ? 'bg-[#0D7FF2] text-white border-[#0D7FF2]'
+                : 'bg-white text-black border-[#D0D5DD] hover:border-[#0D7FF2]'
+                }`}
+            >
+              All
+            </button>
+            <button
+              onClick={() => updateSearchParams('type', 'hotels')}
+              className={`border-1 rounded-[12px] py-[16px] px-[24px] font-inter font-medium text-[22px] leading-[100%] tracking-[-0.02em] transition-colors ${currentType === 'hotels'
+                ? 'bg-[#0D7FF2] text-white border-[#0D7FF2]'
+                : 'bg-white text-black border-[#D0D5DD] hover:border-[#0D7FF2]'
+                }`}
+            >
+              Hotels
+            </button>
+            <button
+              onClick={() => updateSearchParams('type', 'attractions')}
+              className={`border-1 rounded-[12px] py-[16px] px-[24px] font-inter font-medium text-[22px] leading-[100%] tracking-[-0.02em] transition-colors ${currentType === 'attractions'
+                ? 'bg-[#0D7FF2] text-white border-[#0D7FF2]'
+                : 'bg-white text-black border-[#D0D5DD] hover:border-[#0D7FF2]'
+                }`}
+            >
+              Attractions
+            </button>
+            <button
+              onClick={() => updateSearchParams('type', 'guides')}
+              className={`border-1 rounded-[12px] py-[16px] px-[24px] font-inter font-medium text-[22px] leading-[100%] tracking-[-0.02em] transition-colors ${currentType === 'guides'
+                ? 'bg-[#0D7FF2] text-white border-[#0D7FF2]'
+                : 'bg-white text-black border-[#D0D5DD] hover:border-[#0D7FF2]'
+                }`}
+            >
+              Guides
+            </button>
           </div>
-          {/* Mobile Filter Button - visible on small screens only */}
-          <div className="min-w-full font-inter font-medium text-[22px] leading-[100%] tracking-[-0.02em] flex lg:hidden items-center justify-between  py-[16px] px-[24px] border-1  border-[#D0D5DD] min-w-full rounded-[12px]">
-            <select className="flex justify-between min-w-full">
-              <option value="">Location</option>
-              <option value="downtown">Downtown</option>
-              <option value="beach">Beach</option>
-              <option value="airport">Near Airport</option>
-              <option value="suburbs">Suburbs</option>
+          {/* Mobile Type Filter Dropdown */}
+          <div className="min-w-full font-inter font-medium text-[22px] leading-[100%] tracking-[-0.02em] flex lg:hidden items-center justify-between py-[16px] px-[24px] border-1 border-[#D0D5DD] rounded-[12px]">
+            <select
+              className="flex justify-between min-w-full bg-transparent outline-none"
+              value={currentType}
+              onChange={(e) => updateSearchParams('type', e.target.value)}
+            >
+              <option value="all">All</option>
+              <option value="hotels">Hotels</option>
+              <option value="attractions">Attractions</option>
+              <option value="guides">Guides</option>
             </select>
           </div>
+          {/* Sort By Dropdown */}
           <div className="flex flex-row items-center lg:justify-center gap-[20px] w-full lg:w-fit justify-between ">
             <span className="font-inter font-bold text-[22px] leading-[100%] tracking-[-0.02em]">
               Sort By:{" "}
             </span>
             <div className="border-[1px] border-[#D0D5DD] rounded-[12px] px-[24px] py-[16px] focus:outline-none focus:ring-2 focus:ring-blue-400 font-inter font-medium text-[22px] leading-[100%] tracking-[-0.02em]">
-              <select>
-                <option value="">Location</option>
-                <option value="downtown">Downtown</option>
-                <option value="beach">Beach</option>
-                <option value="airport">Near Airport</option>
-                <option value="suburbs">Suburbs</option>
+              <select
+                className="bg-transparent outline-none"
+                value={currentSortBy}
+                onChange={(e) => updateSearchParams('sortBy', e.target.value)}
+              >
+                <option value="">Default</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="rating">Rating</option>
+                <option value="popular">Most Popular</option>
               </select>
             </div>
           </div>
@@ -171,9 +210,14 @@ export default function CategoryCardsSection() {
           })}
       </div>
 
-      {hotels && hotels?.length > 0 && (
+      {hotels && hotels?.length > 0 && totalPages > 1 && (
         <div className="hidden md:flex flex-row items-center justify-between border-t-1 w-full border-white">
-          <button className="flex flex-row items-center justify-center px-[30px]  py-[24px] border-[1px] border-[#D0D5DD] gap-[8px] rounded-[800px] ">
+          <button
+            onClick={() => goToPage(currentPage - 1)}
+            disabled={currentPage === 1}
+            className={`flex flex-row items-center justify-center px-[30px] py-[24px] border-[1px] border-[#D0D5DD] gap-[8px] rounded-[800px] transition-opacity ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
+              }`}
+          >
             <Image
               src="/icons/arrow-left.svg"
               alt=""
@@ -185,36 +229,107 @@ export default function CategoryCardsSection() {
               Previous
             </span>
           </button>
-          <div className="flex items-center justify-center gap-[2px]  min-h-full *:font-inter *:font-medium *:text-[18px] *:leading-[26px] *:text-center *:tracking-[-0.05em] ">
-            {/* Page 1 */}
-            <button className="bg-white px-4 py-2 w-full rounded-[8px] active:bg-[#0D7FF2] active:text-white active:rounded-[12px]">
-              1
-            </button>
-            {/* Page 2 */}
-            <button className="bg-white px-4 py-2 rounded-[8px] active:bg-[#0D7FF2] active:text-white active:rounded-[12px]">
-              2
-            </button>
-            {/* Page 3 */}
-            <button className="bg-white px-4 py-2 rounded-[8px] active:bg-[#0D7FF2] active:text-white active:rounded-[12px]">
-              3
-            </button>
-            {/* Ellipsis */}
-            <span className="px-4 py-2">...</span>
-            {/* Page 8 */}
-            <button className="bg-white px-4 py-2 rounded-[8px] active:bg-[#0D7FF2] active:text-white active:rounded-[12px]">
-              8
-            </button>
-            {/* Page 9 */}
-            <button className="bg-white px-4 py-2 rounded-[8px] active:bg-[#0D7FF2] active:text-white active:rounded-[12px]">
-              9
-            </button>
-            {/* Page 10 */}
-            <button className="bg-white px-4 py-2 rounded-[8px] active:bg-[#0D7FF2] active:text-white active:rounded-[12px]">
-              10
-            </button>
+          <div className="flex items-center justify-center gap-[2px] min-h-full">
+            {/* Generate page numbers dynamically */}
+            {(() => {
+              const pages = [];
+              const showEllipsisStart = currentPage > 3;
+              const showEllipsisEnd = currentPage < totalPages - 2;
+
+              // Always show first page
+              pages.push(
+                <button
+                  key={1}
+                  onClick={() => goToPage(1)}
+                  className={`font-inter font-medium text-[18px] leading-[26px] text-center tracking-[-0.05em] px-4 py-2 rounded-[8px] transition-colors ${currentPage === 1
+                    ? 'bg-[#0D7FF2] text-white rounded-[12px]'
+                    : 'bg-white hover:bg-gray-100'
+                    }`}
+                >
+                  1
+                </button>
+              );
+
+              // Show ellipsis or page 2
+              if (showEllipsisStart) {
+                pages.push(<span key="ellipsis-start" className="px-4 py-2 font-inter font-medium text-[18px]">...</span>);
+              } else if (totalPages > 1) {
+                pages.push(
+                  <button
+                    key={2}
+                    onClick={() => goToPage(2)}
+                    className={`font-inter font-medium text-[18px] leading-[26px] text-center tracking-[-0.05em] px-4 py-2 rounded-[8px] transition-colors ${currentPage === 2
+                      ? 'bg-[#0D7FF2] text-white rounded-[12px]'
+                      : 'bg-white hover:bg-gray-100'
+                      }`}
+                  >
+                    2
+                  </button>
+                );
+              }
+
+              // Show current page and neighbors (if not first or last)
+              for (let i = Math.max(3, currentPage - 1); i <= Math.min(totalPages - 2, currentPage + 1); i++) {
+                if (i > 2 && i < totalPages - 1) {
+                  pages.push(
+                    <button
+                      key={i}
+                      onClick={() => goToPage(i)}
+                      className={`font-inter font-medium text-[18px] leading-[26px] text-center tracking-[-0.05em] px-4 py-2 rounded-[8px] transition-colors ${currentPage === i
+                        ? 'bg-[#0D7FF2] text-white rounded-[12px]'
+                        : 'bg-white hover:bg-gray-100'
+                        }`}
+                    >
+                      {i}
+                    </button>
+                  );
+                }
+              }
+
+              // Show ellipsis or second-to-last page
+              if (showEllipsisEnd) {
+                pages.push(<span key="ellipsis-end" className="px-4 py-2 font-inter font-medium text-[18px]">...</span>);
+              } else if (totalPages > 2) {
+                pages.push(
+                  <button
+                    key={totalPages - 1}
+                    onClick={() => goToPage(totalPages - 1)}
+                    className={`font-inter font-medium text-[18px] leading-[26px] text-center tracking-[-0.05em] px-4 py-2 rounded-[8px] transition-colors ${currentPage === totalPages - 1
+                      ? 'bg-[#0D7FF2] text-white rounded-[12px]'
+                      : 'bg-white hover:bg-gray-100'
+                      }`}
+                  >
+                    {totalPages - 1}
+                  </button>
+                );
+              }
+
+              // Always show last page if more than 1 page
+              if (totalPages > 1) {
+                pages.push(
+                  <button
+                    key={totalPages}
+                    onClick={() => goToPage(totalPages)}
+                    className={`font-inter font-medium text-[18px] leading-[26px] text-center tracking-[-0.05em] px-4 py-2 rounded-[8px] transition-colors ${currentPage === totalPages
+                      ? 'bg-[#0D7FF2] text-white rounded-[12px]'
+                      : 'bg-white hover:bg-gray-100'
+                      }`}
+                  >
+                    {totalPages}
+                  </button>
+                );
+              }
+
+              return pages;
+            })()}
           </div>
 
-          <button className="flex flex-row items-center justify-center px-[30px] py-[24px] border-[1px] border-[#D0D5DD] gap-[8px] rounded-[800px] ">
+          <button
+            onClick={() => goToPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className={`flex flex-row items-center justify-center px-[30px] py-[24px] border-[1px] border-[#D0D5DD] gap-[8px] rounded-[800px] transition-opacity ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
+              }`}
+          >
             <span className="font-inter font-bold text-[20px] leading-[100%] tracking-0">
               Next
             </span>
@@ -228,9 +343,14 @@ export default function CategoryCardsSection() {
           </button>
         </div>
       )}
-      {hotels && hotels?.length > 0 && (
-        <div className=" md:hidden flex flex-row items-center justify-between w-full border-t-[1px] border-white ">
-          <button className="rounded-full flex items-center justify-center gap-[8px] border-1 border-[#D0D5DD] w-[58px] h-[58px]">
+      {hotels && hotels?.length > 0 && totalPages > 1 && (
+        <div className="md:hidden flex flex-row items-center justify-between w-full border-t-[1px] border-white">
+          <button
+            onClick={() => goToPage(currentPage - 1)}
+            disabled={currentPage === 1}
+            className={`rounded-full flex items-center justify-center gap-[8px] border-1 border-[#D0D5DD] w-[58px] h-[58px] ${currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
+              }`}
+          >
             <Image
               src="/icons/arrow-left.svg"
               alt=""
@@ -240,15 +360,20 @@ export default function CategoryCardsSection() {
             />
           </button>
           <span className="font-inter font-normal text-[20px] leading-[28px] text-[#344054]">
-            Page 1 of 10
+            Page {currentPage} of {totalPages}
           </span>
-          <button className="rounded-full flex items-center justify-center gap-[8px] border-1 border-[#D0D5DD] w-[58px] h-[58px]">
+          <button
+            onClick={() => goToPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className={`rounded-full flex items-center justify-center gap-[8px] border-1 border-[#D0D5DD] w-[58px] h-[58px] ${currentPage === totalPages ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-50'
+              }`}
+          >
             <Image
               src="/icons/arrow-left.svg"
               alt=""
               width={24}
               height={24}
-              className="w-[24px] h-[24px] rotate-180 border-2"
+              className="w-[24px] h-[24px] rotate-180"
             />
           </button>
         </div>

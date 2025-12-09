@@ -1,7 +1,8 @@
 import Image from "next/image";
 import CategoryHeroCloudSection from "./categoryHeroCloudSection";
 import SearchInput from "./seachInput";
-export default function SearchHeroSectoion() {
+import { Hotel } from "@/utils/types";
+export default function SearchHeroSectoion({ results, query }: { results: Hotel[]; query: string }) {
   return (
     <div className="flex flex-col items-center justify-center relative w-full h-[574px]  ">
       <section className="flex flex-col items-center justify-center w-full">
@@ -16,7 +17,7 @@ export default function SearchHeroSectoion() {
           <div className="flex flex-col items-center justify-center  z-10 text-center gap-[32px]">
             <SearchInput action="" />
             <p className="text-white font-manrope text-[24px] lg:text-[32px] leading-[100%] tracking-[-0.03em]">
-              0 results found for &quot;Luxury hotels in Dubai &quot;
+              {results.length} results found {query?.trim() !== "" && `for "${query}"`}
             </p>
           </div>
           <div className="absolute inset-0 pointer-events-none z-0 max-h-[350px] bg-[radial-gradient(ellipse_at_center,rgba(35,132,200,0.3)_0%,rgba(35,132,200,0.3)_40%,rgba(35,132,200,0.1)_65%,rgba(35,132,200,0)_100%)]"></div>

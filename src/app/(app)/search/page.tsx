@@ -1,55 +1,73 @@
-import type { Metadata } from "next";
+'use client'
+
+import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import SearchCardsSection from "@/components/searchCardsSection";
 import SearchHeroSectoion from "@/components/searchHeroSection";
-import ShalimarSection from "@/components/shalimarSection";
 import ShalimarWithAboveSection from "@/components/shalimarWithAboveCloudSection";
+import { Hotel } from "@/utils/types";
 
-export const metadata: Metadata = {
-  title: "Search Travel Content | Travi",
-  description: "Search for travel articles, destinations, attractions, and hotels. Find exactly what you're looking for with Travi's comprehensive search.",
+export default function SearchPage() {
+  const searchParams = useSearchParams();
+  const query = searchParams.get('q') || '';
+  const type = searchParams.get('type') || 'all';
+  const location = searchParams.get('location') || '';
+  const page = parseInt(searchParams.get('page') || '1');
+  const sortBy = searchParams.get('sortBy') || '';
 
-  openGraph: {
-    title: "Search Travel Content | Travi",
-    description: "Search for travel articles, destinations, attractions, and hotels. Find exactly what you're looking for with Travi's comprehensive search.",
-    url: `${process.env.NEXT_PUBLIC_SITE_URL}/search`,
-    siteName: "Travi",
-    images: [
-      {
-        url: "/logos/navbar-text.svg",
-        width: 1200,
-        height: 630,
-        alt: "Travi - Search Travel Content",
-      },
-    ],
-    type: "website",
-  },
+  const [hotels, setHotels] = useState<Hotel[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [totalCount, setTotalCount] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
-  twitter: {
-    card: "summary_large_image",
-    title: "Search Travel Content | Travi",
-    description: "Search for travel articles, destinations, attractions, and hotels. Find exactly what you're looking for with Travi's comprehensive search.",
-    images: ["/logos/navbar-text.svg"],
-  },
+  useEffect(() => {
+    const fetchHotels = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-  alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/search`,
-  },
+        const params = new URLSearchParams();
+        if (query) params.append('q', query);
+        if (type && type !== 'all') params.append('type', type);
+        if (location) params.append('location', location);
+        if (sortBy) params.append('sortBy', sortBy);
+        params.append('page', page.toString());
+        params.append('limit', '12');
 
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+        const response = await fetch(`/api/hotels?${params.toString()}`);
 
-export default async function SearchPage() {
+        if (!response.ok) {
+          throw new Error('Failed to fetch hotels');
+        }
+
+        const data = await response.json();
+        setHotels(data.hotels || []);
+        setTotalCount(data.total || data.hotels?.length || 0);
+        setTotalPages(data.totalPages || Math.ceil((data.total || data.hotels?.length || 0) / 12));
+      } catch (err) {
+        console.error('Error fetching hotels:', err);
+        setError('Failed to load hotels');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHotels();
+  }, [query, type, location, page, sortBy]);
 
   return (
     <div className="flex flex-col items-center">
-      <SearchHeroSectoion />
-      <SearchCardsSection />
+      <SearchHeroSectoion results={hotels} query={query.toString()} />
+      <SearchCardsSection
+        hotels={hotels}
+        loading={loading}
+        error={error}
+        currentPage={page}
+        totalPages={totalPages}
+      />
       <ShalimarWithAboveSection />
-
-
     </div>
   );
 }
+
