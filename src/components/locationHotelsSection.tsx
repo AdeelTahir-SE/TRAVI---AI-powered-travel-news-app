@@ -1,7 +1,7 @@
 import HotelCard from "./hotelCard";
-
+import { Hotel } from "@/utils/types";
 export default function LocationHotelsSection() {
-  const hotel = {
+  const hotel: Hotel = {
     hotel_id: "1",
     created_at: "2025-12-08T10:09:05.000Z",
     title: "Hotel 1",
@@ -16,11 +16,15 @@ export default function LocationHotelsSection() {
     rating: 4.5,
     reviews: 100,
     about_hotel_images: ["https://example.com/image1.jpg", "https://example.com/image2.jpg"],
-    hotel_image_in_clouds: "https://example.com/hotel-image.jpg",
-    highlights: [
-      { title: "Highlight 1", description: "Description 1" },
-      { title: "Highlight 2", description: "Description 2" },
-    ],
+    hotel_cloud_image: "https://example.com/hotel-image.jpg",
+    highlights: {
+      waterpolo: "Waterpolo",
+      underwater_suites: "Underwater Suites",
+      dining_option: "Dining Option",
+      beach: "Beach",
+      smile: "Smile",
+      bed: "Bed",
+    },
     rooms_link: "https://example.com/rooms",
     rooms: [
       {
