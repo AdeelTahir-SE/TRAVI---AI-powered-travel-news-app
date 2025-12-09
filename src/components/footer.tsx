@@ -9,7 +9,7 @@ export default function Footer() {
     moreLinks: false,
   });
   return (
-    <section className="relative flex flex-col items-center justify-center relative py-[60px] px-[20px] xl:px-[100px]  2xl:px-[140px] 2xl:py-[100px]">
+    <section className="relative flex flex-col items-center justify-center relative pt-[60px] px-[20px] xl:px-[100px]  2xl:px-[140px] 2xl:py-[100px]">
       <section className="absolute w-full top-0   min-h-[760px] ">
         <Image
           src="/background-images/explore-dubai-background-effect.png"

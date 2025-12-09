@@ -1,15 +1,15 @@
 import Image from "next/image"
 export default function CommentContainer({ author, author_image, quote, author_role }: { author?: string, author_image?: string, author_role?: string, quote?: string }) {
     return (
-        <section className="relative flex felx-row items-center justify-center max-w-screen w-[381px] h-[365px]">
-            <Image src={"/images/comment-container.svg"} className="w-full h-full" width={381} height={365} alt="" />
+        <section className="relative flex felx-row items-center justify-center max-w-screen w-[330px] sm:w-[381px] h-[365px]">
+            <Image src={"/images/comment-container.svg"} className="w-full h-auto" width={381} height={365} alt="" />
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-[47px] px-[26px] pt-[44px] pb-[38px]">
                 <div className="relative ">
 
-                    <p className="font-inter font-bold font-italic text-[25px] leading-[30px] tracking-[-0.02em] text-[#000000]">
+                    <p className="font-inter font-bold font-italic text-[20px] sm:text-[25px] leading-[30px] tracking-[-0.02em] text-[#000000] ">
                         {quote}
                     </p>
-                    <Image src={"/images/quote.svg"} className="absolute bottom-[-14px] right-[48px] max-h-[32px] rotate-[180deg]" width={100} height={100} alt="" />
+                    <Image src={"/images/quote.svg"} className="absolute bottom-[-28px] sm:bottom-[-14px] right-[48px] max-h-[32px] rotate-[180deg]" width={100} height={100} alt="" />
 
                 </div>
 

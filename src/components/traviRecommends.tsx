@@ -3,7 +3,7 @@ export default function TraviRecommends() {
     return (
         <section className="relative z-10 flex flex-col items-center justify-center px-[20px] py-[60px] lg:py-[100px] lg:px-[140px] gap-[28px] lg:gap-[40px]">
             <div className="flex flex-col items-center justify-center gap-[28px] text-center">
-                <h2 className="flex flex-row items-center justify-center gap-[6px]"><span className="heading-2">Travi</span><span className="stylish-yellow-text"> Recommends</span></h2>
+                <h2 className="flex flex-row items-center justify-center gap-[6px] flex-wrap"><span className="heading-2">Travi</span><span className="stylish-yellow-text"> Recommends</span></h2>
                 <p className="font-inter font-normal text-[22px] leading-[32px] tracking-[-0.02em]">
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec a ipsum nec tellus venenatis venenatis a quis tortor. Aliquam erat volutpat. Donec sed mi risus.
                 </p>

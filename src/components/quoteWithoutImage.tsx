@@ -1,7 +1,7 @@
 import Image from "next/image"
 export default function QuoteWithoutImage() {
     return (
-        <section className="relative flex flex-row items-center justify-center w-[381px] h-[246px]">
+        <section className="relative flex flex-row items-center justify-center w-[350px] sm:w-[381px] h-[246px]">
             <Image src={"/images/quote-noimage-container.svg"} className="w-full h-full" width={381} height={246} alt="" />
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-[47px] pl-[28px] pt-[73px] pb-[65px] ">
                 <div className=" ">
