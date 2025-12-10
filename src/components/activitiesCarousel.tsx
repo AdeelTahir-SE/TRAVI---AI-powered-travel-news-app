@@ -173,7 +173,7 @@ function CarouselItem({
   return (
     <>
       {isActive ? (
-        <section className="relative rounded-[3280px] lg:rounded-[5000px] flex-shrink-0 min-w-[320px] lg:w-[490px] min-h-[527px] lg:h-[803px] relative  border-white shadow-2xl shadow-black ">
+        <section className="cursor-pointer hover:scale-105 transition-all duration-300 relative rounded-[3280px] lg:rounded-[5000px] flex-shrink-0 min-w-[320px] lg:w-[490px] min-h-[527px] lg:h-[803px] relative  border-white shadow-2xl shadow-black ">
           <Image
             src={imageUrl}
             width={320}

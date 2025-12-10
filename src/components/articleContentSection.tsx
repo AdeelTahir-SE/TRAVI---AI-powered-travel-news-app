@@ -39,12 +39,15 @@ export default function ArticleContentSection({ article }: { article: Article })
             </div>
             <div className="overflow-hidden rounded-[20px] h-[210px] max-h-[210px] sm:max-h-[647px] sm:h-[400px] lg:h-[647px] relative flex flex-col items-center justify-center min-w-full rounded-[20px]">
                 <Image src={article?.images?.[1]} width={700} height={835} className="h-auto object-cover  min-w-full h-[210px] sm:h-[400px] max-h-[210px] lg:h-[647px] sm:max-h-[647px] rounded-[20px]" alt="" />
-                <div className="absolute flex flex-row items-center justify-center overflow-hidden gap-[30px] bottom-[-250px] overflow-hidden *:relative bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_40%,rgba(255,255,255,1)_90.94%,rgba(255,255,255,0.9)_100%)]" >
-                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="w-[1200px] h-[400px] left-[200px]" alt="" />
-                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="w-[1200px] h-[400px] left-[400px]" alt="" />
-                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="w-[1200px] h-[400px]" alt="" />
-                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="w-[1200px] h-[400px] right-[400px]" alt="" />
-                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="w-[1200px] h-[400px] right-[800px]" alt="" />
+                <div className="z-10 absolute flex flex-row items-center justify-center overflow-hidden gap-[30px] bottom-[-250px] 2xl:bottom-[-230px] min-w-full overflow-hidden *:relative " >
+                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="min-w-[800px] lg:min-w-[1200px] w-[1200px] h-[400px] left-[200px]" alt="" />
+                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="min-w-[800px] lg:min-w-[1200px] w-[1200px] h-[400px] left-[400px]" alt="" />
+                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="min-w-[800px] lg:min-w-[1200px] w-[1200px] h-[400px]" alt="" />
+                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="min-w-[800px] lg:min-w-[1200px] w-[1200px] h-[400px] right-[400px]" alt="" />
+                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="min-w-[800px] lg:min-w-[1200px] w-[1200px] h-[400px] right-[800px]" alt="" />
+
+                </div>
+                <div className="absolute z-0 bottom-0 w-full h-[20px] md:h-[50px] lg:h-[100px] 2xl:h-[200px] bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.5)_40%,rgba(255,255,255,1)_90.94%,rgba(255,255,255,0.9)_100%)] ">
 
                 </div>
             </div>
@@ -76,12 +79,15 @@ export default function ArticleContentSection({ article }: { article: Article })
             </div>
             <div className="overflow-hidden rounded-[20px] h-[210px] max-h-[210px] sm:max-h-[647px] sm:h-[400px] lg:h-[647px] relative flex flex-col items-center justify-center min-w-full rounded-[20px]">
                 <Image src={article?.images?.[2]} width={700} height={835} className="h-auto object-cover  min-w-full h-[210px] sm:h-[400px] max-h-[210px] lg:h-[647px] sm:max-h-[647px] rounded-[20px]" alt="" />
-                <div className="absolute flex flex-row items-center justify-center overflow-hidden gap-[30px] bottom-[-250px] overflow-hidden *:relative bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,1)_40%,rgba(255,255,255,1)_90.94%,rgba(255,255,255,0.9)_100%)]" >
-                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="w-[1200px] h-[400px] left-[200px]" alt="" />
-                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="w-[1200px] h-[400px] left-[400px]" alt="" />
-                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="w-[1200px] h-[400px]" alt="" />
-                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="w-[1200px] h-[400px] right-[400px]" alt="" />
-                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="w-[1200px] h-[400px] right-[800px]" alt="" />
+                <div className="z-10 absolute flex flex-row items-center justify-center overflow-hidden gap-[30px] bottom-[-250px] 2xl:bottom-[-230px] min-w-full overflow-hidden *:relative " >
+                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="min-w-[800px] lg:min-w-[1200px] w-[1200px] h-[400px] left-[200px]" alt="" />
+                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="min-w-[800px] lg:min-w-[1200px] w-[1200px] h-[400px] left-[400px]" alt="" />
+                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="min-w-[800px] lg:min-w-[1200px] w-[1200px] h-[400px]" alt="" />
+                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="min-w-[800px] lg:min-w-[1200px] w-[1200px] h-[400px] right-[400px]" alt="" />
+                    <Image src={"/clouds/cloud.svg"} width={1200} height={400} className="min-w-[800px] lg:min-w-[1200px] w-[1200px] h-[400px] right-[800px]" alt="" />
+
+                </div>
+                <div className="absolute z-0 bottom-0 w-full h-[20px] md:h-[50px] lg:h-[100px] 2xl:h-[200px] bg-[linear-gradient(180deg,rgba(255,255,255,0)_0%,rgba(255,255,255,0.5)_40%,rgba(255,255,255,1)_90.94%,rgba(255,255,255,0.9)_100%)] ">
 
                 </div>
             </div>

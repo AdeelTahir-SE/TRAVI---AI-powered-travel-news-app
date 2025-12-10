@@ -37,8 +37,8 @@ export default function HotelDetailsEssentialInformation({ information, image }:
 function EssentialItem({ image, title, desc }: { image?: string, title?: string, desc?: string }) {
     return (
         <div className="bg-white w-full rounded-[24px] flex flex-row items-center justify-start gap-[20px] lg:gap-[32px] p-[20px] lg:p-[32px] border-[1px] border-[#D0D5DD]">
-            <div className="flex flex-row items-center justify-center rounded-[16px] gap-[10px] bg-[#4999D21A] w-[64px] h-[64px] lg:w-[80px] lg:h-[80px]">
-                {image && <Image src={image} className="w-[32px] lg:w-[46px] h-[32px] lg:h-[46px] " width={46} height={46} alt="" />}
+            <div className="flex flex-row items-center justify-center rounded-[16px] gap-[10px] bg-[#4999D21A] min-w-[64px] min-h-[64px] lg:min-w-[80px] lg:min-h-[80px] w-[64px] h-[64px] lg:w-[80px] lg:h-[80px]">
+                {image && <Image src={image} className="w-[32px]  lg:w-[46px] h-[32px] lg:h-[46px] " width={46} height={46} alt="" />}
             </div>
 
             <div className="flex flex-col items-start justify-center gap-[12px]">

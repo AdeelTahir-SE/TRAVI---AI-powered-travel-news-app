@@ -1,8 +1,8 @@
 import Image from "next/image"
 export default function ArticleCloudSection() {
     return (
-        <div className="absolute flex flex-col items-center justify-center bottom-0 overflow-hidden w-full h-[100px] 2xl:h-[200px]">
-            <div className="flex flex-row items-center justify-around relative w-full *:z-20 *:2xl:top-[-74] *:top-[-30] *:lg:top-[-40]">
+        <div className="absolute flex flex-col items-center justify-center bottom-0 overflow-hidden w-full h-[100px] bg-transparent 2xl:h-[200px]">
+            <div className="flex flex-row items-center justify-around relative w-full *:min-h-[200px] *:z-20 *:2xl:top-[-74] *:top-[-70px] *:lg:top-[-40]">
                 <Image
                     src="/clouds/cloud.svg"
                     className="absolute w-1/2 right-4  h-auto"
@@ -77,7 +77,7 @@ export default function ArticleCloudSection() {
             <div
                 className="
       absolute inset-0 z-0
-      bg-[linear-gradient(to_bottom,rgba(255,255,255,0.1)_0%,rgba(35,132,200,0)_33.27%,rgba(255,255,255,0.2)_70%,rgba(255,255,255,1)_100%)]
+      bg-[linear-gradient(to_bottom,rgba(255,255,255,0)_0%,rgba(35,132,200,0)_33.27%,rgba(255,255,255,0.2)_70%,rgba(255,255,255,1)_100%)]
     "
             ></div>
         </div>

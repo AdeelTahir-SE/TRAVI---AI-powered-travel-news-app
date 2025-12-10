@@ -8,7 +8,7 @@ export default function FAQSection({ faqs }: { faqs?: { question: string, answer
     setActive(index);
   }
   return (
-    <>{faqs && faqs?.length > 0 && <section className="flex flex-col items-center justify-center py-[60px] px-[20px] text-center  sm:px-[100px] sm:py-[140px] sm:gap-[80px] gap-[48px]">
+    <>{faqs && faqs?.length > 0 && <section className="flex flex-col items-center justify-center py-[60px] px-[20px] text-center  sm:px-[100px] sm:py-[140px] sm:gap-[80px] gap-[48px] min-w-full">
       {/* heading */}
       <div className="flex flex-col items-center justify-center gap-[12px]">
         <h2 className="stylish-yellow-text">Faq&apos;s</h2>

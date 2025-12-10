@@ -4,7 +4,7 @@ export default function TravelerTips({ tips, image }: { tips?: string[], image?:
         <section className="flex flex-col items-center justify-center gap-[80px] py-[60px] lg:py-[100px] px-[20px] lg:px-[140px] min-w-full">
             <div className="min-w-full flex flex-col items-start justify-center rounded-[24px] gap-[32px] p-[32px] lg:rounded-[60px] lg:p-[72px] lg:gap-[48px] bg-[#112259] text-white">
                 <h2 className="font-manrope font-extrabold text-[40px] lg:text-[48px] leading-[100%] tracking-[0.03em]">Traveler Tips</h2>
-                <div className="grid grid-cols-1 2xl:grid-cols-2 gap-[32px] lg:gap-[60px] ">
+                <div className="grid grid-cols-1 2xl:grid-cols-2 gap-[32px] lg:gap-[60px] w-full">
 
 
 
@@ -40,8 +40,8 @@ export default function TravelerTips({ tips, image }: { tips?: string[], image?:
                             • <span className="font-medium">Pack swimwear and sunscreen:</span> You'll want to take full advantage of the pools and beach
                         </p> */}
                     </div>
-                    {image && <div className="flex flex-row items-center justify-center rounded-[32px]">
-                        <Image src={image} width={600} height={400} className="rounded-[32px] w-full h-full" alt="" />
+                    {image && <div className="flex flex-row items-center justify-center rounded-[32px] w-full ">
+                        <Image src={image} width={600} height={400} className="rounded-[32px] w-full h-full object-cover" alt="" />
                     </div>}
                 </div>
             </div>

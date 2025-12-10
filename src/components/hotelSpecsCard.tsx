@@ -2,7 +2,7 @@ import Image from "next/image";
 export default function HotelSpecsCard({ imageurl, title, description }: { imageurl: string, title: string, description: string }) {
   return (
     <section className="bg-white flex flex-row items-center justify-start p-[20px] lg:p-6 gap-[16px] lg:gap-[24px] rounded-[16px] lg:rounded-[24px] border-1 border-[#D0D5DD] shadow-[0px_4px_40px_0px_rgba(127,127,127,0.25)] w-[390px]">
-      <div className="w-[70px] h-[70px] bg-[#F2F4F7] flex items-center justify-center rounded-[12px]">
+      <div className="min-w-[70px] min-h-[70px] bg-[#F2F4F7] flex items-center justify-center rounded-[12px]">
         <Image
           src={imageurl}
           width={40}
