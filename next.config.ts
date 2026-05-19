@@ -16,6 +16,15 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "travi-ai-powered-travel-news-app.vercel.app",
       },
+      // DALL-E 3 generated image CDN
+      {
+        protocol: "https",
+        hostname: "oaidalleapiprodscus.blob.core.windows.net",
+      },
+      {
+        protocol: "https",
+        hostname: "*.openai.azure.com",
+      },
     ],
   },
 };

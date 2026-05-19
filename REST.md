@@ -94,7 +94,7 @@
 | 39 | `next.config.js` — add Supabase storage domain to `images.domains` | 🟢 Done | Upgraded to `remotePatterns` with Supabase storage pathname pattern |
 | 40 | Error boundary component for graceful UI failures | 🟢 Done | `src/components/ErrorBoundary.tsx` — class component, shows recovery UI |
 | 41 | Loading skeleton screens (instead of spinner-only) | 🟢 Done | `src/components/Skeletons.tsx` — `AdminPageSkeleton` used in hotels & articles |
-| 42 | Sitemap (`/sitemap.xml`) for SEO | 🔴 Not started | |
+| 42 | Sitemap (`/sitemap.xml`) for SEO | 🟢 Done | `src/app/sitemap.ts` — dynamic, fetches all articles & hotels from Supabase; revalidates hourly |
 | 43 | `robots.txt` | 🟢 Done | Created at `public/robots.txt` — allows public, blocks `/admin/*` |
 
 ---
@@ -104,7 +104,7 @@
 | # | Task | Status | Notes |
 |---|------|--------|-------|
 | 44 | Toast notification system (success / error) instead of `alert()` | 🟢 Done | All `alert()`/`confirm()` replaced in hotels & articles; slide-in toasts bottom-right |
-| 45 | Mobile responsiveness audit — admin panel on tablet | 🟡 Partial | Sidebar collapses; forms need testing |
+| 45 | Mobile responsiveness audit — admin panel on tablet | 🟢 Done | Sidebar: `lg`→`md` breakpoint (tablets get permanent sidebar); hamburger phone-only; form grids all get `sm:` prefixes; `pt-16 md:pt-0` on main content |
 | 46 | Dark mode support (admin panel) | 🔴 Not started | |
 | 47 | Keyboard accessibility (focus traps in modals, escape to close) | 🔴 Not started | |
 | 48 | `favicon.ico` / `apple-touch-icon` | 🔴 Not started | |

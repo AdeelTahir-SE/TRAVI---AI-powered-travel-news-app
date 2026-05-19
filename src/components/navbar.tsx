@@ -54,7 +54,7 @@ export default function Navbar() {
             <Link href="/">About</Link>
           </li>
           <li className="font-inter font-normal text-[20px] leading-[30px] -tracking-[0.02em] text-white">
-            <Link href="/">Contact</Link>
+            <Link href="/contact">Contact</Link>
           </li>
         </ul>
 

@@ -55,7 +55,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <ToastProvider>
                 <div className="flex min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
                     <Sidebar onLogout={handleLogout} />
-                    <main className="flex-1 overflow-x-hidden overflow-y-auto">
+                    <main className="flex-1 overflow-x-hidden overflow-y-auto pt-16 md:pt-0">
                         {children}
                     </main>
                 </div>

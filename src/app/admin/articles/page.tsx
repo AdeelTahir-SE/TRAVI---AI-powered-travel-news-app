@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/utils/supabase'
 import { Article, Quotation, Subsection } from '@/utils/types'
 import ImageUpload from '@/components/admin/ImageUpload'
+import ImageGenerator from '@/components/admin/ImageGenerator'
 import { useToast } from '@/components/admin/Toaster'
 import { AdminPageSkeleton } from '@/components/Skeletons'
 
@@ -342,14 +343,21 @@ export default function ArticlesAdminPage() {
                                     </div>
 
                                     {/* Images (3) */}
-                                    <ImageUpload
-                                        multiple={true}
-                                        onUploadComplete={handleImageUpload}
-                                        existingImages={formData.images || []}
-                                        label="Article Images (3 Required)"
-                                        bucket="article-images"
-                                        folder="articles"
-                                    />
+                                    <div>
+                                        <ImageUpload
+                                            multiple={true}
+                                            onUploadComplete={handleImageUpload}
+                                            existingImages={formData.images || []}
+                                            label="Article Images (3 Required)"
+                                            bucket="article-images"
+                                            folder="articles"
+                                        />
+                                        <ImageGenerator
+                                            context={formData.title ? `Travel article: ${formData.title}` : 'Travel article hero image'}
+                                            label="Generate Article Image with DALL·E 3"
+                                            onGenerated={(url) => handleImageUpload([...(formData.images || []), url])}
+                                        />
+                                    </div>
 
                                     {/* Published Date */}
                                     <div>
@@ -434,7 +442,7 @@ export default function ArticlesAdminPage() {
                                     {/* Quotation 1 */}
                                     <div className="border-t border-gray-400 pt-6">
                                         <label className="block text-sm font-semibold text-gray-700 mb-3">Quotation 1 (Full)</label>
-                                        <div className="grid grid-cols-2 gap-4">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <div className="col-span-2">
                                                 <label className="block text-xs font-medium text-gray-600 mb-1">Quote</label>
                                                 <textarea
@@ -489,7 +497,7 @@ export default function ArticlesAdminPage() {
                                     {/* Quotation 2 */}
                                     <div className="border-t border-gray-400 pt-6">
                                         <label className="block text-sm font-semibold text-gray-700 mb-3">Quotation 2 (Simplified)</label>
-                                        <div className="grid grid-cols-2 gap-4">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <div className="col-span-2">
                                                 <label className="block text-xs font-medium text-gray-600 mb-1">Quote</label>
                                                 <textarea

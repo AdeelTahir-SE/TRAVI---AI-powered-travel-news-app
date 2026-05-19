@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { supabase } from '@/utils/supabase'
 import { Hotel } from '@/utils/types'
 import ImageUpload from '@/components/admin/ImageUpload'
+import ImageGenerator from '@/components/admin/ImageGenerator'
 import { useToast } from '@/components/admin/Toaster'
 import { AdminPageSkeleton } from '@/components/Skeletons'
 
@@ -385,12 +386,19 @@ export default function HotelsPage() {
                                     </div>
 
                                     {/* Image Uploads */}
-                                    <ImageUpload
-                                        label="Main Hotel Image"
-                                        multiple={false}
-                                        existingImages={formData.main_image ? [formData.main_image] : []}
-                                        onUploadComplete={(urls) => handleInputChange('main_image', urls[0] || '')}
-                                    />
+                                    <div>
+                                        <ImageUpload
+                                            label="Main Hotel Image"
+                                            multiple={false}
+                                            existingImages={formData.main_image ? [formData.main_image] : []}
+                                            onUploadComplete={(urls) => handleInputChange('main_image', urls[0] || '')}
+                                        />
+                                        <ImageGenerator
+                                            context={formData.title ? `Main hero image for hotel: ${formData.title}` : 'Luxury hotel exterior or lobby'}
+                                            label="Generate Main Image with DALL·E 3"
+                                            onGenerated={(url) => handleInputChange('main_image', url)}
+                                        />
+                                    </div>
 
                                     <div>
                                         <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -449,29 +457,55 @@ export default function HotelsPage() {
                                             existingImages={[]}
                                             onUploadComplete={(urls) => handleInputChange('about_hotel_images', [...(formData.about_hotel_images || []), ...urls])}
                                         />
+                                        <ImageGenerator
+                                            context={formData.title ? `Hotel interior / amenity photo for ${formData.title}` : 'Hotel interior room or amenity'}
+                                            label="Generate About Image with DALL·E 3"
+                                            onGenerated={(url) => handleInputChange('about_hotel_images', [...(formData.about_hotel_images || []), url])}
+                                        />
                                         <p className="text-xs text-gray-400 mt-1">Hover a thumbnail to reorder with ← → or remove with ×. Minimum 4 images required.</p>
                                     </div>
 
-                                    <ImageUpload
-                                        label="Essential Information Image *"
-                                        multiple={false}
-                                        existingImages={formData.essential_information_image ? [formData.essential_information_image] : []}
-                                        onUploadComplete={(urls) => handleInputChange('essential_information_image', urls[0] || '')}
-                                    />
+                                    <div>
+                                        <ImageUpload
+                                            label="Essential Information Image *"
+                                            multiple={false}
+                                            existingImages={formData.essential_information_image ? [formData.essential_information_image] : []}
+                                            onUploadComplete={(urls) => handleInputChange('essential_information_image', urls[0] || '')}
+                                        />
+                                        <ImageGenerator
+                                            context={formData.title ? `Hotel essential information visual for ${formData.title}` : 'Hotel check-in desk or concierge'}
+                                            label="Generate Essential Info Image"
+                                            onGenerated={(url) => handleInputChange('essential_information_image', url)}
+                                        />
+                                    </div>
 
-                                    <ImageUpload
-                                        label="Traveler Tips Image *"
-                                        multiple={false}
-                                        existingImages={formData.traveler_tips_image ? [formData.traveler_tips_image] : []}
-                                        onUploadComplete={(urls) => handleInputChange('traveler_tips_image', urls[0] || '')}
-                                    />
+                                    <div>
+                                        <ImageUpload
+                                            label="Traveler Tips Image *"
+                                            multiple={false}
+                                            existingImages={formData.traveler_tips_image ? [formData.traveler_tips_image] : []}
+                                            onUploadComplete={(urls) => handleInputChange('traveler_tips_image', urls[0] || '')}
+                                        />
+                                        <ImageGenerator
+                                            context={formData.title ? `Traveler tips lifestyle photo for ${formData.title}` : 'Traveler tips, suitcase or map'}
+                                            label="Generate Traveler Tips Image"
+                                            onGenerated={(url) => handleInputChange('traveler_tips_image', url)}
+                                        />
+                                    </div>
 
-                                    <ImageUpload
-                                        label="Hotel Cloud Image *"
-                                        multiple={false}
-                                        existingImages={formData.hotel_cloud_image ? [formData.hotel_cloud_image] : []}
-                                        onUploadComplete={(urls) => handleInputChange('hotel_cloud_image', urls[0] || '')}
-                                    />
+                                    <div>
+                                        <ImageUpload
+                                            label="Hotel Cloud Image *"
+                                            multiple={false}
+                                            existingImages={formData.hotel_cloud_image ? [formData.hotel_cloud_image] : []}
+                                            onUploadComplete={(urls) => handleInputChange('hotel_cloud_image', urls[0] || '')}
+                                        />
+                                        <ImageGenerator
+                                            context={formData.title ? `Aerial or skyline view of ${formData.title}` : 'Aerial hotel view, Dubai skyline or pool'}
+                                            label="Generate Cloud / Aerial Image"
+                                            onGenerated={(url) => handleInputChange('hotel_cloud_image', url)}
+                                        />
+                                    </div>
 
                                     {/* Highlights Descriptions */}
                                     <div>
@@ -582,7 +616,7 @@ export default function HotelsPage() {
                                     </div>
 
                                     {/* Optional Fields */}
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-2">Location</label>
                                             <input
@@ -605,7 +639,7 @@ export default function HotelsPage() {
                                     </div>
 
 
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-2">Rating Description</label>
@@ -627,7 +661,7 @@ export default function HotelsPage() {
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-3 gap-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-2">Rating (0–5)</label>
                                             {/* Star picker */}
@@ -699,7 +733,7 @@ export default function HotelsPage() {
                                         </div>
                                     </div>
 
-                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
                                             <label className="block text-sm font-semibold text-gray-700 mb-2">Check Rates Link</label>
                                             <input
@@ -735,7 +769,7 @@ export default function HotelsPage() {
                                         <label className="block text-sm font-semibold text-gray-700 mb-3">
                                             Essential Information
                                         </label>
-                                        <div className="grid grid-cols-2 gap-4 border border-gray-200 rounded-lg p-4 bg-gray-50">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border border-gray-200 rounded-lg p-4 bg-gray-50">
                                             <div>
                                                 <label className="block text-xs font-medium text-gray-600 mb-1">Check-in / Check-out</label>
                                                 <input
