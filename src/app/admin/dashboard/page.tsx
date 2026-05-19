@@ -198,7 +198,7 @@ export default function AdminDashboard() {
                                 href={action.href}
                                 className="group bg-white rounded-[20px] shadow-[9px_9px_75px_0px_#00000029] hover:shadow-[9px_9px_100px_0px_#00000040] p-6 transition-all duration-300 hover:-translate-y-1.5 flex flex-col gap-4 border-t-4 border-transparent hover:border-t-4"
                                 style={{ borderTopColor: 'transparent' }}
-                                onMouseEnter={e => (e.currentTarget.style.borderTopColor = action.accent.replace('border-', '').split('[')[1]?.replace(']', '') || '#F8A900')}
+                                onMouseEnter={e => (e.currentTarget.style.borderTopColor = action.border.replace('border-', '').split('[')[1]?.replace(']', '') || '#F8A900')}
                                 onMouseLeave={e => (e.currentTarget.style.borderTopColor = 'transparent')}
                             >
                                 <div className="flex items-center justify-between">

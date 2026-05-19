@@ -29,7 +29,7 @@ const STATUS_DOT: Record<AdminUser['status'], string> = {
 }
 
 export default function AdminUsersPage() {
-    const { showToast } = useToast()
+    const { toast } = useToast()
     const [users, setUsers] = useState<AdminUser[]>([])
     const [loading, setLoading] = useState(true)
     const [currentUserId, setCurrentUserId] = useState<string | null>(null)
@@ -45,7 +45,7 @@ export default function AdminUsersPage() {
             .order('created_at', { ascending: false })
 
         if (error) {
-            showToast('Failed to load admin users.', 'error')
+            toast('Failed to load admin users.', 'error')
         } else {
             setUsers(data ?? [])
             // Determine if current user is super_admin
@@ -88,9 +88,9 @@ export default function AdminUsersPage() {
         const { error } = await supabase.rpc(RPC_MAP[action], { target_id: userId })
 
         if (error) {
-            showToast(error.message || 'Action failed.', 'error')
+            toast(error.message || 'Action failed.', 'error')
         } else {
-            showToast(`User ${ACTION_LABEL[action]} successfully.`, 'success')
+            toast(`User ${ACTION_LABEL[action]} successfully.`, 'success')
             if (currentUserId) await fetchAll(currentUserId)
         }
 

@@ -19,7 +19,7 @@ export function FormSection({ id, number, title, description, icon, children }: 
         <div id={id} className="scroll-mt-4">
             {/* Section header */}
             <div className="flex items-start gap-3 mb-5">
-                <div className="flex-shrink-0 w-8 h-8 rounded-[10px] bg-[#F8A900] flex items-center justify-center shadow-sm">
+                <div className="flex-none w-8 h-8 rounded-[10px] bg-[#F8A900] flex items-center justify-center shadow-sm">
                     <span className="text-black text-xs font-extrabold font-manrope">{number}</span>
                 </div>
                 <div className="flex-1">
@@ -75,7 +75,7 @@ export function SubCard({ label, index, onRemove, children, accent = 'bg-gray-50
         <div className={`rounded-xl border border-gray-100 ${accent} overflow-hidden`}>
             <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-100 bg-white">
                 <div className="flex items-center gap-2">
-                    <span className="w-5 h-5 rounded-full bg-[#F8A900] text-black text-[10px] font-extrabold flex items-center justify-center font-manrope flex-shrink-0">
+                    <span className="w-5 h-5 rounded-full bg-[#F8A900] text-black text-[10px] font-extrabold flex items-center justify-center font-manrope flex-none">
                         {index + 1}
                     </span>
                     <span className="text-[13px] font-semibold text-[#112259] font-inter">{label} #{index + 1}</span>
@@ -118,10 +118,17 @@ export function AddButton({ onClick, label }: AddButtonProps) {
 
 interface SectionNavProps {
     sections: { id: string; label: string; icon: React.ReactNode }[]
+    activeSectionId?: string
+    onSelect?: (id: string) => void
 }
 
-export function SectionNav({ sections }: SectionNavProps) {
+export function SectionNav({ sections, activeSectionId, onSelect }: SectionNavProps) {
     const scroll = (id: string) => {
+        if (onSelect) {
+            onSelect(id)
+            return
+        }
+
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
     return (
@@ -131,12 +138,12 @@ export function SectionNav({ sections }: SectionNavProps) {
                     key={s.id}
                     type="button"
                     onClick={() => scroll(s.id)}
-                    className="cursor-pointer flex items-center gap-2.5 px-3 py-2 rounded-xl text-left hover:bg-[#F8A900]/10 transition-colors group"
+                    className={`cursor-pointer flex items-center gap-2.5 px-3 py-2 rounded-xl text-left transition-colors group ${activeSectionId === s.id ? 'bg-[#F8A900]/15 ring-1 ring-[#F8A900]/40' : 'hover:bg-[#F8A900]/10'}`}
                 >
-                    <span className="w-5 h-5 rounded-full bg-[#F8A900]/20 text-[#112259] text-[10px] font-bold flex items-center justify-center flex-shrink-0 group-hover:bg-[#F8A900] group-hover:text-black transition-colors font-manrope">
+                    <span className={`w-5 h-5 rounded-full text-[10px] font-bold flex items-center justify-center flex-none transition-colors font-manrope ${activeSectionId === s.id ? 'bg-[#F8A900] text-black' : 'bg-[#F8A900]/20 text-[#112259] group-hover:bg-[#F8A900] group-hover:text-black'}`}>
                         {i + 1}
                     </span>
-                    <span className="text-xs font-medium text-gray-500 group-hover:text-[#112259] transition-colors font-inter truncate">{s.label}</span>
+                    <span className={`text-xs font-medium transition-colors font-inter truncate ${activeSectionId === s.id ? 'text-[#112259]' : 'text-gray-500 group-hover:text-[#112259]'}`}>{s.label}</span>
                 </button>
             ))}
         </nav>

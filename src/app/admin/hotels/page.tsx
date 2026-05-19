@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { supabase } from '@/utils/supabase'
 import { Hotel } from '@/utils/types'
@@ -8,7 +8,7 @@ import ImageUpload from '@/components/admin/ImageUpload'
 import ImageGenerator from '@/components/admin/ImageGenerator'
 import { useToast } from '@/components/admin/Toaster'
 import { AdminPageSkeleton } from '@/components/Skeletons'
-import { FormSection, FieldLabel, SubCard, AddButton, SectionNav, inputCls, textareaCls } from '@/components/admin/FormSection'
+import { SectionNav } from '@/components/admin/FormSection'
 
 export default function HotelsPage() {
     const { toast } = useToast()
@@ -16,6 +16,7 @@ export default function HotelsPage() {
     const [loading, setLoading] = useState(true)
     const [showModal, setShowModal] = useState(false)
     const [editingHotel, setEditingHotel] = useState<Hotel | null>(null)
+    const [currentStep, setCurrentStep] = useState(0)
     const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null)
     const [formData, setFormData] = useState<Partial<Hotel>>({
         title: '',
@@ -23,12 +24,7 @@ export default function HotelsPage() {
         about_hotel_images: [],
     })
 
-    useEffect(() => {
-        fetchHotels()
-    }, [])
-
-    const fetchHotels = async () => {
-        setLoading(true)
+    const fetchHotels = useCallback(async () => {
         const { data, error } = await supabase
             .from('hotel')
             .select('*')
@@ -41,10 +37,19 @@ export default function HotelsPage() {
             setHotels(data || [])
         }
         setLoading(false)
-    }
+    }, [toast])
+
+    useEffect(() => {
+        const timer = window.setTimeout(() => {
+            void fetchHotels()
+        }, 0)
+
+        return () => window.clearTimeout(timer)
+    }, [fetchHotels])
 
     const handleCreate = () => {
         setEditingHotel(null)
+        setCurrentStep(0)
         setFormData({
             title: 'Paradise Beach Resort',
             tagline: 'Your Perfect Tropical Getaway',
@@ -133,9 +138,29 @@ export default function HotelsPage() {
 
     const handleEdit = (hotel: Hotel) => {
         setEditingHotel(hotel)
+        setCurrentStep(0)
         setFormData(hotel)
         setShowModal(true)
     }
+
+    const hotelSections = [
+        { id: 's-basic', label: 'Basic Info' },
+        { id: 's-images', label: 'Images & Media' },
+        { id: 's-highlights', label: 'Highlights' },
+        { id: 's-content', label: 'About Hotel' },
+        { id: 's-location', label: 'Location & Details' },
+    ]
+
+    const closeModal = () => {
+        setShowModal(false)
+        setCurrentStep(0)
+    }
+
+    const goToStep = (step: number) => {
+        setCurrentStep(Math.max(0, Math.min(step, hotelSections.length - 1)))
+    }
+
+    const isLastStep = currentStep === hotelSections.length - 1
 
     const handleDelete = async (hotelId: string) => {
         const { error } = await supabase
@@ -207,7 +232,7 @@ export default function HotelsPage() {
                 toast('Failed to update hotel: ' + error.message, 'error')
             } else {
                 toast('Hotel updated successfully!', 'success')
-                setShowModal(false)
+                closeModal()
                 fetchHotels()
             }
         } else {
@@ -221,19 +246,14 @@ export default function HotelsPage() {
                 toast('Failed to create hotel: ' + error.message, 'error')
             } else {
                 toast('Hotel created successfully!', 'success')
-                setShowModal(false)
+                closeModal()
                 fetchHotels()
             }
         }
     }
 
-    const handleInputChange = (field: keyof Hotel, value: any) => {
+    const handleInputChange = (field: keyof Hotel, value: Hotel[keyof Hotel]) => {
         setFormData(prev => ({ ...prev, [field]: value }))
-    }
-
-    const handleArrayInput = (field: keyof Hotel, value: string) => {
-        const array = value.split(',').map(item => item.trim()).filter(item => item)
-        setFormData(prev => ({ ...prev, [field]: array }))
     }
 
     return (
@@ -297,7 +317,7 @@ export default function HotelsPage() {
                                             )}
                                         </div>
                                     </div>
-                                    <div className="flex gap-2 flex-shrink-0">
+                                    <div className="flex gap-2 shrink-0">
                                         <button
                                             onClick={() => handleEdit(hotel)}
                                             className="cursor-pointer flex items-center gap-1.5 bg-[#F8A900] hover:bg-[#e09800] text-black px-4 py-2 rounded-xl text-sm font-bold font-manrope transition-all duration-200"
@@ -340,8 +360,8 @@ export default function HotelsPage() {
                 {/* Modal for Create/Edit */}
                 {showModal && (
                     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
-                        <div className="bg-white rounded-[24px] shadow-[9px_9px_75px_0px_#00000029] max-w-5xl w-full max-h-[90vh] overflow-hidden my-8 flex flex-col">
-                            <div className="sticky z-20 top-0 bg-white border-b border-gray-100 px-6 py-5 flex justify-between items-center rounded-t-[24px]">
+                        <div className="bg-white rounded-3xl shadow-[9px_9px_75px_0px_#00000029] max-w-5xl w-full max-h-[90vh] overflow-hidden my-8 flex flex-col">
+                            <div className="sticky z-20 top-0 bg-white border-b border-gray-100 px-6 py-5 flex justify-between items-center rounded-t-3xl">
                                 <div>
                                     <h2 className="font-manrope font-extrabold text-[20px] tracking-tight text-[#112259]">
                                         {editingHotel ? 'Edit Hotel' : 'New Hotel'}
@@ -349,7 +369,7 @@ export default function HotelsPage() {
                                     <p className="text-xs text-gray-400 mt-0.5 font-inter">{editingHotel ? 'Update hotel details and images' : 'Fill in hotel details to publish'}</p>
                                 </div>
                                 <button
-                                    onClick={() => setShowModal(false)}
+                                    onClick={closeModal}
                                     className="cursor-pointer p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
                                     aria-label="Close modal"
                                 >
@@ -359,18 +379,17 @@ export default function HotelsPage() {
 
                             <form onSubmit={handleSubmit} className="flex flex-1 overflow-hidden">
                                     {/* Sidebar Nav */}
-                                    <div className="w-52 flex-shrink-0 border-r border-gray-100 p-4 overflow-y-auto bg-gray-50/50 hidden md:block">
+                                    <div className="w-52 shrink-0 border-r border-gray-100 p-4 overflow-y-auto bg-gray-50/50 hidden md:block">
                                         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 font-inter">Sections</p>
-                                        <SectionNav sections={[
-                                            {id:"s-basic",label:"Basic Info",icon:null},{id:"s-images",label:"Images",icon:null},
-                                            {id:"s-highlights",label:"Highlights",icon:null},{id:"s-location",label:"Details",icon:null},
-                                            {id:"s-essential",label:"Essential Info",icon:null},{id:"s-tips",label:"Tips & FAQs",icon:null},
-                                            {id:"s-rooms",label:"Rooms",icon:null}
-                                        ]} />
+                                        <SectionNav
+                                            sections={hotelSections.map((section) => ({ ...section, icon: null }))}
+                                            activeSectionId={hotelSections[currentStep]?.id}
+                                            onSelect={(id) => setCurrentStep(hotelSections.findIndex((section) => section.id === id))}
+                                        />
                                     </div>
                                     {/* Form Content */}
                                     <div className="flex-1 overflow-y-auto p-6 space-y-8">
-                                    <div id="s-basic" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Basic Info</h3></div><div><label className="block text-[13px] font-semibold text-[#112259] mb-1.5 font-inter">Title <span className="text-red-600">*</span>
+                                    <div id="s-basic" className={currentStep === 0 ? "scroll-mt-2" : "hidden"}><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Basic Info</h3></div><div><label className="block text-[13px] font-semibold text-[#112259] mb-1.5 font-inter">Title <span className="text-red-600">*</span>
                                         </label>
                                         <input
                                             type="text"
@@ -394,7 +413,7 @@ export default function HotelsPage() {
                                         />
                                     </div>
 
-                                    <div id="s-images" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Images & Media</h3></div>
+                                    <div id="s-images" className={currentStep === 1 ? "scroll-mt-2" : "hidden"}><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Images & Media</h3></div>
                                     <div>
                                         <ImageUpload
                                             label="Main Hotel Image"
@@ -516,7 +535,7 @@ export default function HotelsPage() {
                                         />
                                     </div>
 
-                                    <div id="s-highlights" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Highlights</h3></div>
+                                    <div id="s-highlights" className={currentStep === 2 ? "scroll-mt-2" : "hidden"}><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Highlights</h3></div>
                                     <div>
                                         <label className="block text-sm font-semibold text-[#112259] mb-3 font-inter">
                                             Highlights Descriptions <span className="text-red-600">*</span>
@@ -609,7 +628,7 @@ export default function HotelsPage() {
                                         </div>
                                     </div>
 
-                                    <div id="s-content" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">About Hotel</h3></div>
+                                    <div id="s-content" className={currentStep === 3 ? "scroll-mt-2" : "hidden"}><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">About Hotel</h3></div>
                                     <div>
                                         <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">
                                             About Hotel <span className="text-red-600">*</span>
@@ -624,7 +643,7 @@ export default function HotelsPage() {
                                         />
                                     </div>
 
-                                    <div id="s-location" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Location & Details</h3></div>
+                                    <div id="s-location" className={currentStep === 4 ? "scroll-mt-2" : "hidden"}><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Location & Details</h3></div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
                                             <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">Location</label>
@@ -1129,21 +1148,38 @@ export default function HotelsPage() {
                                         </div>
                                     </div>
                                 </div>
-
-                                <div className="flex justify-end gap-3 mt-8 pt-6 border-t border-gray-100">
+                                </div><div className="flex items-center justify-between gap-3 px-6 py-4 border-t border-gray-100 bg-white shrink-0">
                                     <button
                                         type="button"
-                                        onClick={() => setShowModal(false)}
-                                        className="cursor-pointer px-5 py-2.5 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 font-medium text-sm transition-all duration-200"
+                                        onClick={() => goToStep(currentStep - 1)}
+                                        disabled={currentStep === 0}
+                                        className="cursor-pointer px-5 py-2.5 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 font-medium text-sm transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
                                     >
-                                        Cancel
+                                        Back
                                     </button>
-                                    <button
-                                        type="submit"
-                                        className="cursor-pointer px-6 py-2.5 bg-[#F8A900] hover:bg-[#e09800] text-black rounded-[14px] font-bold text-sm font-manrope shadow-md transition-all duration-200"
-                                    >
-                                        {editingHotel ? 'Update Hotel' : 'Create Hotel'}
-                                    </button>
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-xs font-medium text-gray-400 font-inter hidden sm:block">Section {currentStep + 1} of {hotelSections.length}</span>
+                                        {!isLastStep ? (
+                                            <button
+                                                type="button"
+                                                onClick={() => goToStep(currentStep + 1)}
+                                                className="cursor-pointer px-6 py-2.5 bg-[#F8A900] hover:bg-[#e09800] text-black rounded-[14px] font-bold text-sm font-manrope shadow-md transition-all duration-200"
+                                            >
+                                                Next
+                                            </button>
+                                        ) : (
+                                            <button
+                                                type="submit"
+                                                className="cursor-pointer px-6 py-2.5 bg-[#F8A900] hover:bg-[#e09800] text-black rounded-[14px] font-bold text-sm font-manrope shadow-md transition-all duration-200"
+                                            >
+                                                {editingHotel ? 'Update Hotel' : 'Create Hotel'}
+                                            </button>
+                                        )}
+                                    </div>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
                                 </div>
                             </form>
                         </div>

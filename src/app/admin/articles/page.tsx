@@ -15,6 +15,7 @@ export default function ArticlesAdminPage() {
     const [loading, setLoading] = useState(true)
     const [showModal, setShowModal] = useState(false)
     const [editingArticle, setEditingArticle] = useState<Article | null>(null)
+    const [currentStep, setCurrentStep] = useState(0)
     const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null)
     const [formData, setFormData] = useState<Partial<Article>>({
         title: '',
@@ -45,6 +46,7 @@ export default function ArticlesAdminPage() {
 
     const handleCreate = () => {
         setEditingArticle(null)
+        setCurrentStep(0)
         setFormData({
             title: 'Discover Dubai: Where Tradition Meets Tomorrow',
             images: [],
@@ -95,9 +97,29 @@ export default function ArticlesAdminPage() {
 
     const handleEdit = (article: Article) => {
         setEditingArticle(article)
+        setCurrentStep(0)
         setFormData(article)
         setShowModal(true)
     }
+
+    const articleSections = [
+        { id: 'a-basic', label: 'Basic Info' },
+        { id: 'a-images', label: 'Images' },
+        { id: 'a-paras', label: 'Paragraphs' },
+        { id: 'a-subs', label: 'Subsections' },
+        { id: 'a-quotes', label: 'Quotes & Tip' },
+    ]
+
+    const closeModal = () => {
+        setShowModal(false)
+        setCurrentStep(0)
+    }
+
+    const goToStep = (step: number) => {
+        setCurrentStep(Math.max(0, Math.min(step, articleSections.length - 1)))
+    }
+
+    const isLastStep = currentStep === articleSections.length - 1
 
     const handleDelete = async (articleId: number) => {
         const { error } = await supabase
@@ -139,7 +161,7 @@ export default function ArticlesAdminPage() {
                 toast('Failed to update article: ' + error.message, 'error')
             } else {
                 toast('Article updated successfully!', 'success')
-                setShowModal(false)
+                closeModal()
                 fetchArticles()
             }
         } else {
@@ -152,7 +174,7 @@ export default function ArticlesAdminPage() {
                 toast('Failed to create article: ' + error.message, 'error')
             } else {
                 toast('Article created successfully!', 'success')
-                setShowModal(false)
+                closeModal()
                 fetchArticles()
             }
         }
@@ -268,7 +290,7 @@ export default function ArticlesAdminPage() {
                                             </span>
                                         </div>
                                     </div>
-                                    <div className="flex gap-2 flex-shrink-0">
+                                    <div className="flex gap-2 shrink-0">
                                         <button
                                             onClick={() => handleEdit(article)}
                                             className="cursor-pointer flex items-center gap-1.5 bg-[#F8A900] hover:bg-[#e09800] text-black px-4 py-2 rounded-xl text-sm font-bold font-manrope transition-all duration-200"
@@ -311,8 +333,8 @@ export default function ArticlesAdminPage() {
                 {/* Modal for Create/Edit */}
                 {showModal && (
                     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-                        <div className="bg-white rounded-[24px] shadow-[9px_9px_75px_0px_#00000029] max-w-5xl w-full max-h-[90vh] overflow-hidden my-8 flex flex-col">
-                            <div className="sticky z-20 top-0 bg-white border-b border-gray-100 px-6 py-5 flex justify-between items-center rounded-t-[24px]">
+                        <div className="bg-white rounded-3xl shadow-[9px_9px_75px_0px_#00000029] max-w-5xl w-full max-h-[90vh] overflow-hidden my-8 flex flex-col">
+                            <div className="sticky z-20 top-0 bg-white border-b border-gray-100 px-6 py-5 flex justify-between items-center rounded-t-3xl">
                                 <div>
                                     <h2 className="font-manrope font-extrabold text-[20px] tracking-tight text-[#112259]">
                                         {editingArticle ? 'Edit Article' : 'New Article'}
@@ -320,246 +342,165 @@ export default function ArticlesAdminPage() {
                                     <p className="text-xs text-gray-400 mt-0.5 font-inter">{editingArticle ? 'Update article content and images' : 'Fill in article details to publish'}</p>
                                 </div>
                                 <button
-                                    onClick={() => setShowModal(false)}
+                                    onClick={closeModal}
                                     className="cursor-pointer p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
                                 >
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                                 </button>
                             </div>
 
-                            <form onSubmit={handleSubmit} className="flex flex-1 overflow-hidden">
-                                    <div className="w-48 flex-shrink-0 border-r border-gray-100 p-4 overflow-y-auto bg-gray-50/50 hidden md:block">
+                            <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+                                <div className="flex flex-1 overflow-hidden">
+                                    <div className="w-48 shrink-0 border-r border-gray-100 p-4 overflow-y-auto bg-gray-50/50 hidden md:block">
                                         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 font-inter">Jump to</p>
-                                        <SectionNav sections={[{id:"a-basic",label:"Basic Info",icon:null},{id:"a-images",label:"Images",icon:null},{id:"a-paras",label:"Paragraphs",icon:null},{id:"a-subs",label:"Subsections",icon:null},{id:"a-quotes",label:"Quotes & Tip",icon:null}]} />
+                                        <SectionNav
+                                            sections={articleSections.map((section) => ({ ...section, icon: null }))}
+                                            activeSectionId={articleSections[currentStep]?.id}
+                                            onSelect={(id) => setCurrentStep(articleSections.findIndex((section) => section.id === id))}
+                                        />
                                     </div>
                                     <div className="flex-1 overflow-y-auto p-6 space-y-8">
-<div id="a-basic" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Basic Info</h3></div>
-                                    {/* Title */
-                                    <div>
-                                        <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">
-                                            Title <span className="text-red-600">*</span>
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={formData.title || ''}
-                                            onChange={(e) => handleInputChange('title', e.target.value)}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
-                                            required
-                                        />
-                                    </div>
-
-                                    <div id="a-images" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Images</h3></div>
-                                    <div>
-                                        <ImageUpload
-                                            multiple={true}
-                                            onUploadComplete={handleImageUpload}
-                                            existingImages={formData.images || []}
-                                            label="Article Images (3 Required)"
-                                            bucket="article-images"
-                                            folder="articles"
-                                        />
-                                        <ImageGenerator
-                                            context={formData.title ? `Travel article: ${formData.title}` : 'Travel article hero image'}
-                                            label="Generate Article Image with DALL·E 3"
-                                            onGenerated={(url) => handleImageUpload([...(formData.images || []), url])}
-                                        />
-                                    </div>
-
-                                    <div className="grid grid-cols-2 gap-4"><div>
-                                    <div>
-                                        <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">Published Date</label>
-                                        <input
-                                            type="date"
-                                            value={formData.published_date?.split('T')[0] || ''}
-                                            onChange={(e) => handleInputChange('published_date', e.target.value)}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
-                                        />
-                                    </div>
-
-                                    </div></div><div id="a-paras" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Paragraphs</h3></div>
-                                    <div>
-                                        <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">Paragraphs (5 Required)</label>
-                                        <div className="space-y-2">
-                                            {[0, 1, 2, 3, 4].map((index) => (
-                                                <div key={index}>
-                                                    <label className="block text-xs font-medium text-gray-600 mb-1">Paragraph {index + 1}</label>
-                                                    <textarea
-                                                        value={formData.paras?.[index] || ''}
-                                                        onChange={(e) => updateParagraph(index, e.target.value)}
-                                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
-                                                        rows={3}
-                                                        placeholder={`Paragraph ${index + 1}`}
-                                                    />
-                                                </div>
-                                            ))}
+                                        <div id="a-basic" className={currentStep === 0 ? 'scroll-mt-2' : 'hidden'}>
+                                            <div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100">
+                                                <div className="w-1 h-5 bg-[#F8A900] rounded-full"></div>
+                                                <h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Basic Info</h3>
+                                            </div>
+                                            <div>
+                                                <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">Title <span className="text-red-600">*</span></label>
+                                                <input type="text" value={formData.title || ''} onChange={(e) => handleInputChange('title', e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" required />
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div id="a-subs" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Subsections</h3></div>
-                                    <div>
-                                        <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">Subsections</label>
-                                        <div className="space-y-4">
-                                            {(formData.subsections || []).map((subsection, index) => (
-                                                <div key={index} className="border border-gray-200 rounded-xl p-4 bg-gray-50">
-                                                    <div className="flex justify-between items-start mb-3">
-                                                        <span className="text-[13px] font-bold text-[#112259] font-manrope">Subsection #{index + 1}</span>
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => removeSubsection(index)}
-                                                            className="cursor-pointer  px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-bold transition-all duration-200 cursor-pointer"
-                                                        >
-                                                            ×
-                                                        </button>
+                                        <div id="a-images" className={currentStep === 1 ? 'scroll-mt-2' : 'hidden'}>
+                                            <div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100">
+                                                <div className="w-1 h-5 bg-[#F8A900] rounded-full"></div>
+                                                <h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Images</h3>
+                                            </div>
+                                            <ImageUpload multiple={true} onUploadComplete={handleImageUpload} existingImages={formData.images || []} label="Article Images (3 Required)" bucket="article-images" folder="articles" />
+                                            <ImageGenerator context={formData.title ? `Travel article: ${formData.title}` : 'Travel article hero image'} label="Generate Article Image with DALL·E 3" onGenerated={(url) => handleImageUpload([...(formData.images || []), url])} />
+                                            <div>
+                                                <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">Published Date</label>
+                                                <input type="date" value={formData.published_date?.split('T')[0] || ''} onChange={(e) => handleInputChange('published_date', e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" />
+                                            </div>
+                                        </div>
+
+                                        <div id="a-paras" className={currentStep === 2 ? 'scroll-mt-2' : 'hidden'}>
+                                            <div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100">
+                                                <div className="w-1 h-5 bg-[#F8A900] rounded-full"></div>
+                                                <h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Paragraphs</h3>
+                                            </div>
+                                            <div className="space-y-2">
+                                                {[0, 1, 2, 3, 4].map((index) => (
+                                                    <div key={index}>
+                                                        <label className="block text-xs font-medium text-gray-600 mb-1">Paragraph {index + 1}</label>
+                                                        <textarea value={formData.paras?.[index] || ''} onChange={(e) => updateParagraph(index, e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" rows={3} placeholder={`Paragraph ${index + 1}`} />
                                                     </div>
-                                                    <div className="space-y-3">
-                                                        <input
-                                                            type="text"
-                                                            value={subsection.heading}
-                                                            onChange={(e) => updateSubsection(index, 'heading', e.target.value)}
-                                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
-                                                            placeholder="Heading"
-                                                        />
-                                                        <div className="space-y-2">
-                                                            <label className="block text-xs font-semibold text-gray-600">Paragraphs (5 Required)</label>
-                                                            {[0, 1, 2, 3, 4].map((paraIndex) => (
-                                                                <textarea
-                                                                    key={paraIndex}
-                                                                    value={subsection.paras?.[paraIndex] || ''}
-                                                                    onChange={(e) => updateSubsectionPara(index, paraIndex, e.target.value)}
-                                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white text-sm"
-                                                                    rows={2}
-                                                                    placeholder={`Paragraph ${paraIndex + 1}`}
-                                                                />
-                                                            ))}
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        <div id="a-subs" className={currentStep === 3 ? 'scroll-mt-2' : 'hidden'}>
+                                            <div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100">
+                                                <div className="w-1 h-5 bg-[#F8A900] rounded-full"></div>
+                                                <h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Subsections</h3>
+                                            </div>
+                                            <div className="space-y-4">
+                                                {(formData.subsections || []).map((subsection, index) => (
+                                                    <div key={index} className="border border-gray-200 rounded-xl p-4 bg-gray-50">
+                                                        <div className="flex justify-between items-start mb-3">
+                                                            <span className="text-[13px] font-bold text-[#112259] font-manrope">Subsection #{index + 1}</span>
+                                                            <button type="button" onClick={() => removeSubsection(index)} className="cursor-pointer px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-bold transition-all duration-200">×</button>
+                                                        </div>
+                                                        <div className="space-y-3">
+                                                            <input type="text" value={subsection.heading} onChange={(e) => updateSubsection(index, 'heading', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white" placeholder="Heading" />
+                                                            <div className="space-y-2">
+                                                                <label className="block text-xs font-semibold text-gray-600">Paragraphs (5 Required)</label>
+                                                                {[0, 1, 2, 3, 4].map((paraIndex) => (
+                                                                    <textarea key={paraIndex} value={subsection.paras?.[paraIndex] || ''} onChange={(e) => updateSubsectionPara(index, paraIndex, e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white text-sm" rows={2} placeholder={`Paragraph ${paraIndex + 1}`} />
+                                                                ))}
+                                                            </div>
                                                         </div>
                                                     </div>
+                                                ))}
+                                                <button type="button" onClick={addSubsection} className="cursor-pointer w-full px-4 py-2 border-2 border-dashed border-gray-200 hover:border-[#F8A900] text-gray-500 hover:text-[#112259] rounded-xl font-medium transition-all duration-200 flex items-center justify-center gap-2"><span className="text-xl">+</span> Add Subsection</button>
+                                            </div>
+                                        </div>
+
+                                        <div id="a-quotes" className={currentStep === 4 ? 'scroll-mt-2' : 'hidden'}>
+                                            <div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100">
+                                                <div className="w-1 h-5 bg-[#F8A900] rounded-full"></div>
+                                                <h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Quotes & Tip</h3>
+                                            </div>
+                                            <div className="border-t border-gray-400 pt-6">
+                                                <label className="block text-sm font-semibold text-[#112259] mb-3 font-inter">Quotation 1 (Full)</label>
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                    <div className="col-span-2">
+                                                        <label className="block text-xs font-medium text-gray-600 mb-1">Quote</label>
+                                                        <textarea value={formData.quotation1?.quote || ''} onChange={(e) => handleInputChange('quotation1', { ...formData.quotation1, quote: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" rows={2} />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-xs font-medium text-gray-600 mb-1">Person Name</label>
+                                                        <input type="text" value={formData.quotation1?.person_name || ''} onChange={(e) => handleInputChange('quotation1', { ...formData.quotation1, person_name: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" />
+                                                    </div>
+                                                    <div>
+                                                        <label className="block text-xs font-medium text-gray-600 mb-1">Person Role</label>
+                                                        <input type="text" value={formData.quotation1?.person_role || ''} onChange={(e) => handleInputChange('quotation1', { ...formData.quotation1, person_role: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" />
+                                                    </div>
+                                                    <div className="col-span-2">
+                                                        <label className="block text-xs font-medium text-gray-600 mb-1">Person Image URL</label>
+                                                        <input type="url" value={formData.quotation1?.person_image || ''} onChange={(e) => handleInputChange('quotation1', { ...formData.quotation1, person_image: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" />
+                                                    </div>
                                                 </div>
-                                            ))}
-                                            <button
-                                                type="button"
-                                                onClick={addSubsection}
-                                                className="cursor-pointer w-full px-4 py-2 border-2 border-dashed border-gray-200 hover:border-[#F8A900] text-gray-500 hover:text-[#112259] rounded-xl font-medium transition-all duration-200 cursor-pointer flex items-center justify-center gap-2"
-                                            >
-                                                <span className="text-xl">+</span> Add Subsection
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <div id="a-quotes" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Quotes & Tip</h3></div>
-                                    <div className="border-t border-gray-400 pt-6">
-                                        <label className="block text-sm font-semibold text-[#112259] mb-3 font-inter">Quotation 1 (Full)</label>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            <div className="col-span-2">
-                                                <label className="block text-xs font-medium text-gray-600 mb-1">Quote</label>
-                                                <textarea
-                                                    value={formData.quotation1?.quote || ''}
-                                                    onChange={(e) => handleInputChange('quotation1', {
-                                                        ...formData.quotation1,
-                                                        quote: e.target.value
-                                                    })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
-                                                    rows={2}
-                                                />
                                             </div>
-                                            <div>
-                                                <label className="block text-xs font-medium text-gray-600 mb-1">Person Name</label>
-                                                <input
-                                                    type="text"
-                                                    value={formData.quotation1?.person_name || ''}
-                                                    onChange={(e) => handleInputChange('quotation1', {
-                                                        ...formData.quotation1,
-                                                        person_name: e.target.value
-                                                    })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
-                                                />
+                                            <div className="border-t border-gray-400 pt-6 mt-6">
+                                                <label className="block text-sm font-semibold text-[#112259] mb-3 font-inter">Quotation 2 (Simplified)</label>
+                                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                                    <div className="col-span-2">
+                                                        <label className="block text-xs font-medium text-gray-600 mb-1">Quote</label>
+                                                        <textarea value={formData.quotation2?.quote || ''} onChange={(e) => handleInputChange('quotation2', { ...formData.quotation2, quote: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" rows={2} />
+                                                    </div>
+                                                    <div className="col-span-2">
+                                                        <label className="block text-xs font-medium text-gray-600 mb-1">Person Name</label>
+                                                        <input type="text" value={formData.quotation2?.person_name || ''} onChange={(e) => handleInputChange('quotation2', { ...formData.quotation2, person_name: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" />
+                                                    </div>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <label className="block text-xs font-medium text-gray-600 mb-1">Person Role</label>
-                                                <input
-                                                    type="text"
-                                                    value={formData.quotation1?.person_role || ''}
-                                                    onChange={(e) => handleInputChange('quotation1', {
-                                                        ...formData.quotation1,
-                                                        person_role: e.target.value
-                                                    })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
-                                                />
-                                            </div>
-                                            <div className="col-span-2">
-                                                <label className="block text-xs font-medium text-gray-600 mb-1">Person Image URL</label>
-                                                <input
-                                                    type="url"
-                                                    value={formData.quotation1?.person_image || ''}
-                                                    onChange={(e) => handleInputChange('quotation1', {
-                                                        ...formData.quotation1,
-                                                        person_image: e.target.value
-                                                    })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
-                                                />
+                                            <div className="border-t border-gray-400 pt-6 mt-6">
+                                                <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">Tip <span className="text-red-600">*</span></label>
+                                                <textarea value={formData.tip || ''} onChange={(e) => handleInputChange('tip', e.target.value)} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" rows={3} required />
                                             </div>
                                         </div>
                                     </div>
 
-                                    
-                                    <div className="border-t border-gray-400 pt-6">
-                                        <label className="block text-sm font-semibold text-[#112259] mb-3 font-inter">Quotation 2 (Simplified)</label>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            <div className="col-span-2">
-                                                <label className="block text-xs font-medium text-gray-600 mb-1">Quote</label>
-                                                <textarea
-                                                    value={formData.quotation2?.quote || ''}
-                                                    onChange={(e) => handleInputChange('quotation2', {
-                                                        ...formData.quotation2,
-                                                        quote: e.target.value
-                                                    })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
-                                                    rows={2}
-                                                />
-                                            </div>
-                                            <div className="col-span-2">
-                                                <label className="block text-xs font-medium text-gray-600 mb-1">Person Name</label>
-                                                <input
-                                                    type="text"
-                                                    value={formData.quotation2?.person_name || ''}
-                                                    onChange={(e) => handleInputChange('quotation2', {
-                                                        ...formData.quotation2,
-                                                        person_name: e.target.value
-                                                    })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    
-                                    <div className='border-t border-gray-400 pt-6'>
-                                        <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">
-                                            Tip <span className="text-red-600">*</span>
-                                        </label>
-                                        <textarea
-                                            value={formData.tip || ''}
-                                            onChange={(e) => handleInputChange('tip', e.target.value)}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
-                                            rows={3}
-                                            required
-                                        />
-                                    </div>
                                 </div>
-
-                                </div></div><div className="flex justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-white flex-shrink-0">
+                                <div className="flex items-center justify-between gap-3 px-6 py-4 border-t border-gray-100 bg-white shrink-0">
                                     <button
                                         type="button"
-                                        onClick={() => setShowModal(false)}
-                                        className="cursor-pointer px-5 py-2.5 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 font-medium text-sm transition-all duration-200"
+                                        onClick={() => goToStep(currentStep - 1)}
+                                        disabled={currentStep === 0}
+                                        className="cursor-pointer px-5 py-2.5 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 font-medium text-sm transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
                                     >
-                                        Cancel
+                                        Back
                                     </button>
-                                    <button
-                                        type="submit"
-                                        className="cursor-pointer px-6 py-2.5 bg-[#F8A900] hover:bg-[#e09800] text-black rounded-[14px] font-bold text-sm font-manrope shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-                                    >
-                                        {editingArticle ? 'Update Article' : 'Create Article'}
-                                    </button>
+                                    <div className="flex items-center gap-3">
+                                        <span className="text-xs font-medium text-gray-400 font-inter hidden sm:block">Section {currentStep + 1} of {articleSections.length}</span>
+                                        {!isLastStep ? (
+                                            <button
+                                                type="button"
+                                                onClick={() => goToStep(currentStep + 1)}
+                                                className="cursor-pointer px-6 py-2.5 bg-[#F8A900] hover:bg-[#e09800] text-black rounded-[14px] font-bold text-sm font-manrope shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                                            >
+                                                Next
+                                            </button>
+                                        ) : (
+                                            <button
+                                                type="submit"
+                                                className="cursor-pointer px-6 py-2.5 bg-[#F8A900] hover:bg-[#e09800] text-black rounded-[14px] font-bold text-sm font-manrope shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                                            >
+                                                {editingArticle ? 'Update Article' : 'Create Article'}
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
                             </form>
                         </div>
