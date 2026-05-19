@@ -1,58 +1,9 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
-
-## Getting Started
-
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-
-I’m not looking for a heavy back-end engineer or a big dev team — I just need a mid-level front-end or full-stack developer who’s comfortable with Next.js and Strapi.
-
-
-
-The project is a simple MVP: a content-based Dubai experiences site with a small CMS and banner management.
-
-
-
-It’s lightweight — around 1,500–2,000 lines of total code, including components, CMS integration, and one small API route for click tracking.
-
-
-
 Main scope:
-• Build a fast, responsive Next.js site connected to Strapi CMS
+• Build a fast, responsive Next.js site connected to a custom Admin Panel (Supabase-backed)
 • Basic content pages (home, experiences, news, about)
-• Manual banners (admin uploads image + link in CMS)
+• Manual banners (admin uploads image + link in Admin Panel)
 • Simple analytics for banner/affiliate clicks
+• AI-powered travel news generation via OpenAI API
 • No logins, payments, or advanced logic — just clean content and speed
 
 
@@ -66,7 +17,7 @@ Goal: a clean, fast, easy-to-maintain MVP, not a complex platform.
 
 
 ## 1. One-line Business Goal
-Launch a content-driven Dubai experiences site with manual admin content, simple monetization, and stable CMS—optimized for clarity and maintainability.
+Launch a content-driven Dubai experiences site with manual admin content, AI-generated travel news, simple monetization, and a custom Admin Panel—optimized for clarity and maintainability.
 
 
 
@@ -84,11 +35,12 @@ URL Pattern Type Content Summary
 /news Listing AI-imported news list/grid, banners
 /news/[slug] Dynamic Page Full news article, image, original source, banners
 /about Static Page Site/company info, contact, banners
+/admin Admin Panel Content management dashboard (Hotels, Articles, AI News Generator)
 ---
 
 
 
-## 3. CMS Data Models (Strapi)
+## 3. CMS Data Models (Custom Admin Panel — Supabase)
 
 
 
@@ -110,6 +62,8 @@ URL Pattern Type Content Summary
 - image: string (URL)
 - status: enum (draft/published)
 - imported_at: datetime
+- ai_generated: boolean (flag for AI-generated articles)
+- openai_model: string (model used for generation, e.g. gpt-4o)
 
 
 
@@ -138,7 +92,7 @@ URL Pattern Type Content Summary
 
 
 
-Admin uploads single image/link banner for each zone via CMS. Banners change only when admin updates them in Strapi.
+Admin uploads single image/link banner for each zone via the Admin Panel. Banners change only when admin updates them.
 
 
 
@@ -146,7 +100,51 @@ Admin uploads single image/link banner for each zone via CMS. Banners change onl
 
 
 
-## 5. Tracking & Analytics
+## 5. AI-Powered Travel News Generation (OpenAI API)
+
+A key feature of TRAVI is its AI-powered news generation system, which allows the admin to automatically create high-quality travel news articles using the OpenAI API.
+
+### How It Works
+
+1. **Admin triggers generation** — From `/admin/articles`, the admin clicks "Generate with AI" and enters a topic/prompt (e.g. "Top 5 things to do in Dubai this winter").
+2. **API Route processes the request** — The Next.js API route `/api/generate-news` calls the OpenAI Chat Completions API (model: `gpt-4o-mini` or `gpt-4o`).
+3. **Structured output returned** — The AI returns a fully structured article (title, paragraphs, subsections, quotations, tip) in JSON format.
+4. **Admin reviews and saves** — The generated content is pre-filled into the article creation form. The admin can review, edit, and save it to Supabase.
+
+### API Route: `/api/generate-news`
+
+- **Method:** POST
+- **Body:** `{ prompt: string, model?: string }`
+- **Returns:** Structured article JSON compatible with the `Article` type
+- **Auth:** Protected — only callable from the admin panel session
+- **OpenAI Model:** `gpt-4o-mini` (default), configurable to `gpt-4o`
+
+### Environment Variables Required
+
+```env
+OPENAI_API_KEY=your_openai_api_key_here
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+NEXT_PUBLIC_SITE_URL=https://your-site.vercel.app
+```
+
+### OpenAI Prompt Strategy
+
+The system prompt instructs GPT to return a JSON object with:
+- `title` — compelling article headline
+- `paras` — array of 5 rich paragraphs
+- `subsections` — array of 2 subsections, each with heading + 5 paragraphs
+- `quotation1` — full quotation with person name, role
+- `quotation2` — simplified quotation with person name
+- `tip` — practical traveler tip
+
+
+
+---
+
+
+
+## 6. Tracking & Analytics
 
 
 
@@ -155,15 +153,15 @@ Trigger the following events server-side (via Next.js + custom API route) and pu
 
 
 - affiliate_click: When user clicks affiliate/partner link or widget
-- Include: experience_id, link_url
+  - Include: experience_id, link_url
 - banner_click: When user clicks a banner
-- Include: zone, banner_id
+  - Include: zone, banner_id
 - banner_impression: When banner loads in viewport
-- Include: zone, banner_id
+  - Include: zone, banner_id
 - view_experience: On pageview for any experience
-- Include: experience_id
+  - Include: experience_id
 - view_news: On pageview for any news story
-- Include: news_id
+  - Include: news_id
 
 
 
@@ -171,17 +169,18 @@ Trigger the following events server-side (via Next.js + custom API route) and pu
 
 
 
-## 6. Technology & Infrastructure
+## 7. Technology & Infrastructure
 
 
 
 - Frontend: Next.js (use SSR and ISR as appropriate), TailwindCSS for styling
-- CMS: Strapi (content-admin-only access)
-- Database: PostgreSQL (managed/hosted)
+- Admin Panel: Custom Next.js admin routes at `/admin` (replaces Strapi CMS)
+- Database: Supabase (PostgreSQL-backed, managed/hosted)
+- AI Integration: OpenAI API (`gpt-4o-mini` / `gpt-4o`) for travel news generation
 - Deploy/Host: Vercel, use default settings + Cloudflare CDN
 - Images: Use Next.js Image for auto-optimization, lazy-load everything except single top hero/cover per page
 - SEO: Render all meta/canonical/OG tags on server
-- News Import: Set up server cron (node script or Vercel scheduled function): pull 2–3 RSS tourism news items/day, create as Strapi drafts. Admin reviews in Strapi and publishes.
+- News Import: Admin can manually trigger AI generation or schedule a Vercel cron job to auto-generate 2–3 travel news items/day as drafts. Admin reviews in the Admin Panel and publishes.
 
 
 
@@ -189,7 +188,7 @@ Trigger the following events server-side (via Next.js + custom API route) and pu
 
 
 
-## 7. Performance & Targets
+## 8. Performance & Targets
 
 
 
@@ -205,30 +204,65 @@ Trigger the following events server-side (via Next.js + custom API route) and pu
 
 
 
-## 8. Dev Hand-Off Summary
+## 9. Admin Panel Overview
+
+The custom `/admin` panel replaces Strapi CMS entirely. It is a password-protected Next.js section with:
+
+### Pages
+- `/admin/login` — Admin login with password stored in environment variables
+- `/admin` / `/admin/dashboard` — Overview dashboard with quick stats and AI news generation widget
+- `/admin/articles` — Full CRUD for travel articles + AI generation via OpenAI
+- `/admin/hotels` — Full CRUD for hotel listings with image uploads
+
+### Features
+- **Sidebar navigation** with active state highlighting
+- **Authentication** via localStorage session flag (simple password-based)
+- **Image uploads** to Supabase Storage buckets
+- **AI News Generation Widget** — generate, preview, and publish articles with one click
+- **Responsive** — works on desktop and tablet screens
+
+### Design Language (Figma Reference)
+Based on the Figma design (Travi-Homepage---Mobile-Final, node 3-5):
+- **Primary color:** `#0D7FF2` (vivid blue)
+- **Dark background:** `#0A1929` to `#0D2137` gradient
+- **Accent:** `#F8A900` (golden yellow for AI/featured elements)
+- **Typography:** Inter, Manrope, Oswald fonts
+- **Card style:** White cards with `shadow-md hover:shadow-xl` transitions
 
 
 
-- Stack: Next.js, TailwindCSS, Strapi, PostgreSQL, Vercel, Cloudflare CDN, GA4
+---
 
-- Content Models: Experiences, News, Banners (as detailed above)
+
+
+## 10. Dev Hand-Off Summary
+
+
+
+- Stack: Next.js, TailwindCSS, Supabase, OpenAI API, Vercel, Cloudflare CDN, GA4
+
+- Content Models: Experiences, News (with AI flag), Banners (as detailed above)
 
 - API Endpoints:
 
-- Strapi REST for content
+  - Supabase REST for content (via @supabase/supabase-js)
 
-- /api/track (custom, for click/impression tracking)
+  - /api/generate-news (OpenAI-powered travel news generation)
 
-- Banner Zones: header, sidebar, in-content-1, footer—place as designed above and control from CMS only
+  - /api/track (custom, for click/impression tracking)
 
-- Affiliate: Insert links/widgets directly in each experience via CMS; track clicks via server
+- Banner Zones: header, sidebar, in-content-1, footer—place as designed above and control from Admin Panel only
 
-- News Workflow: RSS → Strapi draft → manual admin publish
+- Affiliate: Insert links/widgets directly in each experience via Admin Panel; track clicks via server
 
-- Image Handling: Next.js optimized + lazy-load (except 1st hero image)
+- News Workflow: Admin Panel → "Generate with AI" → review draft → publish (or schedule via Vercel cron)
+
+- Image Handling: Next.js optimized + lazy-load (except 1st hero image), stored in Supabase Storage
 
 - Analytics: GA4 custom events for all described triggers
 
 - Production Constraints:
 
-- Do not add offline, personalization, login, or non-essential features
+  - Do not add offline, personalization, login, or non-essential features
+  - OpenAI API calls must always go through server-side API routes (never expose API key to client)
+  - AI-generated articles must be reviewed by admin before publishing

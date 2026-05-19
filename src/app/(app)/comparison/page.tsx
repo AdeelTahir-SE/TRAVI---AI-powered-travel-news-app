@@ -46,7 +46,7 @@ export const metadata: Metadata = {
 
 export default function ComparisonPage() {
   return (
-    <div className="flex flex-col items-center justify-center overflow-x-auto">
+    <div className="flex flex-col overflow-hidden w-full">
       <CategoryHeroSection />
       <ComparisonDescriptionSection />
       <TopHotelsSection />

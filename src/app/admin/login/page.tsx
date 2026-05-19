@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+
 export default function AdminLoginPage() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
@@ -15,12 +16,10 @@ export default function AdminLoginPage() {
         setError('')
         setLoading(true)
 
-        // Hardcoded credentials
         const ADMIN_USERNAME = 'admin'
         const ADMIN_PASSWORD = 'admin123'
 
         if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
-            // Set session in localStorage
             localStorage.setItem('adminAuth', 'true')
             router.push('/admin/dashboard')
         } else {
@@ -31,8 +30,8 @@ export default function AdminLoginPage() {
     }
 
     return (
-        <div className="relative min-h-screen  flex items-center justify-center p-4">
-            <div className="relative  z-10 bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 sm:p-10">
+        <div className="relative min-h-screen flex items-center justify-center p-4">
+            <div className="relative z-10 bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 sm:p-10">
                 <div className="text-center mb-8">
                     <div className="inline-block p-3 bg-gradient-to-br from-[#0D7FF2] to-[#0B6FD9] rounded-2xl mb-4">
                         <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -112,8 +111,6 @@ export default function AdminLoginPage() {
                     alt=""
                     className="w-full h-full object-cover absolute bottom-0 z-0"
                 />
-
-                {/* gradient overlay */}
                 <div className="absolute inset-0 z-10 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.9)_0%,rgba(255,255,255,1)_45%,rgba(255,255,255,0)_50%,rgba(255,255,255,1)_100%)]"></div>
             </div>
         </div>

@@ -4,12 +4,16 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/utils/supabase'
 import { Article, Quotation, Subsection } from '@/utils/types'
 import ImageUpload from '@/components/admin/ImageUpload'
+import { useToast } from '@/components/admin/Toaster'
+import { AdminPageSkeleton } from '@/components/Skeletons'
 
 export default function ArticlesAdminPage() {
+    const { toast } = useToast()
     const [articles, setArticles] = useState<Article[]>([])
     const [loading, setLoading] = useState(true)
     const [showModal, setShowModal] = useState(false)
     const [editingArticle, setEditingArticle] = useState<Article | null>(null)
+    const [deleteConfirmId, setDeleteConfirmId] = useState<number | null>(null)
     const [formData, setFormData] = useState<Partial<Article>>({
         title: '',
         paras: [],
@@ -29,7 +33,7 @@ export default function ArticlesAdminPage() {
 
         if (error) {
             console.error('Error fetching articles:', error)
-            alert('Failed to fetch articles: ' + error.message)
+            toast('Failed to fetch articles: ' + error.message, 'error')
         } else {
             setArticles(data || [])
         }
@@ -94,8 +98,6 @@ export default function ArticlesAdminPage() {
     }
 
     const handleDelete = async (articleId: number) => {
-        if (!confirm('Are you sure you want to delete this article?')) return
-
         const { error } = await supabase
             .from('article')
             .delete()
@@ -103,9 +105,10 @@ export default function ArticlesAdminPage() {
 
         if (error) {
             console.error('Error deleting article:', error)
-            alert('Failed to delete article: ' + error.message)
+            toast('Failed to delete article: ' + error.message, 'error')
         } else {
-            alert('Article deleted successfully!')
+            toast('Article deleted successfully!', 'success')
+            setDeleteConfirmId(null)
             fetchArticles()
         }
     }
@@ -114,7 +117,7 @@ export default function ArticlesAdminPage() {
         e.preventDefault()
 
         if (!formData.title || !formData.tip) {
-            alert('Title and Tip are required!')
+            toast('Title and Tip are required!', 'error')
             return
         }
 
@@ -131,9 +134,9 @@ export default function ArticlesAdminPage() {
 
             if (error) {
                 console.error('Error updating article:', error)
-                alert('Failed to update article: ' + error.message)
+                toast('Failed to update article: ' + error.message, 'error')
             } else {
-                alert('Article updated successfully!')
+                toast('Article updated successfully!', 'success')
                 setShowModal(false)
                 fetchArticles()
             }
@@ -144,9 +147,9 @@ export default function ArticlesAdminPage() {
 
             if (error) {
                 console.error('Error creating article:', error)
-                alert('Failed to create article: ' + error.message)
+                toast('Failed to create article: ' + error.message, 'error')
             } else {
-                alert('Article created successfully!')
+                toast('Article created successfully!', 'success')
                 setShowModal(false)
                 fetchArticles()
             }
@@ -212,97 +215,113 @@ export default function ArticlesAdminPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gray-50 p-8">
+        <div className="p-4 sm:p-6 lg:p-8">
             <div className="max-w-7xl mx-auto">
                 <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
-                    <h1 className="text-3xl font-bold text-gray-900">Articles Management</h1>
+                    <div>
+                        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Articles</h1>
+                        <p className="text-gray-500 text-sm mt-1">Create, edit, and manage travel articles.</p>
+                    </div>
                     <button
                         onClick={handleCreate}
-                        className="cursor-pointer bg-[#0D7FF2] w-full sm:w-fit hover:bg-[#0B6FD9] text-white px-6 py-2 rounded-lg font-medium z-10"
+                        className="cursor-pointer flex items-center gap-2 bg-[#0D7FF2] hover:bg-[#0B6FD9] text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-200"
                     >
-                        + Create New Article
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                        </svg>
+                        New Article
                     </button>
                 </div>
 
                 {loading ? (
-                    <div className="text-center py-12">
-                        <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#0D7FF2] border-t border-gray-400-transparent"></div>
-                        <p className="mt-4 text-gray-600">Loading articles...</p>
-                    </div>
+                    <AdminPageSkeleton count={4} />
                 ) : articles.length === 0 ? (
-                    <div className="text-center py-12 bg-white rounded-lg shadow">
-                        <p className="text-gray-600 text-lg">No articles found. Create your first article!</p>
+                    <div className="text-center py-16 bg-white rounded-2xl shadow-md border border-gray-100">
+                        <svg className="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        <p className="text-gray-500 font-medium">No articles yet</p>
+                        <p className="text-gray-400 text-sm mt-1">Create your first article to get started.</p>
                     </div>
                 ) : (
-                    <div className="grid gap-6">
+                    <div className="grid gap-4">
                         {articles.map((article) => (
                             <div
                                 key={article.article_id}
-                                className="bg-white rounded-xl shadow-md p-6 hover:shadow-xl transition-all border border-gray-100"
+                                className="bg-white rounded-2xl shadow-md border border-gray-100 p-6 hover:shadow-lg transition-all duration-200"
                             >
-                                <div className="flex flex-col md:flex-row justify-between md:items-start gap-6">
-                                    {/* LEFT SIDE — Article Info */}
-                                    <div className="flex-1">
-                                        <h2 className="text-2xl font-bold text-gray-900 mb-3">
-                                            {article.title}
-                                        </h2>
-
-                                        <div className="flex flex-col gap-3 text-sm">
-                                            <div className="flex items-center gap-2">
-                                                <span className="font-semibold text-gray-700">Published:</span>
-                                                <span className="text-gray-600">
-                                                    {new Date(article.published_date).toLocaleDateString()}
-                                                </span>
-                                            </div>
-
-                                            <div className="flex items-center gap-2">
-                                                <span className="font-semibold text-gray-700">Paragraphs:</span>
-                                                <span className="text-gray-600">{article.paras?.length || 0}</span>
-                                            </div>
-
-                                            <div className="flex items-center gap-2">
-                                                <span className="font-semibold text-gray-700">Subsections:</span>
-                                                <span className="text-gray-600">{article.subsections?.length || 0}</span>
-                                            </div>
+                                <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
+                                    <div className="flex-1 min-w-0">
+                                        <h2 className="text-base font-bold text-gray-900 truncate mb-2">{article.title}</h2>
+                                        <div className="flex flex-wrap gap-3">
+                                            <span className="inline-flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 border border-gray-100 px-2.5 py-1 rounded-full">
+                                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                                {new Date(article.published_date).toLocaleDateString()}
+                                            </span>
+                                            <span className="inline-flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 border border-gray-100 px-2.5 py-1 rounded-full">
+                                                {article.paras?.length || 0} paragraphs
+                                            </span>
+                                            <span className="inline-flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 border border-gray-100 px-2.5 py-1 rounded-full">
+                                                {article.subsections?.length || 0} subsections
+                                            </span>
                                         </div>
                                     </div>
-
-                                    {/* RIGHT SIDE — Action Buttons */}
-                                    <div className="flex gap-3 self-start">
+                                    <div className="flex gap-2 flex-shrink-0">
                                         <button
                                             onClick={() => handleEdit(article)}
-                                            className=" cursor-pointer bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200"
+                                            className="cursor-pointer flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200"
                                         >
+                                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                                             Edit
                                         </button>
-
-                                        <button
-                                            onClick={() => handleDelete(article.article_id)}
-                                            className=" cursor-pointer bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200"
-                                        >
-                                            Delete
-                                        </button>
+                                        {deleteConfirmId === article.article_id ? (
+                                            <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-3 py-1.5">
+                                                <span className="text-xs text-red-600 font-medium whitespace-nowrap">Sure?</span>
+                                                <button
+                                                    onClick={() => handleDelete(article.article_id)}
+                                                    className="cursor-pointer text-xs bg-red-600 hover:bg-red-700 text-white px-2.5 py-1 rounded-lg font-semibold transition-colors"
+                                                >
+                                                    Yes, delete
+                                                </button>
+                                                <button
+                                                    onClick={() => setDeleteConfirmId(null)}
+                                                    className="cursor-pointer text-xs text-gray-500 hover:text-gray-700 px-2 py-1 rounded-lg font-medium transition-colors"
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <button
+                                                onClick={() => setDeleteConfirmId(article.article_id)}
+                                                className="cursor-pointer flex items-center gap-1.5 border border-red-200 text-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200"
+                                            >
+                                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                                Delete
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             </div>
-
                         ))}
                     </div>
                 )}
 
                 {/* Modal for Create/Edit */}
                 {showModal && (
-                    <div className=" bg-black fixed inset-0 bg-opacity-50 flex items-center justify-center p-4 z-50">
-                        <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-                            <div className="sticky z-20 top-0 bg-white border-b border-gray-400  px-6 py-4 flex justify-between items-center">
-                                <h2 className="text-2xl font-bold text-gray-900">
-                                    {editingArticle ? 'Edit Article' : 'Create New Article'}
-                                </h2>
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+                        <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+                            <div className="sticky z-20 top-0 bg-white border-b border-gray-100 px-6 py-4 flex justify-between items-center rounded-t-2xl">
+                                <div>
+                                    <h2 className="text-lg font-bold text-gray-900">
+                                        {editingArticle ? 'Edit Article' : 'New Article'}
+                                    </h2>
+                                    <p className="text-xs text-gray-400 mt-0.5">{editingArticle ? 'Update article content and images' : 'Fill in article details to publish'}</p>
+                                </div>
                                 <button
                                     onClick={() => setShowModal(false)}
-                                    className="cursor-pointer text-gray-500 hover:text-gray-700 text-2xl font-bold"
+                                    className="cursor-pointer p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
                                 >
-                                    ×
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                                 </button>
                             </div>
 
@@ -513,17 +532,17 @@ export default function ArticlesAdminPage() {
                                     </div>
                                 </div>
 
-                                <div className="flex justify-end gap-4 mt-8 pt-6 border-t border-gray-400">
+                                <div className="flex justify-end gap-3 mt-8 pt-6 border-t border-gray-100">
                                     <button
                                         type="button"
                                         onClick={() => setShowModal(false)}
-                                        className="cursor-pointer px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium transition-all duration-200 cursor-pointer"
+                                        className="cursor-pointer px-5 py-2.5 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 font-medium text-sm transition-all duration-200"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         type="submit"
-                                        className="cursor-pointer px-6 py-2 bg-[#0D7FF2] hover:bg-[#0B6FD9] text-white rounded-lg font-medium transition-all duration-200 cursor-pointer"
+                                        className="cursor-pointer px-5 py-2.5 bg-[#0D7FF2] hover:bg-[#0B6FD9] text-white rounded-xl font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-200"
                                     >
                                         {editingArticle ? 'Update Article' : 'Create Article'}
                                     </button>

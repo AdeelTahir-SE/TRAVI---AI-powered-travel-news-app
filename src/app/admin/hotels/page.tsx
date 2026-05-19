@@ -1,15 +1,20 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import { supabase } from '@/utils/supabase'
 import { Hotel } from '@/utils/types'
 import ImageUpload from '@/components/admin/ImageUpload'
+import { useToast } from '@/components/admin/Toaster'
+import { AdminPageSkeleton } from '@/components/Skeletons'
 
 export default function HotelsPage() {
+    const { toast } = useToast()
     const [hotels, setHotels] = useState<Hotel[]>([])
     const [loading, setLoading] = useState(true)
     const [showModal, setShowModal] = useState(false)
     const [editingHotel, setEditingHotel] = useState<Hotel | null>(null)
+    const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null)
     const [formData, setFormData] = useState<Partial<Hotel>>({
         title: '',
         tagline: '',
@@ -29,7 +34,7 @@ export default function HotelsPage() {
 
         if (error) {
             console.error('Error fetching hotels:', error)
-            alert('Failed to fetch hotels: ' + error.message)
+            toast('Failed to fetch hotels: ' + error.message, 'error')
         } else {
             setHotels(data || [])
         }
@@ -131,8 +136,6 @@ export default function HotelsPage() {
     }
 
     const handleDelete = async (hotelId: string) => {
-        if (!confirm('Are you sure you want to delete this hotel?')) return
-
         const { error } = await supabase
             .from('hotel')
             .delete()
@@ -140,9 +143,10 @@ export default function HotelsPage() {
 
         if (error) {
             console.error('Error deleting hotel:', error)
-            alert('Failed to delete hotel: ' + error.message)
+            toast('Failed to delete hotel: ' + error.message, 'error')
         } else {
-            alert('Hotel deleted successfully!')
+            toast('Hotel deleted successfully!', 'success')
+            setDeleteConfirmId(null)
             fetchHotels()
         }
     }
@@ -152,32 +156,32 @@ export default function HotelsPage() {
 
         // Validate required fields
         if (!formData.title || !formData.tagline) {
-            alert('Title and tagline are required!')
+            toast('Title and tagline are required!', 'error')
             return
         }
 
         if (!formData.about_hotel || formData.about_hotel.trim() === '') {
-            alert('About Hotel description is required!')
+            toast('About Hotel description is required!', 'error')
             return
         }
 
         if (!formData.about_hotel_images || formData.about_hotel_images.length < 4) {
-            alert('At least 4 About Hotel images are required!')
+            toast('At least 4 About Hotel images are required!', 'error')
             return
         }
 
         if (!formData.essential_information_image) {
-            alert('Essential Information Image is required!')
+            toast('Essential Information Image is required!', 'error')
             return
         }
 
         if (!formData.traveler_tips_image) {
-            alert('Traveler Tips Image is required!')
+            toast('Traveler Tips Image is required!', 'error')
             return
         }
 
         if (!formData.hotel_cloud_image) {
-            alert('Hotel Cloud Image is required!')
+            toast('Hotel Cloud Image is required!', 'error')
             return
         }
 
@@ -185,7 +189,7 @@ export default function HotelsPage() {
         if (!formData.highlights?.waterpolo || !formData.highlights?.underwater_suites ||
             !formData.highlights?.dining_option || !formData.highlights?.beach ||
             !formData.highlights?.smile || !formData.highlights?.bed) {
-            alert('All highlight descriptions (Waterpolo, Underwater Suites, Dining Option, Beach, Smile, Bed) are required!')
+            toast('All highlight descriptions are required!', 'error')
             return
         }
 
@@ -198,9 +202,9 @@ export default function HotelsPage() {
 
             if (error) {
                 console.error('Error updating hotel:', error)
-                alert('Failed to update hotel: ' + error.message)
+                toast('Failed to update hotel: ' + error.message, 'error')
             } else {
-                alert('Hotel updated successfully!')
+                toast('Hotel updated successfully!', 'success')
                 setShowModal(false)
                 fetchHotels()
             }
@@ -212,9 +216,9 @@ export default function HotelsPage() {
 
             if (error) {
                 console.error('Error creating hotel:', error)
-                alert('Failed to create hotel: ' + error.message)
+                toast('Failed to create hotel: ' + error.message, 'error')
             } else {
-                alert('Hotel created successfully!')
+                toast('Hotel created successfully!', 'success')
                 setShowModal(false)
                 fetchHotels()
             }
@@ -231,93 +235,99 @@ export default function HotelsPage() {
     }
 
     return (
-        <div className="min-h-screen p-4 sm:p-6 lg:p-8">
+        <div className="p-4 sm:p-6 lg:p-8">
             <div className="max-w-7xl mx-auto">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
-                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Hotel Management</h1>
+                <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
+                    <div>
+                        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Hotels</h1>
+                        <p className="text-gray-500 text-sm mt-1">Create, edit, and manage hotel listings.</p>
+                    </div>
                     <button
                         onClick={handleCreate}
-                        className="bg-[#0D7FF2] hover:bg-[#0B6FD9] active:bg-[#0956B8] text-white px-6 py-3 rounded-lg font-medium transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg transform hover:-translate-y-0.5 w-full sm:w-auto"
+                        className="cursor-pointer flex items-center gap-2 bg-[#0D7FF2] hover:bg-[#0B6FD9] text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-200"
                     >
-                        + Create New Hotel
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                        </svg>
+                        New Hotel
                     </button>
                 </div>
 
                 {loading ? (
-                    <div className="text-center py-12">
-                        <div className="inline-block animate-spin rounded-full h-12 w-12 border-4 border-[#0D7FF2] border-t-transparent"></div>
-                        <p className="mt-4 text-gray-600 font-medium">Loading hotels...</p>
-                    </div>
+                    <AdminPageSkeleton count={4} />
                 ) : hotels.length === 0 ? (
-                    <div className="text-center py-12 bg-white rounded-xl shadow-md">
-                        <p className="text-gray-600 text-lg">No hotels found. Create your first hotel!</p>
+                    <div className="text-center py-16 bg-white rounded-2xl shadow-md border border-gray-100">
+                        <svg className="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                        <p className="text-gray-500 font-medium">No hotels yet</p>
+                        <p className="text-gray-400 text-sm mt-1">Create your first hotel listing to get started.</p>
                     </div>
                 ) : (
-                    <div className="grid gap-4 sm:gap-6">
+                    <div className="grid gap-4">
                         {hotels.map((hotel) => (
-                            <div key={hotel.hotel_id} className="bg-white rounded-xl shadow-md p-4 sm:p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                                <div className="flex flex-col lg:flex-row justify-between items-start gap-4">
-                                    <div className="flex-1 w-full">
-                                        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">{hotel.title}</h2>
-                                        <p className="text-gray-600 mb-3">{hotel.tagline}</p>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
+                            <div key={hotel.hotel_id} className="bg-white rounded-2xl shadow-md border border-gray-100 p-6 hover:shadow-lg transition-all duration-200">
+                                <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
+                                    <div className="flex-1 min-w-0">
+                                        <h2 className="text-base font-bold text-gray-900 truncate mb-2">{hotel.title}</h2>
+                                        <div className="flex flex-wrap gap-2">
                                             {hotel.location && (
-                                                <div>
-                                                    <span className="font-semibold text-gray-700">Location:</span>
-                                                    <span className="ml-2 text-gray-600">{hotel.location}</span>
-                                                </div>
+                                                <span className="inline-flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 border border-gray-100 px-2.5 py-1 rounded-full">
+                                                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                                                    {hotel.location}
+                                                </span>
                                             )}
                                             {hotel.rating && (
-                                                <div>
-                                                    <span className="font-semibold text-gray-700">Rating:</span>
-                                                    <span className="ml-2 text-gray-600">{hotel.rating} / 5</span>
-                                                </div>
+                                                <span className="inline-flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 border border-gray-100 px-2.5 py-1 rounded-full">
+                                                    <svg className="w-3 h-3 text-amber-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                                    {hotel.rating}/5
+                                                </span>
                                             )}
                                             {hotel.reviews && (
-                                                <div>
-                                                    <span className="font-semibold text-gray-700">Reviews:</span>
-                                                    <span className="ml-2 text-gray-600">{hotel.reviews}</span>
-                                                </div>
+                                                <span className="inline-flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 border border-gray-100 px-2.5 py-1 rounded-full">
+                                                    {hotel.reviews.toLocaleString()} reviews
+                                                </span>
                                             )}
-                                            {hotel.beach && (
-                                                <div>
-                                                    <span className="font-semibold text-gray-700">Beach:</span>
-                                                    <span className="ml-2 text-gray-600">{hotel.beach}</span>
-                                                </div>
+                                            {hotel.price && (
+                                                <span className="inline-flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 border border-gray-100 px-2.5 py-1 rounded-full">
+                                                    ${hotel.price}/night
+                                                </span>
                                             )}
                                         </div>
-                                        {/* Show images if available */}
-                                        {hotel.about_hotel_images && hotel.about_hotel_images.length > 0 && (
-                                            <div className="mt-4 flex gap-2 overflow-x-auto pb-2">
-                                                {hotel.about_hotel_images.slice(0, 3).map((img, idx) => (
-                                                    <img
-                                                        key={idx}
-                                                        src={img}
-                                                        alt={`${hotel.title} ${idx + 1}`}
-                                                        className="w-20 h-20 sm:w-24 sm:h-24 object-cover rounded-lg flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
-                                                    />
-                                                ))}
-                                                {hotel.about_hotel_images.length > 3 && (
-                                                    <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg flex items-center justify-center text-gray-600 text-sm font-semibold flex-shrink-0">
-                                                        +{hotel.about_hotel_images.length - 3}
-                                                    </div>
-                                                )}
-                                            </div>
-                                        )}
                                     </div>
-                                    <div className="flex flex-row lg:flex-col gap-2 w-full lg:w-auto">
+                                    <div className="flex gap-2 flex-shrink-0">
                                         <button
                                             onClick={() => handleEdit(hotel)}
-                                            className="flex-1 lg:flex-none bg-green-600 hover:bg-green-700 active:bg-green-800 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg"
+                                            className="cursor-pointer flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200"
                                         >
+                                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                                             Edit
                                         </button>
-                                        <button
-                                            onClick={() => handleDelete(hotel.hotel_id)}
-                                            className="flex-1 lg:flex-none bg-red-600 hover:bg-red-700 active:bg-red-800 text-white px-4 py-2 rounded-lg font-medium transition-all duration-200 cursor-pointer shadow-md hover:shadow-lg"
-                                        >
-                                            Delete
-                                        </button>
+                                        {deleteConfirmId === hotel.hotel_id ? (
+                                            <div className="flex items-center gap-2 bg-red-50 border border-red-200 rounded-xl px-3 py-1.5">
+                                                <span className="text-xs text-red-600 font-medium whitespace-nowrap">Sure?</span>
+                                                <button
+                                                    onClick={() => handleDelete(hotel.hotel_id)}
+                                                    className="cursor-pointer text-xs bg-red-600 hover:bg-red-700 text-white px-2.5 py-1 rounded-lg font-semibold transition-colors"
+                                                >
+                                                    Yes, delete
+                                                </button>
+                                                <button
+                                                    onClick={() => setDeleteConfirmId(null)}
+                                                    className="cursor-pointer text-xs text-gray-500 hover:text-gray-700 px-2 py-1 rounded-lg font-medium transition-colors"
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </div>
+                                        ) : (
+                                            <button
+                                                onClick={() => setDeleteConfirmId(hotel.hotel_id)}
+                                                className="cursor-pointer flex items-center gap-1.5 border border-red-200 text-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200"
+                                            >
+                                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                                                Delete
+                                            </button>
+                                        )}
                                     </div>
                                 </div>
                             </div>
@@ -327,18 +337,21 @@ export default function HotelsPage() {
 
                 {/* Modal for Create/Edit */}
                 {showModal && (
-                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 overflow-y-auto">
-                        <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto my-8">
-                            <div className="sticky z-20 top-0 bg-gradient-to-r from-white to-blue-50 border-b border-[#0D7FF2]/20 px-4 sm:px-6 py-4 flex justify-between items-center">
-                                <h2 className="text-xl sm:text-2xl font-bold text-gray-900">
-                                    {editingHotel ? 'Edit Hotel' : 'Create New Hotel'}
-                                </h2>
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
+                        <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto my-8">
+                            <div className="sticky z-20 top-0 bg-white border-b border-gray-100 px-6 py-4 flex justify-between items-center rounded-t-2xl">
+                                <div>
+                                    <h2 className="text-lg font-bold text-gray-900">
+                                        {editingHotel ? 'Edit Hotel' : 'New Hotel'}
+                                    </h2>
+                                    <p className="text-xs text-gray-400 mt-0.5">{editingHotel ? 'Update hotel details and images' : 'Fill in hotel details to publish'}</p>
+                                </div>
                                 <button
                                     onClick={() => setShowModal(false)}
-                                    className="cursor-pointer text-gray-500 hover:text-red-600 text-3xl font-bold cursor-pointer transition-colors w-10 h-10 flex items-center justify-center rounded-lg hover:bg-red-50"
+                                    className="cursor-pointer p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
                                     aria-label="Close modal"
                                 >
-                                    ×
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                                 </button>
                             </div>
 
@@ -379,12 +392,65 @@ export default function HotelsPage() {
                                         onUploadComplete={(urls) => handleInputChange('main_image', urls[0] || '')}
                                     />
 
-                                    <ImageUpload
-                                        label="About Hotel Images (Minimum 4) *"
-                                        multiple={true}
-                                        existingImages={formData.about_hotel_images || []}
-                                        onUploadComplete={(urls) => handleInputChange('about_hotel_images', urls)}
-                                    />
+                                    <div>
+                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                            About Hotel Images (Minimum 4) *
+                                        </label>
+                                        {/* Reorder grid */}
+                                        {(formData.about_hotel_images || []).length > 0 && (
+                                            <div className="grid grid-cols-3 sm:grid-cols-4 gap-3 mb-3">
+                                                {(formData.about_hotel_images || []).map((url, idx) => (
+                                                    <div key={idx} className="relative group rounded-xl overflow-hidden border-2 border-gray-200 aspect-square bg-gray-100">
+                                                        <Image src={url} alt={`Hotel image ${idx + 1}`} fill sizes="120px" className="object-cover" />
+                                                        {/* overlay controls */}
+                                                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-between p-1">
+                                                            {/* order arrows */}
+                                                            <div className="flex gap-1 w-full justify-between">
+                                                                <button
+                                                                    type="button"
+                                                                    disabled={idx === 0}
+                                                                    onClick={() => {
+                                                                        const imgs = [...(formData.about_hotel_images || [])]
+                                                                        ;[imgs[idx - 1], imgs[idx]] = [imgs[idx], imgs[idx - 1]]
+                                                                        handleInputChange('about_hotel_images', imgs)
+                                                                    }}
+                                                                    className="cursor-pointer text-white bg-black/50 hover:bg-black/70 disabled:opacity-30 rounded-lg px-2 py-1 text-xs font-bold transition-all"
+                                                                >←</button>
+                                                                <span className="text-white text-[10px] font-bold bg-black/50 rounded px-1.5 flex items-center">{idx + 1}</span>
+                                                                <button
+                                                                    type="button"
+                                                                    disabled={idx === (formData.about_hotel_images || []).length - 1}
+                                                                    onClick={() => {
+                                                                        const imgs = [...(formData.about_hotel_images || [])]
+                                                                        ;[imgs[idx], imgs[idx + 1]] = [imgs[idx + 1], imgs[idx]]
+                                                                        handleInputChange('about_hotel_images', imgs)
+                                                                    }}
+                                                                    className="cursor-pointer text-white bg-black/50 hover:bg-black/70 disabled:opacity-30 rounded-lg px-2 py-1 text-xs font-bold transition-all"
+                                                                >→</button>
+                                                            </div>
+                                                            {/* remove */}
+                                                            <button
+                                                                type="button"
+                                                                onClick={() => {
+                                                                    const imgs = (formData.about_hotel_images || []).filter((_, i) => i !== idx)
+                                                                    handleInputChange('about_hotel_images', imgs)
+                                                                }}
+                                                                className="cursor-pointer w-7 h-7 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center text-sm font-bold transition-colors"
+                                                            >×</button>
+                                                        </div>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                        {/* Append more images */}
+                                        <ImageUpload
+                                            label=""
+                                            multiple={true}
+                                            existingImages={[]}
+                                            onUploadComplete={(urls) => handleInputChange('about_hotel_images', [...(formData.about_hotel_images || []), ...urls])}
+                                        />
+                                        <p className="text-xs text-gray-400 mt-1">Hover a thumbnail to reorder with ← → or remove with ×. Minimum 4 images required.</p>
+                                    </div>
 
                                     <ImageUpload
                                         label="Essential Information Image *"
@@ -563,16 +629,51 @@ export default function HotelsPage() {
 
                                     <div className="grid grid-cols-3 gap-4">
                                         <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Rating (0-5)</label>
-                                            <input
-                                                type="number"
-                                                step="0.1"
-                                                min="0"
-                                                max="5"
-                                                value={formData.rating || ''}
-                                                onChange={(e) => handleInputChange('rating', parseFloat(e.target.value))}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
-                                            />
+                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Rating (0–5)</label>
+                                            {/* Star picker */}
+                                            <div className="flex items-center gap-1 mb-1">
+                                                {[1, 2, 3, 4, 5].map((star) => {
+                                                    const val = formData.rating ?? 0
+                                                    const filled = val >= star
+                                                    const half = !filled && val >= star - 0.5
+                                                    return (
+                                                        <button
+                                                            key={star}
+                                                            type="button"
+                                                            onClick={() => handleInputChange('rating', val === star ? star - 0.5 : star)}
+                                                            title={`${star} stars`}
+                                                            className="cursor-pointer p-0.5 transition-transform hover:scale-110"
+                                                        >
+                                                            <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none">
+                                                                {/* full fill */}
+                                                                {filled && (
+                                                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#F8A900" />
+                                                                )}
+                                                                {/* half fill */}
+                                                                {half && (
+                                                                    <>
+                                                                        <defs>
+                                                                            <linearGradient id={`half-${star}`}>
+                                                                                <stop offset="50%" stopColor="#F8A900" />
+                                                                                <stop offset="50%" stopColor="#E5E7EB" />
+                                                                            </linearGradient>
+                                                                        </defs>
+                                                                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill={`url(#half-${star})`} />
+                                                                    </>
+                                                                )}
+                                                                {/* empty */}
+                                                                {!filled && !half && (
+                                                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#E5E7EB" />
+                                                                )}
+                                                                {/* outline */}
+                                                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" stroke="#D1D5DB" strokeWidth="0.5" fill="none" />
+                                                            </svg>
+                                                        </button>
+                                                    )
+                                                })}
+                                                <span className="ml-2 text-sm font-semibold text-gray-700">{formData.rating?.toFixed(1) ?? '—'}</span>
+                                            </div>
+                                            <p className="text-xs text-gray-400">Click a star to set rating. Click again for half star.</p>
                                         </div>
 
                                         <div>
@@ -986,17 +1087,17 @@ export default function HotelsPage() {
                                     </div>
                                 </div>
 
-                                <div className="flex justify-end gap-4 mt-8 pt-6 border-t">
+                                <div className="flex justify-end gap-3 mt-8 pt-6 border-t border-gray-100">
                                     <button
                                         type="button"
                                         onClick={() => setShowModal(false)}
-                                        className="cursor-pointer px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 font-medium transition-colors"
+                                        className="cursor-pointer px-5 py-2.5 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 font-medium text-sm transition-all duration-200"
                                     >
                                         Cancel
                                     </button>
                                     <button
                                         type="submit"
-                                        className="cursor-pointer px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                                        className="cursor-pointer px-5 py-2.5 bg-[#0D7FF2] hover:bg-[#0B6FD9] text-white rounded-xl font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-200"
                                     >
                                         {editingHotel ? 'Update Hotel' : 'Create Hotel'}
                                     </button>

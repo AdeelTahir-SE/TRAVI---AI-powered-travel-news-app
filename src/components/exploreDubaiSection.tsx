@@ -26,6 +26,7 @@ export default function ExploreDubaiSection() {
     if (error) {
       console.error('Error fetching articles:', error);
     } else if (data) {
+      console.log(data);
       setArticles(data as Article[]);
     }
     setLoading(false);
@@ -204,7 +205,6 @@ export default function ExploreDubaiSection() {
               {articles.slice(currentIndex, currentIndex + 1).map((article, idx) => (
                 <div key={article.article_id} className="flex flex-row items-center justify-center gap-[11px]">
                   <Image
-                    key={article.article_id}
                     src={article.images?.[1] || "/background-images/explore-dubai.svg"}
                     className="min-w-[258px] 2xl:min-w-[328px] 2xl:min-h-[258px] min-h-[223px] rounded-[20px] object-cover"
                     width={328}
@@ -212,7 +212,6 @@ export default function ExploreDubaiSection() {
                     alt={article.title}
                   />
                   <Image
-                    key={article.article_id}
                     src={article.images?.[2] || "/background-images/explore-dubai.svg"}
                     className="min-w-[258px] 2xl:min-w-[328px] 2xl:min-h-[258px] min-h-[223px] rounded-[20px] object-cover"
                     width={328}

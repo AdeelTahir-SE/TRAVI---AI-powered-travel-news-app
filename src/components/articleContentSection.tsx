@@ -1,14 +1,22 @@
-
-
 import Image from "next/image"
 import CommentContainer from "./commentContainer"
 import QuoteWithoutImage from "./quoteWithoutImage"
 import { Article } from "@/utils/types"
-export default function ArticleContentSection({ article }: { article: Article }) {
+export default function ArticleContentSection({ article, readTime }: { article: Article; readTime?: number }) {
     return (
         <section className="flex flex-col items-start justify-center w-full py-[60px] px-[20px] lg:py-[100px] lg:px-[140px]  gap-[20px] lg:gap-[28px]">
             <div className="flex flex-col items-start justify-center gap-[20px] lg:gap-[28px]">
-                <span className="text-black flex items-center justify-center bg-[#F8A900] rounded-[50px] py-[14px] px-[30px] font-inter font-normal text-[20px] leading-[32px] tracking-[-0.02em] gap-[8px]"><Image src={"/icons/article-calender.svg"} className="w-[20px] h-[20px]" alt="" width={20} height={20} />{article.published_date}</span>
+                <div className="flex items-center gap-3 flex-wrap">
+                    <span className="text-black flex items-center justify-center bg-[#F8A900] rounded-[50px] py-[14px] px-[30px] font-inter font-normal text-[20px] leading-[32px] tracking-[-0.02em] gap-[8px]"><Image src={"/icons/article-calender.svg"} className="w-[20px] h-[20px]" alt="" width={20} height={20} />{article.published_date}</span>
+                    {readTime && (
+                        <span className="flex items-center gap-1.5 bg-white border border-gray-200 text-gray-600 rounded-full py-[10px] px-[20px] font-inter text-[16px] font-medium shadow-sm">
+                            <svg className="w-4 h-4 text-[#0D7FF2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            {readTime} min read
+                        </span>
+                    )}
+                </div>
                 <h1 className="font-manrope text-[50px] font-extrabold leading-[55px] tracking-[-0.03em]">{article?.title}</h1>
             </div>
 

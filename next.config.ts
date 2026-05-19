@@ -2,7 +2,21 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["travi-ai-powered-travel-news-app.vercel.app", "images.unsplash.com", "flusjttbfwvwvutqpndx.supabase.co", "images.unsplash.com"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "flusjttbfwvwvutqpndx.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
+      {
+        protocol: "https",
+        hostname: "travi-ai-powered-travel-news-app.vercel.app",
+      },
+    ],
   },
 };
 

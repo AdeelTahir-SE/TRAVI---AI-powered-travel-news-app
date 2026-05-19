@@ -1,0 +1,17 @@
+User-agent: *
+Allow: /
+
+# Block admin panel from indexing
+Disallow: /admin/
+Disallow: /admin/login
+Disallow: /admin/dashboard
+Disallow: /admin/articles
+Disallow: /admin/hotels
+Disallow: /admin/generate
+Disallow: /admin/analytics
+
+# Allow all public content
+Allow: /article/
+Allow: /hotel/
+
+Sitemap: https://travi-ai-powered-travel-news-app.vercel.app/sitemap.xml

@@ -9,8 +9,18 @@ import { Article } from "@/utils/types";
 import { notFound } from "next/navigation";
 export const dynamic = "force-dynamic";
 
+/** Returns estimated read time in minutes based on total word count */
+function calcReadTime(article: Article): number {
+  const allText = [
+    ...(article.paras ?? []),
+    ...(article.subsections ?? []).flatMap((s) => s.paras),
+    article.tip ?? "",
+  ].join(" ")
+  const words = allText.split(/\s+/).filter(Boolean).length
+  return Math.max(1, Math.ceil(words / 200))
+}
+
 async function getArticle(title: string): Promise<Article | null> {
-  console.log(title)
   const { data, error } = await supabase
     .from("article")
     .select("*")
@@ -37,13 +47,15 @@ export default async function ArticlePage({
 
   if (!article) notFound();
 
+  const readTime = calcReadTime(article)
+
   return (
     <div className="flex flex-col items-center justify-center">
       <ArticleHeroSection articleImage={article.images?.[0]} />
-      <ArticleContentSection article={article} />
+      <ArticleContentSection article={article} readTime={readTime} />
       <ExperienceDubaiSection />
       <TraviRecommends />
-      <RelatedArticlesSection />
+      <RelatedArticlesSection currentTitle={article.title} />
       <ArticleCoupleSection />
     </div>
   );
