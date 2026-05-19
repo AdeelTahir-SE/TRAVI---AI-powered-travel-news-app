@@ -121,32 +121,43 @@ export default function Sidebar({ onLogout }: SidebarProps) {
             >
                 <div className="flex flex-col h-full">
                     {/* Brand */}
-                    <div className="p-5 border-b border-[#0D7FF2]/20 bg-gradient-to-r from-[#0D7FF2]/10 to-transparent">
-                        <h1 className="text-xl font-bold bg-gradient-to-r from-white to-[#0D7FF2] bg-clip-text text-transparent">
-                            TRAVI Admin
-                        </h1>
-                        <p className="text-xs text-gray-400 mt-0.5">Content Management</p>
+                    <div className="p-5 border-b border-white/10">
+                        <div className="flex items-center gap-2.5">
+                            <div className="w-8 h-8 rounded-lg bg-[#F8A900] flex items-center justify-center flex-shrink-0 shadow-lg">
+                                <svg className="w-4 h-4 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 004 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064" />
+                                </svg>
+                            </div>
+                            <div>
+                                <p className="font-manrope font-extrabold text-[15px] leading-none tracking-tight text-white">TRAVI</p>
+                                <p className="text-[10px] text-[#F8A900]/80 font-medium tracking-widest uppercase mt-0.5">Admin Panel</p>
+                            </div>
+                        </div>
                     </div>
 
                     {/* Nav */}
-                    <nav className="flex-1 p-3 space-y-1 overflow-y-auto">
+                    <nav className="flex-1 p-3 space-y-0.5 overflow-y-auto">
                         {navItems.map((item) => (
                             <Link
                                 key={item.href}
                                 href={item.href}
                                 onClick={() => setIsMobileOpen(false)}
                                 className={`
-                                    flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 cursor-pointer text-sm
+                                    flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 cursor-pointer text-sm
                                     ${isActive(item.href)
-                                        ? 'bg-[#0D7FF2] text-white shadow-lg shadow-[#0D7FF2]/30'
-                                        : 'text-gray-300 hover:bg-[#0D7FF2]/20 hover:text-white hover:translate-x-1'
+                                        ? 'bg-[#F8A900] text-black shadow-lg shadow-[#F8A900]/20 font-semibold'
+                                        : 'text-gray-400 hover:bg-white/8 hover:text-white hover:translate-x-1'
                                     }
                                 `}
                             >
-                                {item.icon}
+                                <span className={isActive(item.href) ? 'text-black' : 'text-gray-400 group-hover:text-white'}>
+                                    {item.icon}
+                                </span>
                                 <span className="font-medium flex-1 truncate">{item.name}</span>
                                 {item.badge && (
-                                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[#F8A900] text-black leading-none flex-shrink-0">
+                                    <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none flex-shrink-0 ${
+                                        isActive(item.href) ? 'bg-black/20 text-black' : 'bg-[#F8A900] text-black'
+                                    }`}>
                                         {item.badge}
                                     </span>
                                 )}
@@ -155,19 +166,19 @@ export default function Sidebar({ onLogout }: SidebarProps) {
                     </nav>
 
                     {/* Footer / Logout */}
-                    <div className="p-3 border-t border-[#0D7FF2]/20 bg-gradient-to-t from-[#0D7FF2]/5 to-transparent">
+                    <div className="p-3 border-t border-white/10">
                         {onLogout && (
                             <button
                                 onClick={onLogout}
-                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-300 hover:bg-red-600 hover:text-white transition-all duration-200 cursor-pointer text-sm"
+                                className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-gray-400 hover:bg-red-500/15 hover:text-red-400 transition-all duration-200 cursor-pointer text-sm group"
                             >
                                 <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                                 </svg>
-                                <span className="font-medium">Logout</span>
+                                <span className="font-medium">Sign Out</span>
                             </button>
                         )}
-                        <p className="text-xs text-gray-500 text-center mt-2">© 2024 TRAVI</p>
+                        <p className="text-[11px] text-gray-600 text-center mt-2 tracking-wider">© 2025 TRAVI</p>
                     </div>
                 </div>
             </aside>

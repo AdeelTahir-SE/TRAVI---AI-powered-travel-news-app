@@ -113,9 +113,9 @@ export default function AdminUsersPage() {
     }
 
     const ACTION_STYLES: Record<Action, string> = {
-        verify: 'bg-emerald-600 hover:bg-emerald-700 text-white',
+        verify: 'bg-[#F8A900] hover:bg-[#e09800] text-black',
         reject: 'bg-red-50 hover:bg-red-100 text-red-700 border border-red-200',
-        promote: 'bg-[#0D7FF2]/10 hover:bg-[#0D7FF2]/20 text-[#0D7FF2] border border-[#0D7FF2]/20',
+        promote: 'bg-[#112259]/10 hover:bg-[#112259]/20 text-[#112259] border border-[#112259]/20',
         demote: 'bg-gray-100 hover:bg-gray-200 text-gray-700 border border-gray-200',
     }
     const ACTION_LABEL_BTN: Record<Action, string> = {
@@ -132,8 +132,8 @@ export default function AdminUsersPage() {
                 {/* Header */}
                 <div className="flex items-start justify-between gap-4 flex-wrap">
                     <div>
-                        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Admin Users</h1>
-                        <p className="text-gray-500 text-sm mt-1">
+                        <h1 className="font-manrope font-extrabold text-[28px] leading-none tracking-[-0.03em] text-[#112259]">Admin Users</h1>
+                        <p className="text-gray-500 text-sm mt-1 font-inter">
                             {isSuperAdmin
                                 ? 'Approve, reject, and manage admin access.'
                                 : 'View all admin accounts. Only super admins can manage access.'}
@@ -160,17 +160,17 @@ export default function AdminUsersPage() {
 
                 {/* Legend */}
                 {isSuperAdmin && (
-                    <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 text-sm text-blue-700 flex flex-wrap gap-4 items-center">
-                        <span className="font-semibold text-blue-800">Actions available:</span>
-                        <span><span className="font-medium">Approve</span> — grants admin access</span>
-                        <span><span className="font-medium">Reject</span> — blocks access</span>
-                        <span><span className="font-medium">↑ Promote</span> — makes verified admin a super admin</span>
-                        <span><span className="font-medium">↓ Demote</span> — reverts super admin to regular admin</span>
+                    <div className="bg-[#F8A900]/8 border border-[#F8A900]/20 rounded-xl p-4 text-sm flex flex-wrap gap-4 items-center">
+                        <span className="font-manrope font-bold text-[#112259] text-xs uppercase tracking-wider">Actions:</span>
+                        <span className="font-inter text-xs text-gray-600"><span className="font-semibold text-[#112259]">Approve</span> — grants access</span>
+                        <span className="font-inter text-xs text-gray-600"><span className="font-semibold text-[#112259]">Reject</span> — blocks access</span>
+                        <span className="font-inter text-xs text-gray-600"><span className="font-semibold text-[#112259]">↑ Promote</span> — super admin</span>
+                        <span className="font-inter text-xs text-gray-600"><span className="font-semibold text-[#112259]">↓ Demote</span> — regular admin</span>
                     </div>
                 )}
 
                 {/* Table card */}
-                <div className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+                <div className="bg-white rounded-[25px] shadow-[9px_9px_75px_0px_#00000029] overflow-hidden">
                     {loading ? (
                         <div className="p-6 space-y-3">
                             {[1, 2, 3, 4].map(i => (
@@ -207,8 +207,8 @@ export default function AdminUsersPage() {
                                                 {/* User */}
                                                 <td className="px-5 py-4">
                                                     <div className="flex items-center gap-3">
-                                                        <div className="w-9 h-9 rounded-full bg-gradient-to-br from-[#0D7FF2] to-[#0B5FC9] flex items-center justify-center flex-shrink-0 shadow-sm">
-                                                            <span className="text-white text-sm font-bold">
+                                                        <div className="w-9 h-9 rounded-full bg-[#F8A900] flex items-center justify-center flex-shrink-0 shadow-sm">
+                                                            <span className="text-black text-sm font-bold font-manrope">
                                                                 {(user.full_name || user.email)[0].toUpperCase()}
                                                             </span>
                                                         </div>
@@ -218,7 +218,7 @@ export default function AdminUsersPage() {
                                                                     {user.full_name || '—'}
                                                                 </p>
                                                                 {user.id === currentUserId && (
-                                                                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[#0D7FF2]/10 text-[#0D7FF2] flex-shrink-0">You</span>
+                                                                    <span className="text-[10px] font-bold px-1.5 py-0.5 rounded-full bg-[#F8A900]/15 text-[#112259] flex-shrink-0">You</span>
                                                                 )}
                                                             </div>
                                                             <p className="text-xs text-gray-400 truncate">{user.email}</p>
@@ -260,7 +260,7 @@ export default function AdminUsersPage() {
                                                                 <button
                                                                     onClick={() => runAction(user.id, confirmAction!.action)}
                                                                     disabled={!!actionLoading}
-                                                                    className="cursor-pointer text-xs px-2.5 py-1.5 bg-[#0D7FF2] text-white rounded-lg hover:bg-[#0B6FD9] transition-colors disabled:opacity-50 font-semibold"
+                                                                    className="cursor-pointer text-xs px-2.5 py-1.5 bg-[#F8A900] hover:bg-[#e09800] text-black rounded-lg transition-colors disabled:opacity-50 font-semibold font-manrope"
                                                                 >
                                                                     {actionLoading === user.id + confirmAction?.action ? (
                                                                         <svg className="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -306,8 +306,8 @@ export default function AdminUsersPage() {
                 </div>
 
                 {/* Footer note */}
-                <p className="text-xs text-gray-400 text-center">
-                    All actions use server-side RPC functions with super_admin validation. Changes take effect immediately.
+                <p className="text-xs text-gray-400 text-center font-inter">
+                    All actions use server-side RPC functions. Changes take effect immediately.
                 </p>
             </div>
         </div>

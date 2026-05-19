@@ -7,6 +7,7 @@ import ImageUpload from '@/components/admin/ImageUpload'
 import ImageGenerator from '@/components/admin/ImageGenerator'
 import { useToast } from '@/components/admin/Toaster'
 import { AdminPageSkeleton } from '@/components/Skeletons'
+import { SectionNav } from '@/components/admin/FormSection'
 
 export default function ArticlesAdminPage() {
     const { toast } = useToast()
@@ -220,12 +221,12 @@ export default function ArticlesAdminPage() {
             <div className="max-w-7xl mx-auto">
                 <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
                     <div>
-                        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Articles</h1>
-                        <p className="text-gray-500 text-sm mt-1">Create, edit, and manage travel articles.</p>
+                        <h1 className="font-manrope font-extrabold text-[30px] leading-none tracking-[-0.03em] text-[#112259]">Articles</h1>
+                        <p className="text-gray-500 text-sm mt-1 font-inter">Create, edit, and manage travel articles.</p>
                     </div>
                     <button
                         onClick={handleCreate}
-                        className="cursor-pointer flex items-center gap-2 bg-[#0D7FF2] hover:bg-[#0B6FD9] text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-200"
+                        className="cursor-pointer flex items-center gap-2 bg-[#F8A900] hover:bg-[#e09800] text-black px-5 py-2.5 rounded-[14px] font-bold text-sm font-manrope shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
                     >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -237,7 +238,7 @@ export default function ArticlesAdminPage() {
                 {loading ? (
                     <AdminPageSkeleton count={4} />
                 ) : articles.length === 0 ? (
-                    <div className="text-center py-16 bg-white rounded-2xl shadow-md border border-gray-100">
+                    <div className="text-center py-16 bg-white rounded-[25px] shadow-[9px_9px_75px_0px_#00000029]">
                         <svg className="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
@@ -249,11 +250,11 @@ export default function ArticlesAdminPage() {
                         {articles.map((article) => (
                             <div
                                 key={article.article_id}
-                                className="bg-white rounded-2xl shadow-md border border-gray-100 p-6 hover:shadow-lg transition-all duration-200"
+                                className="bg-white rounded-[20px] shadow-[9px_9px_75px_0px_#00000029] p-6 hover:shadow-[9px_9px_100px_0px_#00000040] transition-all duration-300 hover:-translate-y-0.5"
                             >
                                 <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
                                     <div className="flex-1 min-w-0">
-                                        <h2 className="text-base font-bold text-gray-900 truncate mb-2">{article.title}</h2>
+                                        <h2 className="font-manrope font-extrabold text-[16px] text-[#112259] truncate mb-2">{article.title}</h2>
                                         <div className="flex flex-wrap gap-3">
                                             <span className="inline-flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 border border-gray-100 px-2.5 py-1 rounded-full">
                                                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
@@ -270,7 +271,7 @@ export default function ArticlesAdminPage() {
                                     <div className="flex gap-2 flex-shrink-0">
                                         <button
                                             onClick={() => handleEdit(article)}
-                                            className="cursor-pointer flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200"
+                                            className="cursor-pointer flex items-center gap-1.5 bg-[#F8A900] hover:bg-[#e09800] text-black px-4 py-2 rounded-xl text-sm font-bold font-manrope transition-all duration-200"
                                         >
                                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                                             Edit
@@ -310,13 +311,13 @@ export default function ArticlesAdminPage() {
                 {/* Modal for Create/Edit */}
                 {showModal && (
                     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-                        <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-                            <div className="sticky z-20 top-0 bg-white border-b border-gray-100 px-6 py-4 flex justify-between items-center rounded-t-2xl">
+                        <div className="bg-white rounded-[24px] shadow-[9px_9px_75px_0px_#00000029] max-w-5xl w-full max-h-[90vh] overflow-hidden my-8 flex flex-col">
+                            <div className="sticky z-20 top-0 bg-white border-b border-gray-100 px-6 py-5 flex justify-between items-center rounded-t-[24px]">
                                 <div>
-                                    <h2 className="text-lg font-bold text-gray-900">
+                                    <h2 className="font-manrope font-extrabold text-[20px] tracking-tight text-[#112259]">
                                         {editingArticle ? 'Edit Article' : 'New Article'}
                                     </h2>
-                                    <p className="text-xs text-gray-400 mt-0.5">{editingArticle ? 'Update article content and images' : 'Fill in article details to publish'}</p>
+                                    <p className="text-xs text-gray-400 mt-0.5 font-inter">{editingArticle ? 'Update article content and images' : 'Fill in article details to publish'}</p>
                                 </div>
                                 <button
                                     onClick={() => setShowModal(false)}
@@ -326,23 +327,28 @@ export default function ArticlesAdminPage() {
                                 </button>
                             </div>
 
-                            <form onSubmit={handleSubmit} className="p-6">
-                                <div className="grid gap-6">
-                                    {/* Title */}
+                            <form onSubmit={handleSubmit} className="flex flex-1 overflow-hidden">
+                                    <div className="w-48 flex-shrink-0 border-r border-gray-100 p-4 overflow-y-auto bg-gray-50/50 hidden md:block">
+                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 font-inter">Jump to</p>
+                                        <SectionNav sections={[{id:"a-basic",label:"Basic Info",icon:null},{id:"a-images",label:"Images",icon:null},{id:"a-paras",label:"Paragraphs",icon:null},{id:"a-subs",label:"Subsections",icon:null},{id:"a-quotes",label:"Quotes & Tip",icon:null}]} />
+                                    </div>
+                                    <div className="flex-1 overflow-y-auto p-6 space-y-8">
+<div id="a-basic" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Basic Info</h3></div>
+                                    {/* Title */
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">
                                             Title <span className="text-red-600">*</span>
                                         </label>
                                         <input
                                             type="text"
                                             value={formData.title || ''}
                                             onChange={(e) => handleInputChange('title', e.target.value)}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-t border-gray-400ransparent"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                             required
                                         />
                                     </div>
 
-                                    {/* Images (3) */}
+                                    <div id="a-images" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Images</h3></div>
                                     <div>
                                         <ImageUpload
                                             multiple={true}
@@ -359,20 +365,20 @@ export default function ArticlesAdminPage() {
                                         />
                                     </div>
 
-                                    {/* Published Date */}
+                                    <div className="grid grid-cols-2 gap-4"><div>
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Published Date</label>
+                                        <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">Published Date</label>
                                         <input
                                             type="date"
                                             value={formData.published_date?.split('T')[0] || ''}
                                             onChange={(e) => handleInputChange('published_date', e.target.value)}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-t border-gray-400ransparent"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                         />
                                     </div>
 
-                                    {/* Paragraphs (Fixed 5) */}
+                                    </div></div><div id="a-paras" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Paragraphs</h3></div>
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Paragraphs (5 Required)</label>
+                                        <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">Paragraphs (5 Required)</label>
                                         <div className="space-y-2">
                                             {[0, 1, 2, 3, 4].map((index) => (
                                                 <div key={index}>
@@ -380,7 +386,7 @@ export default function ArticlesAdminPage() {
                                                     <textarea
                                                         value={formData.paras?.[index] || ''}
                                                         onChange={(e) => updateParagraph(index, e.target.value)}
-                                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-t border-gray-400ransparent"
+                                                        className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                                         rows={3}
                                                         placeholder={`Paragraph ${index + 1}`}
                                                     />
@@ -389,14 +395,14 @@ export default function ArticlesAdminPage() {
                                         </div>
                                     </div>
 
-                                    {/* Subsections */}
+                                    <div id="a-subs" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Subsections</h3></div>
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Subsections</label>
+                                        <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">Subsections</label>
                                         <div className="space-y-4">
                                             {(formData.subsections || []).map((subsection, index) => (
-                                                <div key={index} className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+                                                <div key={index} className="border border-gray-200 rounded-xl p-4 bg-gray-50">
                                                     <div className="flex justify-between items-start mb-3">
-                                                        <span className="text-sm font-semibold text-gray-600">Subsection #{index + 1}</span>
+                                                        <span className="text-[13px] font-bold text-[#112259] font-manrope">Subsection #{index + 1}</span>
                                                         <button
                                                             type="button"
                                                             onClick={() => removeSubsection(index)}
@@ -410,7 +416,7 @@ export default function ArticlesAdminPage() {
                                                             type="text"
                                                             value={subsection.heading}
                                                             onChange={(e) => updateSubsection(index, 'heading', e.target.value)}
-                                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-t border-gray-400ransparent bg-white"
+                                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                             placeholder="Heading"
                                                         />
                                                         <div className="space-y-2">
@@ -420,7 +426,7 @@ export default function ArticlesAdminPage() {
                                                                     key={paraIndex}
                                                                     value={subsection.paras?.[paraIndex] || ''}
                                                                     onChange={(e) => updateSubsectionPara(index, paraIndex, e.target.value)}
-                                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-t border-gray-400ransparent bg-white text-sm"
+                                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white text-sm"
                                                                     rows={2}
                                                                     placeholder={`Paragraph ${paraIndex + 1}`}
                                                                 />
@@ -432,16 +438,16 @@ export default function ArticlesAdminPage() {
                                             <button
                                                 type="button"
                                                 onClick={addSubsection}
-                                                className="cursor-pointer w-full px-4 py-2 border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg font-medium transition-all duration-200 cursor-pointer flex items-center justify-center gap-2"
+                                                className="cursor-pointer w-full px-4 py-2 border-2 border-dashed border-gray-200 hover:border-[#F8A900] text-gray-500 hover:text-[#112259] rounded-xl font-medium transition-all duration-200 cursor-pointer flex items-center justify-center gap-2"
                                             >
                                                 <span className="text-xl">+</span> Add Subsection
                                             </button>
                                         </div>
                                     </div>
 
-                                    {/* Quotation 1 */}
+                                    <div id="a-quotes" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Quotes & Tip</h3></div>
                                     <div className="border-t border-gray-400 pt-6">
-                                        <label className="block text-sm font-semibold text-gray-700 mb-3">Quotation 1 (Full)</label>
+                                        <label className="block text-sm font-semibold text-[#112259] mb-3 font-inter">Quotation 1 (Full)</label>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <div className="col-span-2">
                                                 <label className="block text-xs font-medium text-gray-600 mb-1">Quote</label>
@@ -451,7 +457,7 @@ export default function ArticlesAdminPage() {
                                                         ...formData.quotation1,
                                                         quote: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-t border-gray-400ransparent"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                                     rows={2}
                                                 />
                                             </div>
@@ -464,7 +470,7 @@ export default function ArticlesAdminPage() {
                                                         ...formData.quotation1,
                                                         person_name: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-t border-gray-400ransparent"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                                 />
                                             </div>
                                             <div>
@@ -476,7 +482,7 @@ export default function ArticlesAdminPage() {
                                                         ...formData.quotation1,
                                                         person_role: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-t border-gray-400ransparent"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                                 />
                                             </div>
                                             <div className="col-span-2">
@@ -488,15 +494,15 @@ export default function ArticlesAdminPage() {
                                                         ...formData.quotation1,
                                                         person_image: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-t border-gray-400ransparent"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                                 />
                                             </div>
                                         </div>
                                     </div>
 
-                                    {/* Quotation 2 */}
+                                    
                                     <div className="border-t border-gray-400 pt-6">
-                                        <label className="block text-sm font-semibold text-gray-700 mb-3">Quotation 2 (Simplified)</label>
+                                        <label className="block text-sm font-semibold text-[#112259] mb-3 font-inter">Quotation 2 (Simplified)</label>
                                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <div className="col-span-2">
                                                 <label className="block text-xs font-medium text-gray-600 mb-1">Quote</label>
@@ -506,7 +512,7 @@ export default function ArticlesAdminPage() {
                                                         ...formData.quotation2,
                                                         quote: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-t border-gray-400ransparent"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                                     rows={2}
                                                 />
                                             </div>
@@ -519,28 +525,28 @@ export default function ArticlesAdminPage() {
                                                         ...formData.quotation2,
                                                         person_name: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-t border-gray-400ransparent"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                                 />
                                             </div>
                                         </div>
                                     </div>
 
-                                    {/* Tip */}
+                                    
                                     <div className='border-t border-gray-400 pt-6'>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">
                                             Tip <span className="text-red-600">*</span>
                                         </label>
                                         <textarea
                                             value={formData.tip || ''}
                                             onChange={(e) => handleInputChange('tip', e.target.value)}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-t border-gray-400ransparent"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                             rows={3}
                                             required
                                         />
                                     </div>
                                 </div>
 
-                                <div className="flex justify-end gap-3 mt-8 pt-6 border-t border-gray-100">
+                                </div></div><div className="flex justify-end gap-3 px-6 py-4 border-t border-gray-100 bg-white flex-shrink-0">
                                     <button
                                         type="button"
                                         onClick={() => setShowModal(false)}
@@ -550,7 +556,7 @@ export default function ArticlesAdminPage() {
                                     </button>
                                     <button
                                         type="submit"
-                                        className="cursor-pointer px-5 py-2.5 bg-[#0D7FF2] hover:bg-[#0B6FD9] text-white rounded-xl font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-200"
+                                        className="cursor-pointer px-6 py-2.5 bg-[#F8A900] hover:bg-[#e09800] text-black rounded-[14px] font-bold text-sm font-manrope shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
                                     >
                                         {editingArticle ? 'Update Article' : 'Create Article'}
                                     </button>

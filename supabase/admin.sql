@@ -22,44 +22,46 @@ CREATE TABLE IF NOT EXISTS public.admin_users (
 -- 2. Enable RLS
 ALTER TABLE public.admin_users ENABLE ROW LEVEL SECURITY;
 
--- 3. RLS Policies (drop first so this file is safe to re-run)
-DROP POLICY IF EXISTS "admin_users: self read"          ON public.admin_users;
-DROP POLICY IF EXISTS "admin_users: super_admin read all" ON public.admin_users;
-DROP POLICY IF EXISTS "admin_users: super_admin update" ON public.admin_users;
+-- 3a. Helper function — SECURITY DEFINER bypasses RLS so no recursion occurs
+CREATE OR REPLACE FUNCTION public.is_super_admin()
+RETURNS boolean
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+BEGIN
+    RETURN EXISTS (
+        SELECT 1 FROM public.admin_users
+        WHERE id = auth.uid()
+          AND role = 'super_admin'
+          AND status = 'verified'
+    );
+END;
+$$;
 
--- Authenticated user can read their own row
+-- 3b. RLS Policies (drop first so this file is safe to re-run)
+DROP POLICY IF EXISTS "admin_users: self read"            ON public.admin_users;
+DROP POLICY IF EXISTS "admin_users: super_admin read all" ON public.admin_users;
+DROP POLICY IF EXISTS "admin_users: super_admin update"   ON public.admin_users;
+
+-- Authenticated user can read their own row (no recursion — direct uid check)
 CREATE POLICY "admin_users: self read"
     ON public.admin_users
     FOR SELECT
     USING (auth.uid() = id);
 
--- Super admins can read all rows
+-- Super admins can read all rows — uses helper to avoid recursive policy
 CREATE POLICY "admin_users: super_admin read all"
     ON public.admin_users
     FOR SELECT
-    USING (
-        EXISTS (
-            SELECT 1 FROM public.admin_users
-            WHERE id = auth.uid() AND role = 'super_admin' AND status = 'verified'
-        )
-    );
+    USING (public.is_super_admin());
 
--- Super admins can update status/role of any row
+-- Super admins can update any row — uses helper to avoid recursive policy
 CREATE POLICY "admin_users: super_admin update"
     ON public.admin_users
     FOR UPDATE
-    USING (
-        EXISTS (
-            SELECT 1 FROM public.admin_users
-            WHERE id = auth.uid() AND role = 'super_admin' AND status = 'verified'
-        )
-    )
-    WITH CHECK (
-        EXISTS (
-            SELECT 1 FROM public.admin_users
-            WHERE id = auth.uid() AND role = 'super_admin' AND status = 'verified'
-        )
-    );
+    USING (public.is_super_admin())
+    WITH CHECK (public.is_super_admin());
 
 -- 4. Auto-insert into admin_users on Supabase email confirmation
 -- This trigger fires when a user confirms their email (email_confirmed_at is set)

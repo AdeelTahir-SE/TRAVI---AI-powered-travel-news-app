@@ -96,8 +96,8 @@ export default function Navbar() {
                        flex flex-col gap-6 px-8 py-8 w-[250px] sm:hidden transition-all duration-300"
           >
             <Link href="/" className="text-[20px] font-inter">Home</Link>
-            <Link href="/" className="text-[20px] font-inter">About</Link>
-            <Link href="/" className="text-[20px] font-inter">Contact</Link>
+            <Link href="/about" className="text-[20px] font-inter">About</Link>
+            <Link href="/contact" className="text-[20px] font-inter">Contact</Link>
 
             <Link
               href="/"

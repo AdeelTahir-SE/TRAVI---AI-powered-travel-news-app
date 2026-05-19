@@ -8,6 +8,7 @@ import ImageUpload from '@/components/admin/ImageUpload'
 import ImageGenerator from '@/components/admin/ImageGenerator'
 import { useToast } from '@/components/admin/Toaster'
 import { AdminPageSkeleton } from '@/components/Skeletons'
+import { FormSection, FieldLabel, SubCard, AddButton, SectionNav, inputCls, textareaCls } from '@/components/admin/FormSection'
 
 export default function HotelsPage() {
     const { toast } = useToast()
@@ -240,12 +241,12 @@ export default function HotelsPage() {
             <div className="max-w-7xl mx-auto">
                 <div className="flex justify-between items-center mb-8 flex-wrap gap-4">
                     <div>
-                        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Hotels</h1>
-                        <p className="text-gray-500 text-sm mt-1">Create, edit, and manage hotel listings.</p>
+                        <h1 className="font-manrope font-extrabold text-[30px] leading-none tracking-[-0.03em] text-[#112259]">Hotels</h1>
+                        <p className="text-gray-500 text-sm mt-1 font-inter">Create, edit, and manage hotel listings.</p>
                     </div>
                     <button
                         onClick={handleCreate}
-                        className="cursor-pointer flex items-center gap-2 bg-[#0D7FF2] hover:bg-[#0B6FD9] text-white px-5 py-2.5 rounded-xl font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-200"
+                        className="cursor-pointer flex items-center gap-2 bg-[#F8A900] hover:bg-[#e09800] text-black px-5 py-2.5 rounded-[14px] font-bold text-sm font-manrope shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
                     >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -257,7 +258,7 @@ export default function HotelsPage() {
                 {loading ? (
                     <AdminPageSkeleton count={4} />
                 ) : hotels.length === 0 ? (
-                    <div className="text-center py-16 bg-white rounded-2xl shadow-md border border-gray-100">
+                    <div className="text-center py-16 bg-white rounded-[25px] shadow-[9px_9px_75px_0px_#00000029]">
                         <svg className="w-12 h-12 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                         </svg>
@@ -267,10 +268,10 @@ export default function HotelsPage() {
                 ) : (
                     <div className="grid gap-4">
                         {hotels.map((hotel) => (
-                            <div key={hotel.hotel_id} className="bg-white rounded-2xl shadow-md border border-gray-100 p-6 hover:shadow-lg transition-all duration-200">
+                            <div key={hotel.hotel_id} className="bg-white rounded-[20px] shadow-[9px_9px_75px_0px_#00000029] p-6 hover:shadow-[9px_9px_100px_0px_#00000040] transition-all duration-300 hover:-translate-y-0.5">
                                 <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
                                     <div className="flex-1 min-w-0">
-                                        <h2 className="text-base font-bold text-gray-900 truncate mb-2">{hotel.title}</h2>
+                                        <h2 className="font-manrope font-extrabold text-[16px] text-[#112259] truncate mb-2">{hotel.title}</h2>
                                         <div className="flex flex-wrap gap-2">
                                             {hotel.location && (
                                                 <span className="inline-flex items-center gap-1.5 text-xs text-gray-500 bg-gray-50 border border-gray-100 px-2.5 py-1 rounded-full">
@@ -299,7 +300,7 @@ export default function HotelsPage() {
                                     <div className="flex gap-2 flex-shrink-0">
                                         <button
                                             onClick={() => handleEdit(hotel)}
-                                            className="cursor-pointer flex items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-200"
+                                            className="cursor-pointer flex items-center gap-1.5 bg-[#F8A900] hover:bg-[#e09800] text-black px-4 py-2 rounded-xl text-sm font-bold font-manrope transition-all duration-200"
                                         >
                                             <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
                                             Edit
@@ -339,13 +340,13 @@ export default function HotelsPage() {
                 {/* Modal for Create/Edit */}
                 {showModal && (
                     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
-                        <div className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto my-8">
-                            <div className="sticky z-20 top-0 bg-white border-b border-gray-100 px-6 py-4 flex justify-between items-center rounded-t-2xl">
+                        <div className="bg-white rounded-[24px] shadow-[9px_9px_75px_0px_#00000029] max-w-5xl w-full max-h-[90vh] overflow-hidden my-8 flex flex-col">
+                            <div className="sticky z-20 top-0 bg-white border-b border-gray-100 px-6 py-5 flex justify-between items-center rounded-t-[24px]">
                                 <div>
-                                    <h2 className="text-lg font-bold text-gray-900">
+                                    <h2 className="font-manrope font-extrabold text-[20px] tracking-tight text-[#112259]">
                                         {editingHotel ? 'Edit Hotel' : 'New Hotel'}
                                     </h2>
-                                    <p className="text-xs text-gray-400 mt-0.5">{editingHotel ? 'Update hotel details and images' : 'Fill in hotel details to publish'}</p>
+                                    <p className="text-xs text-gray-400 mt-0.5 font-inter">{editingHotel ? 'Update hotel details and images' : 'Fill in hotel details to publish'}</p>
                                 </div>
                                 <button
                                     onClick={() => setShowModal(false)}
@@ -356,36 +357,44 @@ export default function HotelsPage() {
                                 </button>
                             </div>
 
-                            <form onSubmit={handleSubmit} className="p-6">
-                                <div className="grid gap-6">
-                                    {/* Required Fields */}
-                                    <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
-                                            Title <span className="text-red-600">*</span>
+                            <form onSubmit={handleSubmit} className="flex flex-1 overflow-hidden">
+                                    {/* Sidebar Nav */}
+                                    <div className="w-52 flex-shrink-0 border-r border-gray-100 p-4 overflow-y-auto bg-gray-50/50 hidden md:block">
+                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 font-inter">Sections</p>
+                                        <SectionNav sections={[
+                                            {id:"s-basic",label:"Basic Info",icon:null},{id:"s-images",label:"Images",icon:null},
+                                            {id:"s-highlights",label:"Highlights",icon:null},{id:"s-location",label:"Details",icon:null},
+                                            {id:"s-essential",label:"Essential Info",icon:null},{id:"s-tips",label:"Tips & FAQs",icon:null},
+                                            {id:"s-rooms",label:"Rooms",icon:null}
+                                        ]} />
+                                    </div>
+                                    {/* Form Content */}
+                                    <div className="flex-1 overflow-y-auto p-6 space-y-8">
+                                    <div id="s-basic" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Basic Info</h3></div><div><label className="block text-[13px] font-semibold text-[#112259] mb-1.5 font-inter">Title <span className="text-red-600">*</span>
                                         </label>
                                         <input
                                             type="text"
                                             value={formData.title || ''}
                                             onChange={(e) => handleInputChange('title', e.target.value)}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                             required
                                         />
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">
                                             Tagline <span className="text-red-600">*</span>
                                         </label>
                                         <input
                                             type="text"
                                             value={formData.tagline || ''}
                                             onChange={(e) => handleInputChange('tagline', e.target.value)}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                             required
                                         />
                                     </div>
 
-                                    {/* Image Uploads */}
+                                    <div id="s-images" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Images & Media</h3></div>
                                     <div>
                                         <ImageUpload
                                             label="Main Hotel Image"
@@ -401,7 +410,7 @@ export default function HotelsPage() {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">
                                             About Hotel Images (Minimum 4) *
                                         </label>
                                         {/* Reorder grid */}
@@ -507,12 +516,12 @@ export default function HotelsPage() {
                                         />
                                     </div>
 
-                                    {/* Highlights Descriptions */}
+                                    <div id="s-highlights" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Highlights</h3></div>
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-3">
+                                        <label className="block text-sm font-semibold text-[#112259] mb-3 font-inter">
                                             Highlights Descriptions <span className="text-red-600">*</span>
                                         </label>
-                                        <div className="grid grid-cols-1 gap-4 border border-gray-200 rounded-lg p-4 bg-gray-50">
+                                        <div className="grid grid-cols-1 gap-4 border border-gray-100 rounded-xl p-4 bg-gray-50/60">
                                             <div>
                                                 <label className="block text-xs font-medium text-gray-600 mb-1">Waterpolo</label>
                                                 <textarea
@@ -521,7 +530,7 @@ export default function HotelsPage() {
                                                         ...formData.highlights,
                                                         waterpolo: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                     rows={2}
                                                     placeholder="e.g., Unlimited access to the Middle East's largest waterpark"
                                                     required
@@ -535,7 +544,7 @@ export default function HotelsPage() {
                                                         ...formData.highlights,
                                                         underwater_suites: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                     rows={2}
                                                     placeholder="e.g., Experience the world's first underwater suites"
                                                     required
@@ -549,7 +558,7 @@ export default function HotelsPage() {
                                                         ...formData.highlights,
                                                         dining_option: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                     rows={2}
                                                     placeholder="e.g., Choose from a variety of dining options"
                                                     required
@@ -563,7 +572,7 @@ export default function HotelsPage() {
                                                         ...formData.highlights,
                                                         beach: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                     rows={2}
                                                     placeholder="e.g., Enjoy the beautiful beach with crystal-clear waters"
                                                     required
@@ -577,7 +586,7 @@ export default function HotelsPage() {
                                                         ...formData.highlights,
                                                         smile: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                     rows={2}
                                                     placeholder="e.g., Exceptional service that makes you smile"
                                                     required
@@ -591,7 +600,7 @@ export default function HotelsPage() {
                                                         ...formData.highlights,
                                                         bed: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                     rows={2}
                                                     placeholder="e.g., Luxurious beds for ultimate comfort"
                                                     required
@@ -600,40 +609,40 @@ export default function HotelsPage() {
                                         </div>
                                     </div>
 
-                                    {/* About Hotel */}
+                                    <div id="s-content" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">About Hotel</h3></div>
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">
                                             About Hotel <span className="text-red-600">*</span>
                                         </label>
                                         <textarea
                                             value={formData.about_hotel || ''}
                                             onChange={(e) => handleInputChange('about_hotel', e.target.value)}
-                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                             rows={6}
                                             placeholder="Enter detailed description about the hotel..."
                                             required
                                         />
                                     </div>
 
-                                    {/* Optional Fields */}
+                                    <div id="s-location" className="scroll-mt-2"><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Location & Details</h3></div>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Location</label>
+                                            <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">Location</label>
                                             <input
                                                 type="text"
                                                 value={formData.location || ''}
                                                 onChange={(e) => handleInputChange('location', e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                             />
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Beach</label>
+                                            <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">Beach</label>
                                             <input
                                                 type="text"
                                                 value={formData.beach || ''}
                                                 onChange={(e) => handleInputChange('beach', e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                             />
                                         </div>
                                     </div>
@@ -642,28 +651,28 @@ export default function HotelsPage() {
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
                                         <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Rating Description</label>
+                                            <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">Rating Description</label>
                                             <input
                                                 type="text"
                                                 value={formData.rating_desc || ''}
                                                 onChange={(e) => handleInputChange('rating_desc', e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                             />
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Facilities</label>
+                                            <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">Facilities</label>
                                             <input
                                                 value={formData.facilities || ''}
                                                 onChange={(e) => handleInputChange('facilities', e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                             />
                                         </div>
                                     </div>
 
                                     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                         <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Rating (0–5)</label>
+                                            <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">Rating (0–5)</label>
                                             {/* Star picker */}
                                             <div className="flex items-center gap-1 mb-1">
                                                 {[1, 2, 3, 4, 5].map((star) => {
@@ -711,23 +720,23 @@ export default function HotelsPage() {
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Number of Reviews</label>
+                                            <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">Number of Reviews</label>
                                             <input
                                                 type="number"
                                                 value={formData.reviews || ''}
                                                 onChange={(e) => handleInputChange('reviews', parseInt(e.target.value))}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                             />
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Price (per night)</label>
+                                            <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">Price (per night)</label>
                                             <input
                                                 type="number"
                                                 min="0"
                                                 value={formData.price || ''}
                                                 onChange={(e) => handleInputChange('price', parseFloat(e.target.value))}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                                 placeholder="e.g., 250"
                                             />
                                         </div>
@@ -735,41 +744,41 @@ export default function HotelsPage() {
 
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">Check Rates Link</label>
+                                            <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">Check Rates Link</label>
                                             <input
                                                 type="url"
                                                 value={formData.check_rates_link || ''}
                                                 onChange={(e) => handleInputChange('check_rates_link', e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                             />
                                         </div>
 
                                         <div>
-                                            <label className="block text-sm font-semibold text-gray-700 mb-2">View Rooms Link</label>
+                                            <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">View Rooms Link</label>
                                             <input
                                                 type="url"
                                                 value={formData.view_rooms_link || ''}
                                                 onChange={(e) => handleInputChange('view_rooms_link', e.target.value)}
-                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
+                                                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                             />
                                         </div>
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">Rooms Link</label>
+                                        <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">Rooms Link</label>
                                         <input
                                             type="url"
                                             value={formData.rooms_link || ''}
                                             onChange={(e) => handleInputChange('rooms_link', e.target.value)}
-                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
+                                            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                         />
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-3">
+                                        <label className="block text-sm font-semibold text-[#112259] mb-3 font-inter">
                                             Essential Information
                                         </label>
-                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border border-gray-200 rounded-lg p-4 bg-gray-50">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border border-gray-100 rounded-xl p-4 bg-gray-50/60">
                                             <div>
                                                 <label className="block text-xs font-medium text-gray-600 mb-1">Check-in / Check-out</label>
                                                 <input
@@ -779,7 +788,7 @@ export default function HotelsPage() {
                                                         ...formData.essential_information,
                                                         checkin_checkout: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                     placeholder="e.g., Check-in: 3 PM, Check-out: 11 AM"
                                                 />
                                             </div>
@@ -792,7 +801,7 @@ export default function HotelsPage() {
                                                         ...formData.essential_information,
                                                         location_distance: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                     placeholder="e.g., 5 km from city center"
                                                 />
                                             </div>
@@ -805,7 +814,7 @@ export default function HotelsPage() {
                                                         ...formData.essential_information,
                                                         price_range: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                     placeholder="e.g., $100 - $300 per night"
                                                 />
                                             </div>
@@ -818,7 +827,7 @@ export default function HotelsPage() {
                                                         ...formData.essential_information,
                                                         beach_access: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                     placeholder="e.g., Private beach, 2 min walk"
                                                 />
                                             </div>
@@ -831,7 +840,7 @@ export default function HotelsPage() {
                                                         ...formData.essential_information,
                                                         dining_options: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                     placeholder="e.g., 3 restaurants, room service"
                                                 />
                                             </div>
@@ -844,7 +853,7 @@ export default function HotelsPage() {
                                                         ...formData.essential_information,
                                                         family_facilities: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                     placeholder="e.g., Kids club, playground"
                                                 />
                                             </div>
@@ -857,7 +866,7 @@ export default function HotelsPage() {
                                                         ...formData.essential_information,
                                                         wifi_availability: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                     placeholder="e.g., Free WiFi in all areas"
                                                 />
                                             </div>
@@ -870,7 +879,7 @@ export default function HotelsPage() {
                                                         ...formData.essential_information,
                                                         parking_availability: e.target.value
                                                     })}
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                     placeholder="e.g., Free on-site parking"
                                                 />
                                             </div>
@@ -878,7 +887,7 @@ export default function HotelsPage() {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">
                                             Traveler Tips
                                         </label>
                                         <div className="space-y-2">
@@ -892,7 +901,7 @@ export default function HotelsPage() {
                                                             newTips[index] = e.target.value
                                                             handleInputChange('traveler_tips', newTips)
                                                         }}
-                                                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent"
+                                                        className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                                         placeholder="Enter a traveler tip"
                                                     />
                                                     <button
@@ -913,7 +922,7 @@ export default function HotelsPage() {
                                                     const newTips = [...(formData.traveler_tips || []), '']
                                                     handleInputChange('traveler_tips', newTips)
                                                 }}
-                                                className="cursor-pointer w-full px-4 py-2 border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                                                className="cursor-pointer w-full px-4 py-2 border-2 border-dashed border-gray-300 hover:border-[#F8A900] text-gray-500 hover:text-[#112259] rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
                                             >
                                                 <span className="text-xl">+</span> Add Tip
                                             </button>
@@ -921,14 +930,14 @@ export default function HotelsPage() {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">
                                             FAQs
                                         </label>
                                         <div className="space-y-4">
                                             {(formData.faqs || []).map((faq, index) => (
-                                                <div key={index} className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+                                                <div key={index} className="border border-gray-100 rounded-xl overflow-hidden bg-white shadow-sm">
                                                     <div className="flex justify-between items-start mb-3">
-                                                        <span className="text-sm font-semibold text-gray-600">FAQ #{index + 1}</span>
+                                                        <span className="text-[13px] font-bold text-[#112259] font-manrope">FAQ #{index + 1}</span>
                                                         <button
                                                             type="button"
                                                             onClick={() => {
@@ -951,7 +960,7 @@ export default function HotelsPage() {
                                                                     newFaqs[index] = { ...newFaqs[index], question: e.target.value }
                                                                     handleInputChange('faqs', newFaqs)
                                                                 }}
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                                 placeholder="Enter question"
                                                             />
                                                         </div>
@@ -964,7 +973,7 @@ export default function HotelsPage() {
                                                                     newFaqs[index] = { ...newFaqs[index], answer: e.target.value }
                                                                     handleInputChange('faqs', newFaqs)
                                                                 }}
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                                 rows={3}
                                                                 placeholder="Enter answer"
                                                             />
@@ -978,7 +987,7 @@ export default function HotelsPage() {
                                                     const newFaqs = [...(formData.faqs || []), { question: '', answer: '' }]
                                                     handleInputChange('faqs', newFaqs)
                                                 }}
-                                                className="cursor-pointer w-full px-4 py-2 border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                                                className="cursor-pointer w-full px-4 py-2 border-2 border-dashed border-gray-300 hover:border-[#F8A900] text-gray-500 hover:text-[#112259] rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
                                             >
                                                 <span className="text-xl">+</span> Add FAQ
                                             </button>
@@ -986,14 +995,14 @@ export default function HotelsPage() {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-semibold text-gray-700 mb-2">
+                                        <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">
                                             Rooms
                                         </label>
                                         <div className="space-y-4">
                                             {(formData.rooms || []).map((room, index) => (
-                                                <div key={index} className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+                                                <div key={index} className="border border-gray-100 rounded-xl overflow-hidden bg-white shadow-sm">
                                                     <div className="flex justify-between items-start mb-3">
-                                                        <span className="text-sm font-semibold text-gray-600">Room #{index + 1}</span>
+                                                        <span className="text-[13px] font-bold text-[#112259] font-manrope">Room #{index + 1}</span>
                                                         <button
                                                             type="button"
                                                             onClick={() => {
@@ -1016,7 +1025,7 @@ export default function HotelsPage() {
                                                                     newRooms[index] = { ...newRooms[index], image: e.target.value }
                                                                     handleInputChange('rooms', newRooms)
                                                                 }}
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                                 placeholder="Enter image URL"
                                                             />
                                                         </div>
@@ -1030,7 +1039,7 @@ export default function HotelsPage() {
                                                                     newRooms[index] = { ...newRooms[index], title: e.target.value }
                                                                     handleInputChange('rooms', newRooms)
                                                                 }}
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                                 placeholder="e.g., Deluxe Ocean View Suite"
                                                             />
                                                         </div>
@@ -1044,7 +1053,7 @@ export default function HotelsPage() {
                                                                     newRooms[index] = { ...newRooms[index], size: e.target.value }
                                                                     handleInputChange('rooms', newRooms)
                                                                 }}
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                                 placeholder="e.g., 45 sqm"
                                                             />
                                                         </div>
@@ -1058,7 +1067,7 @@ export default function HotelsPage() {
                                                                     newRooms[index] = { ...newRooms[index], bed_type: e.target.value }
                                                                     handleInputChange('rooms', newRooms)
                                                                 }}
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                                 placeholder="e.g., King bed"
                                                             />
                                                         </div>
@@ -1072,7 +1081,7 @@ export default function HotelsPage() {
                                                                     newRooms[index] = { ...newRooms[index], view: e.target.value }
                                                                     handleInputChange('rooms', newRooms)
                                                                 }}
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                                 placeholder="e.g., Ocean view"
                                                             />
                                                         </div>
@@ -1086,7 +1095,7 @@ export default function HotelsPage() {
                                                                     newRooms[index] = { ...newRooms[index], ventilation: e.target.value }
                                                                     handleInputChange('rooms', newRooms)
                                                                 }}
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                                 placeholder="e.g., Air conditioning"
                                                             />
                                                         </div>
@@ -1100,7 +1109,7 @@ export default function HotelsPage() {
                                                                     newRooms[index] = { ...newRooms[index], link: e.target.value }
                                                                     handleInputChange('rooms', newRooms)
                                                                 }}
-                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent bg-white"
+                                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white"
                                                                 placeholder="Enter link to room details"
                                                             />
                                                         </div>
@@ -1113,7 +1122,7 @@ export default function HotelsPage() {
                                                     const newRooms = [...(formData.rooms || []), { title: '', image: '', size: '', bed_type: '', view: '', ventilation: '', link: '' }]
                                                     handleInputChange('rooms', newRooms)
                                                 }}
-                                                className="cursor-pointer w-full px-4 py-2 border-2 border-dashed border-gray-300 hover:border-blue-500 text-gray-600 hover:text-blue-600 rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
+                                                className="cursor-pointer w-full px-4 py-2 border-2 border-dashed border-gray-300 hover:border-[#F8A900] text-gray-500 hover:text-[#112259] rounded-lg font-medium transition-colors flex items-center justify-center gap-2"
                                             >
                                                 <span className="text-xl">+</span> Add Room
                                             </button>
@@ -1131,7 +1140,7 @@ export default function HotelsPage() {
                                     </button>
                                     <button
                                         type="submit"
-                                        className="cursor-pointer px-5 py-2.5 bg-[#0D7FF2] hover:bg-[#0B6FD9] text-white rounded-xl font-semibold text-sm shadow-md hover:shadow-lg transition-all duration-200"
+                                        className="cursor-pointer px-6 py-2.5 bg-[#F8A900] hover:bg-[#e09800] text-black rounded-[14px] font-bold text-sm font-manrope shadow-md transition-all duration-200"
                                     >
                                         {editingHotel ? 'Update Hotel' : 'Create Hotel'}
                                     </button>
