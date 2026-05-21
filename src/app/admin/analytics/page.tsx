@@ -19,7 +19,7 @@ const PLACEHOLDER_METRICS: GAMetric[] = [
     {
         label: 'Active Users (7d)',
         value: '—',
-        color: 'from-[#0D7FF2] to-[#0B5FC9]',
+        color: 'from-[#112259] to-[#0d1b42]',
         icon: (
             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -62,15 +62,16 @@ const PLACEHOLDER_METRICS: GAMetric[] = [
 export default function AnalyticsDashboard() {
     const [stats, setStats] = useState<ContentStats>({ hotels: 0, articles: 0 })
     const [loading, setLoading] = useState(true)
-    const [gaConnected, setGaConnected] = useState(false)
-    const [gaId, setGaId] = useState<string | null>(null)
+    const [gaConnected, setGaConnected] = useState(() => {
+        const id = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
+        return !!(id && id !== 'G-XXXXXXXXXX')
+    })
+    const [gaId, setGaId] = useState<string | null>(() => {
+        const id = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
+        return id && id !== 'G-XXXXXXXXXX' ? id : null
+    })
 
     useEffect(() => {
-        const id = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID
-        if (id && id !== 'G-XXXXXXXXXX') {
-            setGaId(id)
-            setGaConnected(true)
-        }
         const fetchStats = async () => {
             const [{ count: hotels }, { count: articles }] = await Promise.all([
                 supabase.from('hotel').select('*', { count: 'exact', head: true }),
@@ -83,14 +84,14 @@ export default function AnalyticsDashboard() {
     }, [])
 
     return (
-        <div className="p-4 sm:p-6 lg:p-8">
+        <div className="p-4 sm:p-6 lg:p-8 font-inter">
             <div className="max-w-7xl mx-auto">
 
                 {/* Page Header */}
                 <div className="mb-8 flex items-start justify-between flex-wrap gap-4">
                     <div>
-                        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Analytics</h1>
-                        <p className="text-gray-500 text-sm mt-1">Google Analytics 4 overview &amp; content performance</p>
+                        <h1 className="font-manrope font-extrabold text-[30px] leading-none tracking-[-0.03em] text-[#112259]">Analytics</h1>
+                        <p className="text-gray-500 text-sm mt-1 font-inter">Google Analytics 4 overview &amp; content performance</p>
                     </div>
                     <div className={`flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border ${gaConnected ? 'bg-green-50 border-green-200 text-green-700' : 'bg-amber-50 border-amber-200 text-amber-700'}`}>
                         <span className={`w-2 h-2 rounded-full ${gaConnected ? 'bg-green-500 animate-pulse' : 'bg-amber-400'}`} />
@@ -100,7 +101,7 @@ export default function AnalyticsDashboard() {
 
                 {/* GA4 Not Connected Notice */}
                 {!gaConnected && (
-                    <div className="mb-8 bg-white rounded-2xl shadow-md border border-amber-100 p-6">
+                    <div className="mb-8 bg-white rounded-[25px] shadow-[9px_9px_75px_0px_#00000029] p-6">
                         <div className="flex items-start gap-4">
                             <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl flex-shrink-0">
                                 <svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -117,7 +118,7 @@ export default function AnalyticsDashboard() {
                                 href="https://analytics.google.com"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex-shrink-0 flex items-center gap-2 bg-[#0D7FF2] hover:bg-[#0B6FD9] text-white text-sm font-semibold px-4 py-2 rounded-xl transition-all"
+                                className="flex-shrink-0 flex items-center gap-2 bg-[#F8A900] hover:bg-[#e09800] text-black text-sm font-bold px-4 py-2 rounded-xl font-manrope transition-all"
                             >
                                 Open GA4
                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -131,7 +132,7 @@ export default function AnalyticsDashboard() {
                 {/* GA4 Metrics Grid */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                     {PLACEHOLDER_METRICS.map((metric) => (
-                        <div key={metric.label} className="bg-white rounded-2xl shadow-md border border-gray-100 p-5 flex items-center justify-between hover:shadow-lg transition-all duration-200 hover:-translate-y-0.5">
+                        <div key={metric.label} className="bg-white rounded-[25px] shadow-[9px_9px_75px_0px_#00000029] p-5 flex items-center justify-between hover:shadow-[9px_9px_100px_0px_#00000040] transition-all duration-200 hover:-translate-y-0.5">
                             <div>
                                 <p className="text-xs text-gray-500 font-medium mb-1">{metric.label}</p>
                                 <p className={`text-3xl font-bold text-gray-900 mb-1 ${!gaConnected ? 'opacity-25' : ''}`}>{metric.value}</p>
@@ -148,21 +149,21 @@ export default function AnalyticsDashboard() {
 
                 {/* Content Performance — Supabase */}
                 <div className="mb-8">
-                    <h2 className="text-lg font-bold text-gray-900 mb-4">Content Performance</h2>
+                    <h2 className="font-manrope font-extrabold text-[20px] text-[#112259] tracking-tight mb-4">Content Performance</h2>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         {[
-                            { label: 'Hotel Listings', value: stats.hotels, color: 'bg-[#0D7FF2]', icon: (
-                                <svg className="w-5 h-5 text-[#0D7FF2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            { label: 'Hotel Listings', value: stats.hotels, color: 'bg-[#F8A900]', icon: (
+                                <svg className="w-5 h-5 text-[#112259]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                                 </svg>
                             )},
-                            { label: 'Published Articles', value: stats.articles, color: 'bg-emerald-500', icon: (
-                                <svg className="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            { label: 'Published Articles', value: stats.articles, color: 'bg-[#112259]', icon: (
+                                <svg className="w-5 h-5 text-[#112259]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
                             )},
                         ].map(item => (
-                            <div key={item.label} className="bg-white rounded-2xl shadow-md border border-gray-100 p-6">
+                            <div key={item.label} className="bg-white rounded-[25px] shadow-[9px_9px_75px_0px_#00000029] p-6">
                                 <div className="flex items-center justify-between mb-4">
                                     <div className="flex items-center gap-3">
                                         <div className="p-2 bg-gray-50 rounded-xl border border-gray-100">
@@ -189,11 +190,11 @@ export default function AnalyticsDashboard() {
                 </div>
 
                 {/* Open GA4 CTA */}
-                <div className="bg-gradient-to-br from-[#0A1929] to-[#0D2137] rounded-2xl p-6 text-white">
+                <div className="bg-gradient-to-br from-[#0A1929] to-[#112259] rounded-[25px] p-6 text-white shadow-[9px_9px_75px_0px_#00000029]">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                         <div className="flex items-start gap-4">
-                            <div className="p-3 bg-[#0D7FF2]/20 border border-[#0D7FF2]/30 rounded-xl flex-shrink-0">
-                                <svg className="w-6 h-6 text-[#0D7FF2]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div className="p-3 bg-[#F8A900]/15 border border-[#F8A900]/30 rounded-xl flex-shrink-0">
+                                <svg className="w-6 h-6 text-[#F8A900]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                                 </svg>
                             </div>
@@ -206,7 +207,7 @@ export default function AnalyticsDashboard() {
                             href="https://analytics.google.com"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex-shrink-0 flex items-center gap-2 bg-[#0D7FF2] hover:bg-[#0B6FD9] text-white font-semibold px-5 py-3 rounded-xl transition-all shadow-lg hover:shadow-xl text-sm"
+                            className="flex-shrink-0 flex items-center gap-2 bg-[#F8A900] hover:bg-[#e09800] text-black font-bold px-5 py-3 rounded-xl transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5 text-sm font-manrope"
                         >
                             Open GA4 Dashboard
                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -126,13 +126,13 @@ export default function AdminUsersPage() {
     }
 
     return (
-        <div className="p-4 sm:p-6 lg:p-8">
+        <div className="p-4 sm:p-6 lg:p-8 font-inter">
             <div className="max-w-5xl mx-auto space-y-6">
 
                 {/* Header */}
                 <div className="flex items-start justify-between gap-4 flex-wrap">
                     <div>
-                        <h1 className="font-manrope font-extrabold text-[28px] leading-none tracking-[-0.03em] text-[#112259]">Admin Users</h1>
+                        <h1 className="font-manrope font-extrabold text-[30px] leading-none tracking-[-0.03em] text-[#112259]">Admin Users</h1>
                         <p className="text-gray-500 text-sm mt-1 font-inter">
                             {isSuperAdmin
                                 ? 'Approve, reject, and manage admin access.'

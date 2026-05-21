@@ -9,13 +9,17 @@ export default function Loading() {
 
             {/* Tags Cloud Skeleton */}
             <div className="w-full max-w-6xl mb-8 flex flex-wrap gap-3 justify-center">
-                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
-                    <div
-                        key={i}
-                        className="h-10 bg-gray-200 rounded-full animate-pulse"
-                        style={{ width: `${Math.random() * 60 + 80}px` }}
-                    ></div>
-                ))}
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => {
+                    const widths = [100, 120, 90, 110, 130, 85, 115, 125, 95, 105]
+                    const width = widths[i % widths.length]
+                    return (
+                        <div
+                            key={i}
+                            className="h-10 bg-gray-200 rounded-full animate-pulse"
+                            style={{ width: `${width}px` }}
+                        ></div>
+                    )
+                })}
             </div>
 
             {/* Tag Content Grid Skeleton */}

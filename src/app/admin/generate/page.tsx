@@ -13,7 +13,7 @@ const EXAMPLE_PROMPTS = [
     'Family travel guide to Abu Dhabi',
 ]
 
-// ── Fixed to GPT-4o (best quality) ──────────────────────────────
+// ── Fixed to Ai (best quality) ──────────────────────────────
 const FIXED_MODEL = 'gpt-4o'
 
 type GenerateStatus = 'idle' | 'generating' | 'done' | 'saving' | 'saved' | 'error'
@@ -119,26 +119,29 @@ export default function AINewsGeneratorPage() {
     }
 
     return (
-        <div className="min-h-screen p-4 sm:p-6 lg:p-8">
+        <div className="p-4 sm:p-6 lg:p-8 font-inter">
             <div className="max-w-4xl mx-auto">
 
                 {/* Header */}
                 <div className="mb-8">
-                    <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">AI News Generator</h1>
-                    <p className="text-gray-500 text-sm mt-1">Generate full travel articles instantly using GPT-4o.</p>
+                    <h1 className="font-manrope font-extrabold text-[30px] leading-none tracking-[-0.03em] text-[#112259]">AI News Generator</h1>
+                    <p className="text-gray-500 text-sm mt-1">Generate full travel articles instantly using Ai.</p>
                 </div>
 
                 {/* Generator Card */}
-                <div className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden mb-6">
-                    <div className="bg-gradient-to-r from-[#0A1929] to-[#0D2137] px-6 py-4">
-                        <h2 className="text-white font-semibold text-lg">Generate New Article</h2>
-                        <p className="text-gray-400 text-sm mt-0.5">Enter a topic and let an AI model create a full structured article</p>
+                <div className="bg-white rounded-[25px] shadow-[9px_9px_75px_0px_#00000029] overflow-hidden mb-6">
+                    <div className="bg-gradient-to-r from-[#0A1929] to-[#112259] px-6 py-5 flex items-center justify-between">
+                        <div>
+                            <h2 className="font-manrope font-extrabold text-white text-[18px] tracking-tight">Generate New Article</h2>
+                            <p className="text-gray-400 text-sm mt-0.5">Enter a topic and let Ai create a full structured article</p>
+                        </div>
+                        <span className="text-[11px] font-bold px-3 py-1 rounded-full bg-[#F8A900] text-black">Ai</span>
                     </div>
 
                     <div className="p-6 space-y-5">
                         {/* Prompt Input */}
                         <div>
-                            <label className="block text-sm font-semibold text-gray-700 mb-2">
+                            <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">
                                 Topic / Prompt <span className="text-red-500">*</span>
                             </label>
                             <textarea
@@ -148,7 +151,7 @@ export default function AINewsGeneratorPage() {
                                 placeholder="e.g. Top 5 hidden gems to visit in Dubai this winter…"
                                 rows={3}
                                 maxLength={500}
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#0D7FF2] focus:border-transparent resize-none text-gray-800 placeholder-gray-400 transition-all disabled:opacity-60 disabled:bg-gray-50"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none resize-none text-gray-800 placeholder-gray-400 transition-all disabled:opacity-60 disabled:bg-gray-50"
                             />
                             <div className="flex justify-between items-center mt-1">
                                 <p className="text-xs text-gray-400">Be specific for better results</p>
@@ -160,7 +163,7 @@ export default function AINewsGeneratorPage() {
 
                         {/* Example prompts */}
                         <div>
-                            <p className="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wide">Quick Examples</p>
+                            <p className="text-[10px] font-bold text-gray-400 mb-2 uppercase tracking-widest font-inter">Quick Examples</p>
                             <div className="flex flex-wrap gap-2">
                                 {EXAMPLE_PROMPTS.map(ex => (
                                     <button
@@ -168,7 +171,7 @@ export default function AINewsGeneratorPage() {
                                         type="button"
                                         onClick={() => setPrompt(ex)}
                                         disabled={status === 'generating'}
-                                        className="text-xs px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-[#0D7FF2] rounded-full border border-blue-100 hover:border-blue-200 transition-all cursor-pointer disabled:opacity-50"
+                                        className="cursor-pointer text-xs px-3 py-1.5 bg-[#F8A900]/10 hover:bg-[#F8A900]/20 text-[#112259] rounded-full border border-[#F8A900]/30 hover:border-[#F8A900]/50 transition-all disabled:opacity-50 font-inter font-medium"
                                     >
                                         {ex}
                                     </button>
@@ -192,7 +195,7 @@ export default function AINewsGeneratorPage() {
                                 type="button"
                                 onClick={handleGenerate}
                                 disabled={!prompt.trim() || status === 'generating' || status === 'saving'}
-                                className="flex-1 flex items-center justify-center gap-2 bg-gradient-to-r from-[#0D7FF2] to-[#0B5FC9] hover:from-[#0B6FD9] hover:to-[#0A54B5] text-white font-semibold py-3 px-6 rounded-xl transition-all duration-200 shadow-md hover:shadow-lg cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none transform hover:-translate-y-0.5 disabled:transform-none"
+                                className="cursor-pointer flex-1 flex items-center justify-center gap-2 bg-[#F8A900] hover:bg-[#e09800] text-black font-bold py-3 px-6 rounded-[14px] font-manrope transition-all duration-200 shadow-md hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:shadow-none disabled:transform-none"
                             >
                                 {status === 'generating' ? (
                                     <>
@@ -226,10 +229,10 @@ export default function AINewsGeneratorPage() {
 
                 {/* ── Live Generation Progress ── */}
                 {status === 'generating' && (
-                    <div className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden mb-6">
+                    <div className="bg-white rounded-[25px] shadow-[9px_9px_75px_0px_#00000029] overflow-hidden mb-6">
                         <div className="px-6 py-4 border-b border-gray-100 flex items-center gap-3">
                             <div className="w-2.5 h-2.5 rounded-full bg-[#F8A900] animate-pulse" />
-                            <h2 className="font-semibold text-gray-900">AI is working…</h2>
+                            <h2 className="font-manrope font-bold text-[#112259]">AI is working…</h2>
                             <span className="ml-auto text-xs text-gray-400 font-mono">This may take ~15s</span>
                         </div>
                         <div className="p-6 space-y-3">
@@ -237,8 +240,8 @@ export default function AINewsGeneratorPage() {
                                 const isDone = completedSteps.includes(step.id)
                                 const isActive = currentStep === step.id && !isDone
                                 return (
-                                    <div key={step.id} className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-500 ${isActive ? 'bg-blue-50 border border-blue-200' : isDone ? 'bg-green-50 border border-green-200' : 'bg-gray-50 border border-transparent'}`}>
-                                        <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold transition-all duration-300 ${isDone ? 'bg-green-500 text-white' : isActive ? 'bg-[#0D7FF2] text-white' : 'bg-gray-200 text-gray-400'}`}>
+                                    <div key={step.id} className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-500 ${isActive ? 'bg-[#F8A900]/8 border border-[#F8A900]/30' : isDone ? 'bg-green-50 border border-green-200' : 'bg-gray-50 border border-transparent'}`}>
+                                        <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold transition-all duration-300 ${isDone ? 'bg-green-500 text-white' : isActive ? 'bg-[#F8A900] text-black' : 'bg-gray-200 text-gray-400'}`}>
                                             {isDone ? (
                                                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
@@ -250,13 +253,13 @@ export default function AINewsGeneratorPage() {
                                                 </svg>
                                             ) : step.id}
                                         </div>
-                                        <span className={`text-sm font-medium ${isDone ? 'text-green-700' : isActive ? 'text-[#0D7FF2]' : 'text-gray-400'}`}>
+                                        <span className={`text-sm font-medium font-inter ${isDone ? 'text-green-700' : isActive ? 'text-[#112259]' : 'text-gray-400'}`}>
                                             {step.label}
                                         </span>
                                         {isActive && (
                                             <span className="ml-auto flex gap-1">
                                                 {[0, 1, 2].map(i => (
-                                                    <span key={i} className="w-1.5 h-1.5 rounded-full bg-[#0D7FF2] animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
+                                                    <span key={i} className="w-1.5 h-1.5 rounded-full bg-[#F8A900] animate-bounce" style={{ animationDelay: `${i * 0.15}s` }} />
                                                 ))}
                                             </span>
                                         )}
@@ -270,17 +273,17 @@ export default function AINewsGeneratorPage() {
 
                 {/* Generated Preview */}
                 {generatedArticle && status !== 'idle' && status !== 'generating' && (
-                    <div className="bg-white rounded-2xl shadow-md border border-gray-100 overflow-hidden">
+                    <div className="bg-white rounded-[25px] shadow-[9px_9px_75px_0px_#00000029] overflow-hidden">
                         {/* Preview Header */}
                         <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between flex-wrap gap-3">
                             <div className="flex items-center gap-2">
                                 <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-                                <h2 className="font-semibold text-gray-900">Generated Article Preview</h2>
+                                <h2 className="font-manrope font-bold text-[#112259]">Generated Article Preview</h2>
                             </div>
                             <div className="flex items-center gap-3 flex-wrap">
-                                <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full font-mono">gpt-4o</span>
+                                <span className="text-xs bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full font-mono">AI</span>
                                 {tokenUsage?.total_tokens && (
-                                    <span className="text-xs bg-blue-50 text-[#0D7FF2] px-2 py-1 rounded-full">
+                                    <span className="text-xs bg-[#F8A900]/10 text-[#112259] border border-[#F8A900]/20 px-2.5 py-1 rounded-full font-inter font-medium">
                                         {tokenUsage.total_tokens.toLocaleString()} tokens
                                     </span>
                                 )}
@@ -290,8 +293,8 @@ export default function AINewsGeneratorPage() {
                         <div className="p-6 space-y-6">
                             {/* Title */}
                             <div>
-                                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Title</p>
-                                <h3 className="text-xl font-bold text-gray-900">{generatedArticle.title}</h3>
+                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 font-inter">Title</p>
+                                <h3 className="font-manrope font-extrabold text-[20px] text-[#112259] tracking-tight">{generatedArticle.title}</h3>
                             </div>
 
                             {/* First paragraph preview */}
@@ -315,7 +318,7 @@ export default function AINewsGeneratorPage() {
                                     <div className="space-y-2">
                                         {generatedArticle.subsections.map((s, i) => (
                                             <div key={i} className="flex items-center gap-2 text-sm">
-                                                <span className="w-6 h-6 rounded-full bg-[#0D7FF2]/10 text-[#0D7FF2] flex items-center justify-center text-xs font-bold flex-shrink-0">
+                                                <span className="w-6 h-6 rounded-full bg-[#F8A900]/15 text-[#112259] flex items-center justify-center text-xs font-bold flex-shrink-0 font-manrope">
                                                     {i + 1}
                                                 </span>
                                                 <span className="font-medium text-gray-800">{s.heading}</span>
@@ -328,11 +331,11 @@ export default function AINewsGeneratorPage() {
 
                             {/* Quotation */}
                             {generatedArticle.quotation1 && (
-                                <div className="bg-blue-50 border-l-4 border-[#0D7FF2] px-4 py-3 rounded-r-xl">
-                                    <p className="text-sm italic text-gray-700 mb-1">
+                                <div className="bg-[#112259]/5 border-l-4 border-[#F8A900] px-4 py-3 rounded-r-xl">
+                                    <p className="text-sm italic text-gray-700 mb-1 font-inter">
                                         &quot;{generatedArticle.quotation1.quote}&quot;
                                     </p>
-                                    <p className="text-xs font-semibold text-[#0D7FF2]">
+                                    <p className="text-xs font-semibold text-[#F8A900] font-manrope">
                                         — {generatedArticle.quotation1.person_name}
                                         {generatedArticle.quotation1.person_role && `, ${generatedArticle.quotation1.person_role}`}
                                     </p>
@@ -354,9 +357,9 @@ export default function AINewsGeneratorPage() {
                                     { label: 'Subsections', value: generatedArticle.subsections?.length || 0 },
                                     { label: 'Quotations', value: [generatedArticle.quotation1, generatedArticle.quotation2].filter(Boolean).length },
                                 ].map(stat => (
-                                    <div key={stat.label} className="text-center bg-gray-50 rounded-xl p-3">
-                                        <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-                                        <p className="text-xs text-gray-500 mt-0.5">{stat.label}</p>
+                                    <div key={stat.label} className="text-center bg-gray-50 border border-gray-100 rounded-xl p-3">
+                                        <p className="font-manrope font-extrabold text-2xl text-[#112259]">{stat.value}</p>
+                                        <p className="text-xs text-gray-500 mt-0.5 font-inter">{stat.label}</p>
                                     </div>
                                 ))}
                             </div>
@@ -378,7 +381,7 @@ export default function AINewsGeneratorPage() {
                                         type="button"
                                         onClick={handleSave}
                                         disabled={status === 'saving'}
-                                        className="flex-1 flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded-xl transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed shadow-md hover:shadow-lg"
+                                        className="cursor-pointer flex-1 flex items-center justify-center gap-2 bg-[#112259] hover:bg-[#0d1b42] text-white font-bold py-3 px-6 rounded-[14px] font-manrope transition-all shadow-md hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed"
                                     >
                                         {status === 'saving' ? (
                                             <>
@@ -401,7 +404,7 @@ export default function AINewsGeneratorPage() {
                                         type="button"
                                         onClick={handleGenerate}
                                         disabled={status === 'saving'}
-                                        className="px-4 py-3 border-2 border-[#0D7FF2] text-[#0D7FF2] hover:bg-blue-50 rounded-xl font-medium transition-all cursor-pointer disabled:opacity-50"
+                                        className="cursor-pointer px-4 py-3 border-2 border-[#F8A900] text-[#112259] hover:bg-[#F8A900]/10 rounded-[14px] font-bold font-manrope transition-all disabled:opacity-50"
                                     >
                                         Regenerate
                                     </button>
@@ -412,7 +415,7 @@ export default function AINewsGeneratorPage() {
                 )}
 
                 {/* Info Box */}
-                <div className="mt-6 bg-gradient-to-br from-[#0A1929] to-[#0D2137] rounded-2xl p-5 text-white">
+                <div className="mt-6 bg-gradient-to-br from-[#0A1929] to-[#112259] rounded-[25px] p-6 text-white shadow-[9px_9px_75px_0px_#00000029]">
                     <div className="flex items-start gap-3">
                         <svg className="w-5 h-5 text-[#F8A900] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />

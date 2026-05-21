@@ -136,10 +136,142 @@ export default function HotelsPage() {
         setShowModal(true)
     }
 
+    const normalizeHighlights = (highlights: unknown) => {
+        const defaultHighlights = {
+            waterpolo: '',
+            underwater_suites: '',
+            dining_option: '',
+            beach: '',
+            smile: '',
+            bed: ''
+        }
+
+        if (!highlights) return defaultHighlights
+
+        if (Array.isArray(highlights)) {
+            const result = { ...defaultHighlights }
+            const arr = highlights as Record<string, unknown>[]
+            arr.forEach((h) => {
+                if (!h || typeof h.title !== 'string' || typeof h.description !== 'string') return
+                const titleLower = h.title.toLowerCase()
+                const desc = h.description
+
+                if (titleLower.includes('waterpark') || titleLower.includes('waterpolo')) {
+                    result.waterpolo = desc
+                } else if (titleLower.includes('aquarium') || titleLower.includes('suites') || titleLower.includes('underwater')) {
+                    result.underwater_suites = desc
+                } else if (titleLower.includes('dining') || titleLower.includes('restaurant') || titleLower.includes('bar')) {
+                    result.dining_option = desc
+                } else if (titleLower.includes('beach')) {
+                    result.beach = desc
+                } else if (titleLower.includes('service') || titleLower.includes('smile') || titleLower.includes('staff')) {
+                    result.smile = desc
+                } else if (titleLower.includes('bed') || titleLower.includes('room') || titleLower.includes('stay')) {
+                    result.bed = desc
+                }
+            })
+            return result
+        }
+
+        if (typeof highlights === 'object' && highlights !== null) {
+            const obj = highlights as Record<string, unknown>
+            return {
+                waterpolo: typeof obj.waterpolo === 'string' ? obj.waterpolo : '',
+                underwater_suites: typeof obj.underwater_suites === 'string' ? obj.underwater_suites : '',
+                dining_option: typeof obj.dining_option === 'string' ? obj.dining_option : '',
+                beach: typeof obj.beach === 'string' ? obj.beach : '',
+                smile: typeof obj.smile === 'string' ? obj.smile : '',
+                bed: typeof obj.bed === 'string' ? obj.bed : ''
+            }
+        }
+
+        return defaultHighlights
+    }
+
+    const normalizeEssentialInformation = (info: unknown) => {
+        const defaultInfo = {
+            checkin_checkout: '',
+            location_distance: '',
+            price_range: '',
+            beach_access: '',
+            dining_options: '',
+            family_facilities: '',
+            wifi_availability: '',
+            parking_availability: ''
+        }
+
+        if (!info) return defaultInfo
+
+        if (typeof info === 'object' && info !== null) {
+            const obj = info as Record<string, unknown>
+            const checkin = typeof obj.checkin === 'string' ? obj.checkin : ''
+            const checkout = typeof obj.checkout === 'string' ? obj.checkout : ''
+            const checkinCheckout = typeof obj.checkin_checkout === 'string' ? obj.checkin_checkout : 
+                (checkin || checkout ? `Check-in: ${checkin}, Check-out: ${checkout}` : '')
+
+            const parking = typeof obj.parking === 'string' ? obj.parking : ''
+            const parkingAvailability = typeof obj.parking_availability === 'string' ? obj.parking_availability : parking
+
+            const children = typeof obj.children === 'string' ? obj.children : ''
+            const familyFacilities = typeof obj.family_facilities === 'string' ? obj.family_facilities : children
+
+            const dress = typeof obj.dress_code === 'string' ? obj.dress_code : ''
+            const diningOptions = typeof obj.dining_options === 'string' ? obj.dining_options : dress
+
+            return {
+                checkin_checkout: checkinCheckout,
+                location_distance: typeof obj.location_distance === 'string' ? obj.location_distance : '',
+                price_range: typeof obj.price_range === 'string' ? obj.price_range : '',
+                beach_access: typeof obj.beach_access === 'string' ? obj.beach_access : '',
+                dining_options: diningOptions,
+                family_facilities: familyFacilities,
+                wifi_availability: typeof obj.wifi_availability === 'string' ? obj.wifi_availability : '',
+                parking_availability: parkingAvailability
+            }
+        }
+
+        return defaultInfo
+    }
+
+    const normalizeRooms = (rooms: unknown[] | null | undefined) => {
+        if (!rooms || !Array.isArray(rooms)) return []
+        return rooms.map((rItem) => {
+            if (!rItem || typeof rItem !== 'object') return { title: '' }
+            const r = rItem as Record<string, unknown>
+            const title = typeof r.title === 'string' ? r.title : (typeof r.name === 'string' ? r.name : '')
+            const image = typeof r.image === 'string' ? r.image : ''
+            const amenities = Array.isArray(r.amenities) ? r.amenities as string[] : []
+            
+            const size = typeof r.size === 'string' ? r.size : (amenities.find((a) => typeof a === 'string' && a.includes('sqm')) || '')
+            const bed_type = typeof r.bed_type === 'string' ? r.bed_type : (amenities.find((a) => typeof a === 'string' && a.toLowerCase().includes('bed')) || '')
+            const view = typeof r.view === 'string' ? r.view : (amenities.find((a) => typeof a === 'string' && a.toLowerCase().includes('view')) || '')
+            const ventilation = typeof r.ventilation === 'string' ? r.ventilation : (amenities.find((a) => typeof a === 'string' && (a.toLowerCase().includes('ac') || a.toLowerCase().includes('air'))) || '')
+            const link = typeof r.link === 'string' ? r.link : ''
+
+            return {
+                title,
+                image,
+                size,
+                bed_type,
+                view,
+                ventilation,
+                link
+            }
+        })
+    }
+
     const handleEdit = (hotel: Hotel) => {
         setEditingHotel(hotel)
         setCurrentStep(0)
-        setFormData(hotel)
+        setFormData({
+            ...hotel,
+            highlights: normalizeHighlights(hotel.highlights),
+            essential_information: normalizeEssentialInformation(hotel.essential_information),
+            rooms: normalizeRooms(hotel.rooms),
+            traveler_tips: hotel.traveler_tips || [],
+            faqs: hotel.faqs || [],
+            about_hotel_images: hotel.about_hotel_images || []
+        })
         setShowModal(true)
     }
 
@@ -359,7 +491,7 @@ export default function HotelsPage() {
 
                 {/* Modal for Create/Edit */}
                 {showModal && (
-                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
+                    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
                         <div className="bg-white rounded-3xl shadow-[9px_9px_75px_0px_#00000029] max-w-5xl w-full max-h-[90vh] overflow-hidden my-8 flex flex-col">
                             <div className="sticky z-20 top-0 bg-white border-b border-gray-100 px-6 py-5 flex justify-between items-center rounded-t-3xl">
                                 <div>
@@ -377,7 +509,8 @@ export default function HotelsPage() {
                                 </button>
                             </div>
 
-                            <form onSubmit={handleSubmit} className="flex flex-1 overflow-hidden">
+                            <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+                                <div className="flex flex-1 overflow-hidden min-h-0">
                                     {/* Sidebar Nav */}
                                     <div className="w-52 shrink-0 border-r border-gray-100 p-4 overflow-y-auto bg-gray-50/50 hidden md:block">
                                         <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 font-inter">Sections</p>
@@ -411,6 +544,8 @@ export default function HotelsPage() {
                                             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none"
                                             required
                                         />
+                                    </div>
+
                                     </div>
 
                                     <div id="s-images" className={currentStep === 1 ? "scroll-mt-2" : "hidden"}><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Images & Media</h3></div>
@@ -535,6 +670,8 @@ export default function HotelsPage() {
                                         />
                                     </div>
 
+                                    </div>
+
                                     <div id="s-highlights" className={currentStep === 2 ? "scroll-mt-2" : "hidden"}><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Highlights</h3></div>
                                     <div>
                                         <label className="block text-sm font-semibold text-[#112259] mb-3 font-inter">
@@ -628,6 +765,8 @@ export default function HotelsPage() {
                                         </div>
                                     </div>
 
+                                    </div>
+
                                     <div id="s-content" className={currentStep === 3 ? "scroll-mt-2" : "hidden"}><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">About Hotel</h3></div>
                                     <div>
                                         <label className="block text-sm font-semibold text-[#112259] mb-2 font-inter">
@@ -641,6 +780,8 @@ export default function HotelsPage() {
                                             placeholder="Enter detailed description about the hotel..."
                                             required
                                         />
+                                    </div>
+
                                     </div>
 
                                     <div id="s-location" className={currentStep === 4 ? "scroll-mt-2" : "hidden"}><div className="flex items-center gap-2.5 mb-4 pb-2 border-b border-gray-100"><div className="w-1 h-5 bg-[#F8A900] rounded-full"></div><h3 className="font-manrope font-extrabold text-[14px] text-[#112259] tracking-tight uppercase">Location & Details</h3></div>
@@ -1148,7 +1289,9 @@ export default function HotelsPage() {
                                         </div>
                                     </div>
                                 </div>
-                                </div><div className="flex items-center justify-between gap-3 px-6 py-4 border-t border-gray-100 bg-white shrink-0">
+                                </div>{/* end flex-1 overflow-y-auto form content */}
+                                </div>{/* end flex flex-1 overflow-hidden sidebar+content */}
+                                <div className="flex items-center justify-between gap-3 px-6 py-4 border-t border-gray-100 bg-white shrink-0">
                                     <button
                                         type="button"
                                         onClick={() => goToStep(currentStep - 1)}
@@ -1176,10 +1319,6 @@ export default function HotelsPage() {
                                             </button>
                                         )}
                                     </div>
-                                </div>
-                                </div>
-                                </div>
-                                </div>
                                 </div>
                             </form>
                         </div>

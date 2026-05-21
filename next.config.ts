@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
+    domains: ["qqsnakufscsukqabmdut.supabase.co"],
     remotePatterns: [
       {
         protocol: "https",
@@ -9,9 +10,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "flusjttbfwvwvutqpndx.supabase.co",
+        hostname: "**.supabase.co",
         pathname: "/storage/v1/object/public/**",
       },
+  
       {
         protocol: "https",
         hostname: "travi-ai-powered-travel-news-app.vercel.app",

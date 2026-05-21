@@ -11,7 +11,7 @@ export default function TravelerTips({ tips, image }: { tips?: string[], image?:
                     <div className="flex flex-col gap-6 *:*:text-white text-[#D0D5DD]">
                         {
                             tips?.map((tip, i) => {
-                                return <p className="font-inter font-normal text-[24px] leading-[36px] tracking-[-0.02em]">
+                                return <p key={i} className="font-inter font-normal text-[24px] leading-[36px] tracking-[-0.02em]">
                                     • <span className="font-medium">{tip}</span>
                                 </p>
                             })

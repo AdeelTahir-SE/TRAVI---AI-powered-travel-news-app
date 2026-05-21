@@ -12,8 +12,10 @@ export default function AdminDashboard() {
     const [greeting, setGreeting] = useState('')
 
     useEffect(() => {
-        const h = new Date().getHours()
-        setGreeting(h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening')
+        setTimeout(() => {
+            const h = new Date().getHours()
+            setGreeting(h < 12 ? 'Good morning' : h < 17 ? 'Good afternoon' : 'Good evening')
+        }, 0)
 
         const fetchStats = async () => {
             const [{ count: hotels }, { count: articles }] = await Promise.all([
@@ -86,7 +88,7 @@ export default function AdminDashboard() {
         },
         {
             label: 'AI News Generator',
-            desc: 'Generate full, structured travel articles instantly using GPT-4o.',
+            desc: 'Generate full, structured travel articles instantly using AI.',
             href: '/admin/generate',
             iconBg: 'bg-[#112259]/10',
             iconColor: 'text-[#112259]',
@@ -168,7 +170,7 @@ export default function AdminDashboard() {
                                 <div>
                                     <div className="flex items-center gap-2 mb-1">
                                         <h2 className="font-manrope font-extrabold text-white text-[22px] leading-none tracking-tight">AI News Generator</h2>
-                                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#F8A900] text-black">GPT-4o</span>
+                                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#F8A900] text-black">AI</span>
                                     </div>
                                     <p className="text-gray-400 text-sm max-w-md leading-relaxed">
                                         Generate fully structured travel articles with subsections, quotes, and tips in seconds.

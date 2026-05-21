@@ -23,10 +23,6 @@ export default function ArticlesAdminPage() {
         subsections: [],
     })
 
-    useEffect(() => {
-        fetchArticles()
-    }, [])
-
     const fetchArticles = async () => {
         setLoading(true)
         const { data, error } = await supabase
@@ -42,6 +38,13 @@ export default function ArticlesAdminPage() {
         }
         setLoading(false)
     }
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            fetchArticles()
+        }, 0)
+        return () => clearTimeout(timer)
+    }, [])
 
 
     const handleCreate = () => {
@@ -98,7 +101,25 @@ export default function ArticlesAdminPage() {
     const handleEdit = (article: Article) => {
         setEditingArticle(article)
         setCurrentStep(0)
-        setFormData(article)
+        
+        const paras = [...(article.paras || [])]
+        while (paras.length < 5) {
+            paras.push('')
+        }
+
+        const subsections = (article.subsections || []).map(sub => {
+            const subParas = [...(sub.paras || [])]
+            while (subParas.length < 5) {
+                subParas.push('')
+            }
+            return { ...sub, paras: subParas }
+        })
+
+        setFormData({
+            ...article,
+            paras,
+            subsections
+        })
         setShowModal(true)
     }
 
@@ -180,17 +201,21 @@ export default function ArticlesAdminPage() {
         }
     }
 
-    const handleInputChange = (field: keyof Article, value: any) => {
+    const handleInputChange = <K extends keyof Article>(field: K, value: Article[K]) => {
         setFormData(prev => ({ ...prev, [field]: value }))
     }
 
     // Paragraphs are fixed at 5, no add/remove needed
 
     const updateParagraph = (index: number, value: string) => {
-        setFormData(prev => ({
-            ...prev,
-            paras: (prev.paras || []).map((p, i) => i === index ? value : p)
-        }))
+        setFormData(prev => {
+            const paras = [...(prev.paras || [])]
+            while (paras.length < 5) {
+                paras.push('')
+            }
+            paras[index] = value
+            return { ...prev, paras }
+        })
     }
 
     const addSubsection = () => {
@@ -207,7 +232,7 @@ export default function ArticlesAdminPage() {
         }))
     }
 
-    const updateSubsection = (index: number, field: keyof Subsection, value: any) => {
+    const updateSubsection = <K extends keyof Subsection>(index: number, field: K, value: Subsection[K]) => {
         setFormData(prev => ({
             ...prev,
             subsections: (prev.subsections || []).map((s, i) =>
@@ -219,18 +244,15 @@ export default function ArticlesAdminPage() {
     const updateSubsectionPara = (subsectionIndex: number, paraIndex: number, value: string) => {
         setFormData(prev => ({
             ...prev,
-            subsections: (prev.subsections || []).map((s, i) =>
-                i === subsectionIndex
-                    ? { ...s, paras: s.paras.map((p, pi) => pi === paraIndex ? value : p) }
-                    : s
-            )
-        }))
-    }
-
-    const updateImage = (index: number, value: string) => {
-        setFormData(prev => ({
-            ...prev,
-            images: (prev.images || []).map((img, i) => i === index ? value : img)
+            subsections: (prev.subsections || []).map((s, i) => {
+                if (i !== subsectionIndex) return s
+                const paras = [...(s.paras || [])]
+                while (paras.length < 5) {
+                    paras.push('')
+                }
+                paras[paraIndex] = value
+                return { ...s, paras }
+            })
         }))
     }
 
@@ -409,7 +431,7 @@ export default function ArticlesAdminPage() {
                                                     <div key={index} className="border border-gray-200 rounded-xl p-4 bg-gray-50">
                                                         <div className="flex justify-between items-start mb-3">
                                                             <span className="text-[13px] font-bold text-[#112259] font-manrope">Subsection #{index + 1}</span>
-                                                            <button type="button" onClick={() => removeSubsection(index)} className="cursor-pointer px-2 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm font-bold transition-all duration-200">×</button>
+                                                            <button type="button" onClick={() => removeSubsection(index)} className="cursor-pointer p-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-all duration-200" aria-label="Remove subsection"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg></button>
                                                         </div>
                                                         <div className="space-y-3">
                                                             <input type="text" value={subsection.heading} onChange={(e) => updateSubsection(index, 'heading', e.target.value)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none bg-white" placeholder="Heading" />
@@ -436,19 +458,19 @@ export default function ArticlesAdminPage() {
                                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                                     <div className="col-span-2">
                                                         <label className="block text-xs font-medium text-gray-600 mb-1">Quote</label>
-                                                        <textarea value={formData.quotation1?.quote || ''} onChange={(e) => handleInputChange('quotation1', { ...formData.quotation1, quote: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" rows={2} />
+                                                        <textarea value={formData.quotation1?.quote || ''} onChange={(e) => handleInputChange('quotation1', { ...formData.quotation1, quote: e.target.value } as Quotation)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" rows={2} />
                                                     </div>
                                                     <div>
                                                         <label className="block text-xs font-medium text-gray-600 mb-1">Person Name</label>
-                                                        <input type="text" value={formData.quotation1?.person_name || ''} onChange={(e) => handleInputChange('quotation1', { ...formData.quotation1, person_name: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" />
+                                                        <input type="text" value={formData.quotation1?.person_name || ''} onChange={(e) => handleInputChange('quotation1', { ...formData.quotation1, person_name: e.target.value } as Quotation)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" />
                                                     </div>
                                                     <div>
                                                         <label className="block text-xs font-medium text-gray-600 mb-1">Person Role</label>
-                                                        <input type="text" value={formData.quotation1?.person_role || ''} onChange={(e) => handleInputChange('quotation1', { ...formData.quotation1, person_role: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" />
+                                                        <input type="text" value={formData.quotation1?.person_role || ''} onChange={(e) => handleInputChange('quotation1', { ...formData.quotation1, person_role: e.target.value } as Quotation)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" />
                                                     </div>
                                                     <div className="col-span-2">
                                                         <label className="block text-xs font-medium text-gray-600 mb-1">Person Image URL</label>
-                                                        <input type="url" value={formData.quotation1?.person_image || ''} onChange={(e) => handleInputChange('quotation1', { ...formData.quotation1, person_image: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" />
+                                                        <input type="url" value={formData.quotation1?.person_image || ''} onChange={(e) => handleInputChange('quotation1', { ...formData.quotation1, person_image: e.target.value } as Quotation)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -457,11 +479,11 @@ export default function ArticlesAdminPage() {
                                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                                     <div className="col-span-2">
                                                         <label className="block text-xs font-medium text-gray-600 mb-1">Quote</label>
-                                                        <textarea value={formData.quotation2?.quote || ''} onChange={(e) => handleInputChange('quotation2', { ...formData.quotation2, quote: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" rows={2} />
+                                                        <textarea value={formData.quotation2?.quote || ''} onChange={(e) => handleInputChange('quotation2', { ...formData.quotation2, quote: e.target.value } as Quotation)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" rows={2} />
                                                     </div>
                                                     <div className="col-span-2">
                                                         <label className="block text-xs font-medium text-gray-600 mb-1">Person Name</label>
-                                                        <input type="text" value={formData.quotation2?.person_name || ''} onChange={(e) => handleInputChange('quotation2', { ...formData.quotation2, person_name: e.target.value })} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" />
+                                                        <input type="text" value={formData.quotation2?.person_name || ''} onChange={(e) => handleInputChange('quotation2', { ...formData.quotation2, person_name: e.target.value } as Quotation)} className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#F8A900] focus:border-[#F8A900] focus:outline-none" />
                                                     </div>
                                                 </div>
                                             </div>

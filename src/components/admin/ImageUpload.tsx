@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { uploadImage, uploadMultipleImages } from '@/utils/storage'
 
 interface ImageUploadProps {
@@ -23,6 +23,12 @@ export default function ImageUpload({
     const [uploading, setUploading] = useState(false)
     const [previews, setPreviews] = useState<string[]>(existingImages)
     const [uploadProgress, setUploadProgress] = useState(0)
+
+    const joinedImages = existingImages.join(',')
+    useEffect(() => {
+        setPreviews(existingImages)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [joinedImages])
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files

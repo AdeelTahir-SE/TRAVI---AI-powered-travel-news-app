@@ -11,10 +11,6 @@ export default function ExploreDubaiSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchArticles();
-  }, []);
-
   const fetchArticles = async () => {
     setLoading(true);
     const { data, error } = await supabase
@@ -31,6 +27,13 @@ export default function ExploreDubaiSection() {
     }
     setLoading(false);
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchArticles();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleNext = () => {
     if (currentIndex < articles.length - 1) {
