@@ -1,15 +1,52 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
+import { supabase } from '@/utils/supabase';
 import ShalimarCloudSection from "./shalimarCloudSection";
 export default function Footer() {
   const [isActive, setIsActive] = useState({
     quickLinks: false,
     moreLinks: false,
   });
+  const [email, setEmail] = useState('');
+  const [subscribeStatus, setSubscribeStatus] = useState<'idle' | 'submitting' | 'sent' | 'error'>('idle');
+  const [subscribeMessage, setSubscribeMessage] = useState('');
+
+  const handleSubscribe = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const normalizedEmail = email.trim().toLowerCase();
+
+    if (!normalizedEmail) {
+      setSubscribeStatus('error');
+      setSubscribeMessage('Enter a valid email address.');
+      return;
+    }
+
+    setSubscribeStatus('submitting');
+    setSubscribeMessage('');
+
+    const { error } = await supabase
+      .from('newsletter_subscription')
+      .upsert([{ email: normalizedEmail, source: 'footer' }], {
+        onConflict: 'email',
+        ignoreDuplicates: true,
+      });
+
+    if (error) {
+      console.error('Error saving newsletter subscription:', error);
+      setSubscribeStatus('error');
+      setSubscribeMessage('Subscription failed. Please try again.');
+      return;
+    }
+
+    setSubscribeStatus('sent');
+    setSubscribeMessage('Thanks for subscribing.');
+    setEmail('');
+  };
   return (
-    <section className="relative flex flex-col items-center justify-center relative pt-[60px] px-[20px] xl:px-[100px]  2xl:px-[140px] 2xl:py-[100px]">
+    <section className="relative flex flex-col items-center justify-center pt-[60px] px-5 xl:px-[100px] 2xl:px-[140px] 2xl:py-[100px]">
       <section className="absolute w-full top-0   min-h-[760px] ">
         <Image
           src="/background-images/explore-dubai-background-effect.png"
@@ -53,22 +90,42 @@ export default function Footer() {
 
 
 
-        <div className="flex flex-row items-center justify-center relative">
-          <input
-            type="text"
-            placeholder="Enter your email here"
-            className="bg-white rounded-[34.72px] min-w-[300px] sm:min-w-[400px] min-h-[53.7px] pl-4"
-          />
-          <button className="absolute insets-0   right-2 w-[31px] h-[31px]  flex flex-row items-center justify-center rounded-full bg-[#FFD116]">
-            <Image
-              src="/icons/email-submit.svg"
-              alt=""
-              width={31}
-              height={31}
-              className="w-[13px] h-[13px] "
+        <form className="flex flex-col items-start gap-3" onSubmit={handleSubscribe}>
+          <div className="flex flex-row items-center justify-center relative">
+            <input
+              type="email"
+              placeholder="Enter your email here"
+              value={email}
+              onChange={(event) => {
+                setEmail(event.target.value)
+                if (subscribeStatus !== 'idle') {
+                  setSubscribeStatus('idle')
+                  setSubscribeMessage('')
+                }
+              }}
+              className="bg-white rounded-[34.72px] min-w-[300px] sm:min-w-[400px] min-h-[53.7px] pl-4 pr-14"
+              required
             />
-          </button>
-        </div>
+            <button
+              type="submit"
+              disabled={subscribeStatus === 'submitting'}
+              className="absolute insets-0 right-2 w-[31px] h-[31px] flex flex-row items-center justify-center rounded-full bg-[#FFD116] disabled:opacity-60"
+            >
+              <Image
+                src="/icons/email-submit.svg"
+                alt=""
+                width={31}
+                height={31}
+                className="w-[13px] h-[13px] "
+              />
+            </button>
+          </div>
+          {subscribeMessage ? (
+            <p className={subscribeStatus === 'error' ? 'text-sm text-red-600 font-inter' : 'text-sm text-[#112259] font-inter'}>
+              {subscribeMessage}
+            </p>
+          ) : null}
+        </form>
 
 
 
