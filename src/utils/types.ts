@@ -119,6 +119,21 @@ export interface Article {
     updated_at: string;
 }
 
+export type BannerZone = 'header' | 'sidebar' | 'in-content' | 'footer';
+
+export interface Banner {
+    banner_id: number;
+    title: string;
+    zone: BannerZone;
+    image: string;
+    link: string;
+    start_date?: string | null;
+    end_date?: string | null;
+    active: boolean;
+    created_at: string;
+    updated_at: string;
+}
+
 
 
 

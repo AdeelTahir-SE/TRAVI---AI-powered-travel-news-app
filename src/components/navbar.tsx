@@ -51,7 +51,7 @@ export default function Navbar() {
             <Link href="/">Home</Link>
           </li>
           <li className="font-inter font-normal text-[20px] leading-[30px] -tracking-[0.02em] text-white">
-            <Link href="/">About</Link>
+            <Link href="/about">About</Link>
           </li>
           <li className="font-inter font-normal text-[20px] leading-[30px] -tracking-[0.02em] text-white">
             <Link href="/contact">Contact</Link>
@@ -60,7 +60,7 @@ export default function Navbar() {
 
         {/* Desktop Button */}
         <Link
-          href="/"
+          href="/search"
           className="hidden sm:flex items-center justify-center py-[24px] px-[30px] bg-[#F8A900] text-black gap-[10px] rounded-[800px] text-[20px] font-semibold font-inter leading-[100%]"
         >
           Get Started
@@ -100,10 +100,10 @@ export default function Navbar() {
             <Link href="/contact" className="text-[20px] font-inter">Contact</Link>
 
             <Link
-              href="/"
+              href="/search"
               className="mt-4 py-3 px-5 bg-[#F8A900] text-black rounded-full text-center text-[18px] font-semibold"
             >
-              Get Started
+              Explore Dubai
             </Link>
           </div>
         )}

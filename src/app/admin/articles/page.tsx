@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { supabase } from '@/utils/supabase'
 import { Article, Quotation, Subsection } from '@/utils/types'
 import ImageUpload from '@/components/admin/ImageUpload'
@@ -268,15 +269,28 @@ export default function ArticlesAdminPage() {
                         <h1 className="font-manrope font-extrabold text-[30px] leading-none tracking-[-0.03em] text-[#112259]">Articles</h1>
                         <p className="text-gray-500 text-sm mt-1 font-inter">Create, edit, and manage travel articles.</p>
                     </div>
-                    <button
-                        onClick={handleCreate}
-                        className="cursor-pointer flex items-center gap-2 bg-[#F8A900] hover:bg-[#e09800] text-black px-5 py-2.5 rounded-[14px] font-bold text-sm font-manrope shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
-                    >
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                        </svg>
-                        New Article
-                    </button>
+                    <div className="flex items-center gap-3">
+                        <Link
+                            href="/search?type=articles"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="cursor-pointer flex items-center gap-2 border border-[#112259]/20 text-[#112259] hover:bg-[#112259] hover:text-white px-4 py-2.5 rounded-[14px] font-semibold text-sm font-manrope transition-all duration-200"
+                        >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                            View on Site
+                        </Link>
+                        <button
+                            onClick={handleCreate}
+                            className="cursor-pointer flex items-center gap-2 bg-[#F8A900] hover:bg-[#e09800] text-black px-5 py-2.5 rounded-[14px] font-bold text-sm font-manrope shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all duration-200"
+                        >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                            </svg>
+                            New Article
+                        </button>
+                    </div>
                 </div>
 
                 {loading ? (

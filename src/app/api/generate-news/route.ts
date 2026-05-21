@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
 
+// ─── Model priority list (tried in order until one succeeds) ────────────────
+// gpt-4.5-preview → GPT-4.5, OpenAI's most capable frontier model for nuanced writing
+// gpt-4o          → Rock-solid fallback with full JSON mode support
+const TEXT_MODELS = ['gpt-4.5-preview', 'gpt-4o'] as const
+type TextModel = (typeof TEXT_MODELS)[number]
+
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions'
 
 const SYSTEM_PROMPT = `You are an expert travel journalist specializing in Dubai and global travel destinations. 
@@ -54,6 +60,35 @@ The article MUST follow this exact JSON structure:
 Write in a professional, engaging travel journalism style. Content must be factually accurate and inspiring.
 Return ONLY the JSON object, no markdown code blocks, no additional text.`
 
+// Model-specific request params
+function buildRequestBody(model: TextModel, userPrompt: string) {
+    const base = {
+        model,
+        messages: [
+            { role: 'system' as const, content: SYSTEM_PROMPT },
+            { role: 'user' as const, content: `Generate a travel news article about: ${userPrompt}` },
+        ],
+        temperature: 0.7,
+    }
+
+    if (model === 'gpt-4.5-preview') {
+        return {
+            ...base,
+            // gpt-4.5 supports a larger context — use more tokens for richer articles
+            max_completion_tokens: 6000,
+            // gpt-4.5-preview supports json_object response format
+            response_format: { type: 'json_object' as const },
+        }
+    }
+
+    // gpt-4o
+    return {
+        ...base,
+        max_tokens: 4000,
+        response_format: { type: 'json_object' as const },
+    }
+}
+
 export async function POST(request: NextRequest) {
     try {
         const apiKey = process.env.OPENAI_API_KEY
@@ -66,8 +101,6 @@ export async function POST(request: NextRequest) {
 
         const body = await request.json()
         const { prompt } = body
-        // Always use gpt-4o for maximum quality — model cannot be overridden by client
-        const model = 'gpt-4o'
 
         if (!prompt || typeof prompt !== 'string' || prompt.trim().length === 0) {
             return NextResponse.json(
@@ -75,7 +108,6 @@ export async function POST(request: NextRequest) {
                 { status: 400 }
             )
         }
-
         if (prompt.trim().length > 500) {
             return NextResponse.json(
                 { error: 'Prompt must be under 500 characters.' },
@@ -83,44 +115,24 @@ export async function POST(request: NextRequest) {
             )
         }
 
-        const openaiResponse = await fetch(OPENAI_API_URL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`,
-            },
-            body: JSON.stringify({
-                model: model,
-                messages: [
-                    {
-                        role: 'system',
-                        content: SYSTEM_PROMPT,
-                    },
-                    {
-                        role: 'user',
-                        content: `Generate a travel news article about: ${prompt.trim()}`,
-                    },
-                ],
-                temperature: 0.7,
-                max_tokens: 4000,
-                response_format: { type: 'json_object' },
-            }),
-        })
+        let lastError = 'Generation failed.'
 
-        if (!openaiResponse.ok) {
-            const errorData = await openaiResponse.json().catch(() => ({}))
-            console.error('OpenAI API error:', openaiResponse.status, errorData)
+        // ── Try each model in priority order ──────────────────────────────────
+        for (const model of TEXT_MODELS) {
+            const openaiResponse = await fetch(OPENAI_API_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`,
+                },
+                body: JSON.stringify(buildRequestBody(model, prompt.trim())),
+            })
 
+            // Hard-stop errors — no point retrying other models
             if (openaiResponse.status === 401) {
                 return NextResponse.json(
                     { error: 'Invalid OpenAI API key. Please check your OPENAI_API_KEY.' },
                     { status: 401 }
-                )
-            }
-            if (openaiResponse.status === 429) {
-                return NextResponse.json(
-                    { error: 'OpenAI rate limit exceeded. Please wait a moment and try again.' },
-                    { status: 429 }
                 )
             }
             if (openaiResponse.status === 402) {
@@ -129,64 +141,76 @@ export async function POST(request: NextRequest) {
                     { status: 402 }
                 )
             }
+            if (openaiResponse.status === 429) {
+                return NextResponse.json(
+                    { error: 'OpenAI rate limit exceeded. Please wait a moment and try again.' },
+                    { status: 429 }
+                )
+            }
 
-            return NextResponse.json(
-                { error: `OpenAI API error: ${openaiResponse.statusText}` },
-                { status: openaiResponse.status }
+            if (!openaiResponse.ok) {
+                const errorData = await openaiResponse.json().catch(() => ({}))
+                const detail = (errorData as { error?: { message?: string } })?.error?.message || openaiResponse.statusText
+                console.warn(`[generate-news] ${model} failed (${openaiResponse.status}): ${detail}`)
+                lastError = detail
+                // Try next model
+                continue
+            }
+
+            const openaiData = await openaiResponse.json()
+            const content: string | undefined = openaiData.choices?.[0]?.message?.content
+
+            if (!content) {
+                console.warn(`[generate-news] ${model} returned no content.`)
+                lastError = 'No content returned from model.'
+                continue
+            }
+
+            let article
+            try {
+                article = JSON.parse(content)
+            } catch {
+                console.warn(`[generate-news] ${model} returned non-JSON content.`)
+                lastError = 'Model returned invalid JSON. Trying fallback…'
+                continue
+            }
+
+            // Validate required fields
+            if (!article.title || !Array.isArray(article.paras) || !Array.isArray(article.subsections)) {
+                console.warn(`[generate-news] ${model} returned incomplete article structure.`)
+                lastError = 'Generated article is missing required fields.'
+                continue
+            }
+
+            // Normalise paras to exactly 5 entries
+            while (article.paras.length < 5) article.paras.push('')
+
+            // Normalise subsection paras to exactly 5 entries each
+            article.subsections = article.subsections.map(
+                (sub: { heading: string; paras: string[] }) => ({
+                    ...sub,
+                    paras: sub.paras?.length >= 5
+                        ? sub.paras
+                        : [...(sub.paras || []), ...Array(5 - (sub.paras?.length || 0)).fill('')],
+                })
             )
+
+            console.info(`[generate-news] Success via model: ${model}`)
+            return NextResponse.json({
+                success: true,
+                article,
+                usage: openaiData.usage,
+            })
         }
 
-        const openaiData = await openaiResponse.json()
-        const content = openaiData.choices?.[0]?.message?.content
+        // All models exhausted
+        return NextResponse.json(
+            { error: lastError },
+            { status: 500 }
+        )
 
-        if (!content) {
-            return NextResponse.json(
-                { error: 'No content returned from OpenAI.' },
-                { status: 500 }
-            )
-        }
-
-        let article
-        try {
-            article = JSON.parse(content)
-        } catch {
-            console.error('Failed to parse OpenAI response as JSON:', content)
-            return NextResponse.json(
-                { error: 'OpenAI returned invalid JSON. Please try again.' },
-                { status: 500 }
-            )
-        }
-
-        // Validate required fields
-        if (!article.title || !Array.isArray(article.paras) || !Array.isArray(article.subsections)) {
-            return NextResponse.json(
-                { error: 'Generated article is missing required fields. Please try again.' },
-                { status: 500 }
-            )
-        }
-
-        // Ensure paras has exactly 5 entries
-        while (article.paras.length < 5) {
-            article.paras.push('')
-        }
-
-        // Ensure subsections have exactly 5 paras each
-        article.subsections = article.subsections.map((sub: { heading: string; paras: string[] }) => ({
-            ...sub,
-            paras: sub.paras?.length >= 5 ? sub.paras : [
-                ...(sub.paras || []),
-                ...Array(5 - (sub.paras?.length || 0)).fill('')
-            ]
-        }))
-
-        return NextResponse.json({
-            success: true,
-            article,
-            model: openaiData.model,
-            usage: openaiData.usage,
-        })
     } catch (error) {
-        console.error('Generate news API error:', error)
+        console.error('[generate-news] Unexpected error:', error)
         return NextResponse.json(
             { error: 'Internal server error. Please try again.' },
             { status: 500 }
